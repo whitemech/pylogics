@@ -1,0 +1,21 @@
+site_name: My Docs
+repo_name: 'marcofavorito/pylogics'
+repo_url: https://github.com/marcofavorito/pylogics
+
+nav:
+- Home: index.md
+
+plugins:
+- search
+
+theme:
+  name: material
+
+markdown_extensions:
+- codehilite
+- pymdownx.arithmatex
+- markdown_include.include:
+    base_path: docs
+
+extra_javascript:
+- 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'

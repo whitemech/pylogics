@@ -62,7 +62,7 @@ markdown_include = "^0.6.0"
 mkdocs-material = "^6.2.3"
 ipython = "^7.18.1"
 jupyter = "^1.0.0"
-mknotebooks = "^0.6.0"
+mknotebooks = "^0.7.0"
 markdown = "3.3.3"
 twine = "^3.3.0"
 

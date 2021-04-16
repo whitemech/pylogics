@@ -1,3 +1,23 @@
 # flake8: noqa
 # type: ignore
 # pylint: skip-file
+_get_current_path  # unused function (pylogics/helpers/misc.py:27)
+ensure  # unused function (pylogics/helpers/misc.py:41)
+ensure_set  # unused function (pylogics/helpers/misc.py:46)
+ensure_sequence  # unused function (pylogics/helpers/misc.py:58)
+safe_index  # unused function (pylogics/helpers/misc.py:70)
+safe_get  # unused function (pylogics/helpers/misc.py:78)
+find  # unused function (pylogics/helpers/misc.py:83)
+_.start  # unused method (pylogics/parsers/propositional.py:32)
+_.propositional_formula  # unused method (pylogics/parsers/propositional.py:37)
+_.prop_not  # unused method (pylogics/parsers/propositional.py:80)
+_.prop_atom  # unused method (pylogics/parsers/propositional.py:98)
+_.prop_true  # unused method (pylogics/parsers/propositional.py:103)
+_.prop_false  # unused method (pylogics/parsers/propositional.py:108)
+_.atom  # unused method (pylogics/parsers/propositional.py:113)
+PLParser  # unused class (pylogics/parsers/propositional.py:124)
+FOL  # unused variable (pylogics/syntax/base.py:32)
+SOL  # unused variable (pylogics/syntax/base.py:33)
+LTL  # unused variable (pylogics/syntax/base.py:34)
+LDL  # unused variable (pylogics/syntax/base.py:35)
+ensure_formula  # unused function (pylogics/syntax/base.py:412)

@@ -22,7 +22,16 @@ from lark import Transformer
 
 from pylogics.exceptions import ParsingError
 from pylogics.parsers.base import AbstractParser
-from pylogics.syntax.base import FALSE, TRUE, And, EquivalenceOp, ImpliesOp, Not, Or
+from pylogics.syntax.base import (
+    FALSE,
+    TRUE,
+    And,
+    EquivalenceOp,
+    Formula,
+    ImpliesOp,
+    Not,
+    Or,
+)
 from pylogics.syntax.propositional import Atomic
 
 
@@ -121,8 +130,23 @@ class _PLTransformer(Transformer):
         raise ParsingError(f"error while parsing a '{tag_name}' with tokens: {args}")
 
 
-class PLParser(AbstractParser):
+class _PLParser(AbstractParser):
     """Parser for propositional logic."""
 
     transformer_cls = _PLTransformer
     lark_path = "propositional.lark"
+
+
+__parser = _PLParser()
+
+
+def parse_prop(formula: str) -> Formula:
+    """
+    Parse the propositional formula.
+
+    This is the main entrypoint for PL parsing.
+
+    :param formula: the string representation of the formula.
+    :return: the parsed formula.
+    """
+    return __parser(formula)

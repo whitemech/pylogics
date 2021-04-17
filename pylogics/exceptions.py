@@ -19,9 +19,13 @@
 """Custom library exceptions."""
 
 
-class ParsingError(Exception):
+class PylogicError(Exception):
+    """Generic library error."""
+
+
+class ParsingError(PylogicError):
     """Parsing error."""
 
-    def __init__(self, msg: str = "Parsing error."):
+    def __init__(self, msg: str = "parsing error"):
         """Initialize the exception."""
         super().__init__(msg)

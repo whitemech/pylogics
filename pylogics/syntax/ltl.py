@@ -20,11 +20,19 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Classes for propositional logic."""
+"""Classes for linear temporal logic."""
 from abc import ABC
+from functools import partial
 
 from pylogics.helpers.misc import enforce
-from pylogics.syntax.base import AbstractAtomic, BinaryOp, Formula, Logic, UnaryOp
+from pylogics.syntax.base import (
+    AbstractAtomic,
+    BinaryOp,
+    FalseFormula,
+    Formula,
+    Logic,
+    UnaryOp,
+)
 
 
 class _LTL(Formula, ABC):
@@ -44,7 +52,7 @@ class _LTLUnaryOp(UnaryOp, _LTL):
     """LTL Unary operation."""
 
     def __post_init__(self):
-        """Check that the agument is of LTL logic."""
+        """Check that the argument is of LTL logic."""
         enforce(
             self.argument.logic == Logic.LTL, "operand does not belong to LTL logic"
         )
@@ -113,21 +121,4 @@ class StrongRelease(_LTLBinaryOp):
     SYMBOL = "strong_release"
 
 
-class Last(_LTL, Formula):
-    """The "last" formula (i.e. weak_next(false)) in LTL."""
-
-    def __hash__(self):
-        """Compute the hash."""
-        return hash(Last)
-
-    def __eq__(self, other):
-        """Compare with another object."""
-        return type(other) == Last
-
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return "last"
-
-    def __repr__(self) -> str:
-        """Get an unambiguous string representation."""
-        return "Last()"
+Last = partial(Always, FalseFormula(logic=Logic.LTL))

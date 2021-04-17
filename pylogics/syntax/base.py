@@ -35,10 +35,9 @@ class Logic(Enum):
     """This enumeration lists the supported logics."""
 
     PL = "propositional logic"
-    FOL = "first-order logic"
-    SOL = "second-order logic"
     LTL = "linear temporal logic"
     LDL = "linear dynamic logic"
+    RE = "regular expressions"
 
 
 class _HashConsing(Hashable):
@@ -216,7 +215,7 @@ class TrueFormula(Formula):
 
     def __hash__(self) -> int:
         """Compute the hash."""
-        return hash((TrueFormula, self.logic))
+        return hash((type(self), self.logic))
 
     def __str__(self) -> str:
         """Get the string representation."""
@@ -235,7 +234,7 @@ class TrueFormula(Formula):
         the set of instances of this class
         equal between them.
         """
-        return type(other) == TrueFormula and self.logic == other.logic
+        return type(other) == type(self) and self.logic == other.logic
 
     def __neg__(self) -> Formula:
         """Negate."""
@@ -257,7 +256,7 @@ class FalseFormula(Formula):
 
     def __hash__(self) -> int:
         """Compute the hash."""
-        return hash((FalseFormula, self.logic))
+        return hash((type(self), self.logic))
 
     def __str__(self) -> str:
         """Get the string representation."""
@@ -276,7 +275,7 @@ class FalseFormula(Formula):
         the set of instances of this class
         equal between them.
         """
-        return type(other) == FalseFormula and self.logic == other.logic
+        return type(other) == type(self) and self.logic == other.logic
 
     def __neg__(self) -> Formula:
         """Negate."""

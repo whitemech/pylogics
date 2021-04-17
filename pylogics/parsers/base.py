@@ -80,3 +80,22 @@ class AbstractTransformer(Transformer, ABC):
     def _raise_parsing_error(cls, tag_name, args):
         """Raise a parsing error."""
         raise ParsingError(f"error while parsing a '{tag_name}' with tokens: {args}")
+
+    @classmethod
+    def _starred_binaryop(cls, args, formula_type, func_name):
+        """
+        Process a binary operator with repetitions.
+
+        This parses rules of the form:   rule -> a (OP b)*
+
+        :param args: The parsing Tree.
+        :param formula_type: Constructor of the OP class. It must accept
+            a list of arguments.
+        :return: a Formula.
+        """
+        if len(args) == 1:
+            return args[0]
+        if (len(args) - 1) % 2 == 0:
+            subformulas = args[::2]
+            return formula_type(*subformulas)
+        cls._raise_parsing_error(func_name, args)

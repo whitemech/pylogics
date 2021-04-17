@@ -60,75 +60,35 @@ class _LTLTransformer(AbstractTransformer):
 
     @classmethod
     def ltlf_equivalence(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return EquivalenceOp(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_equivalence.__name__, args)
+        cls._starred_binaryop(args, EquivalenceOp, cls.ltlf_equivalence.__name__)
 
     @classmethod
     def ltlf_implication(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return ImpliesOp(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_implication.__name__, args)
+        cls._starred_binaryop(args, ImpliesOp, cls.ltlf_implication.__name__)
 
     @classmethod
     def ltlf_or(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return Or(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_or.__name__, args)
+        cls._starred_binaryop(args, Or, cls.ltlf_or.__name__)
 
     @classmethod
     def ltlf_and(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return And(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_and.__name__, args)
+        cls._starred_binaryop(args, And, cls.ltlf_and.__name__)
 
     @classmethod
     def ltlf_until(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return Until(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_until.__name__, args)
+        cls._starred_binaryop(args, Until, cls.ltlf_until.__name__)
 
     @classmethod
     def ltlf_weak_until(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return WeakUntil(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_weak_until.__name__, args)
+        cls._starred_binaryop(args, WeakUntil, cls.ltlf_weak_until.__name__)
 
     @classmethod
     def ltlf_release(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return Release(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_release.__name__, args)
+        cls._starred_binaryop(args, Release, cls.ltlf_release.__name__)
 
     @classmethod
     def ltlf_strong_release(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return StrongRelease(*subformulas)
-        cls._raise_parsing_error(cls.ltlf_strong_release.__name__, args)
+        cls._starred_binaryop(args, StrongRelease, cls.ltlf_strong_release.__name__)
 
     @classmethod
     def ltlf_always(cls, args):

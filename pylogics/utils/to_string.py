@@ -36,10 +36,20 @@ from pylogics.syntax.base import (
     Or,
     TrueFormula,
 )
+from pylogics.syntax.ldl import (
+    Box,
+    Diamond,
+    LDLFalse,
+    LDLTrue,
+    Prop,
+    Seq,
+    Star,
+    Test,
+    Union,
+)
 from pylogics.syntax.ltl import (
     Always,
     Eventually,
-    Last,
     Next,
     Release,
     StrongRelease,
@@ -156,7 +166,55 @@ def to_string_always(formula: Always) -> str:
     return f"G({to_string(formula.argument)})"
 
 
-@to_string.register(Last)
-def to_string_last(formula: Last) -> str:
-    """Transform a last formula into string."""
-    return "last"
+@to_string.register(LDLTrue)
+def to_string_ldl_true(formula: LDLTrue) -> str:
+    """Transform an LDL true into string."""
+    return "tt"
+
+
+@to_string.register(LDLFalse)
+def to_string_ldl_false(formula: LDLFalse) -> str:
+    """Transform an LDL false into string."""
+    return "ff"
+
+
+@to_string.register(Diamond)
+def to_string_ldl_diamond(formula: Diamond) -> str:
+    """Transform an LDL diamond formula into string."""
+    return f"<({to_string(formula.regular_expression)})>({to_string(formula.tail_formula)})"
+
+
+@to_string.register(Box)
+def to_string_ldl_box(formula: Box) -> str:
+    """Transform an LDL box formula into string."""
+    return f"[({to_string(formula.regular_expression)})]({to_string(formula.tail_formula)})"
+
+
+@to_string.register(Seq)
+def to_string_re_seq(formula: Seq) -> str:
+    """Transform a sequence regular expression into string."""
+    return ";".join(_map_operands_to_string(formula.operands))
+
+
+@to_string.register(Union)
+def to_string_re_union(formula: Union) -> str:
+    """Transform a union regular expression into string."""
+    return "+".join(_map_operands_to_string(formula.operands))
+
+
+@to_string.register(Star)
+def to_string_re_star(formula: Star) -> str:
+    """Transform a star regular expression into string."""
+    return f"({to_string(formula.argument)})*"
+
+
+@to_string.register(Test)
+def to_string_re_test(formula: Test) -> str:
+    """Transform a test regular expression into string."""
+    return f"?({to_string(formula.argument)})"
+
+
+@to_string.register(Prop)
+def to_string_re_prop(formula: Prop) -> str:
+    """Transform a propositional regular expression into string."""
+    return f"({to_string(formula.argument)})"

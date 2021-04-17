@@ -52,7 +52,7 @@ class Atomic(Formula):
 
     @property
     def name(self) -> str:
-        """Get hte name."""
+        """Get the name."""
         return self._name
 
     def __hash__(self) -> int:

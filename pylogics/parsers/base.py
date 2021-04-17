@@ -29,9 +29,10 @@ from typing import Type
 
 from lark import Lark, Transformer
 
+from pylogics.exceptions import ParsingError
 from pylogics.syntax.base import Formula
 
-CURRENT_DIR = Path(os.path.dirname(inspect.getfile(inspect.currentframe())))  # type: ignore
+CURRENT_DIR = Path(os.path.dirname(inspect.getfile(inspect.currentframe()))).absolute()  # type: ignore
 
 
 class AbstractParser(ABC):
@@ -50,7 +51,15 @@ class AbstractParser(ABC):
         """Initialize the parser."""
         self._transformer = self.transformer_cls()
         self._full_lark_path = CURRENT_DIR / self.lark_path
-        self._parser = Lark(self._full_lark_path.read_text(), parser="lalr")
+        self._parser = self._load_parser()
+
+    def _load_parser(self) -> Lark:
+        """Load the parser."""
+        return Lark(
+            self._full_lark_path.read_text(),
+            parser="lalr",
+            import_paths=[str(CURRENT_DIR)],
+        )
 
     def __call__(self, text: str) -> Formula:
         """
@@ -62,3 +71,12 @@ class AbstractParser(ABC):
         tree = self._parser.parse(text)
         formula = self._transformer.transform(tree)
         return formula
+
+
+class AbstractTransformer(Transformer, ABC):
+    """Abstract Lark transformer."""
+
+    @classmethod
+    def _raise_parsing_error(cls, tag_name, args):
+        """Raise a parsing error."""
+        raise ParsingError(f"error while parsing a '{tag_name}' with tokens: {args}")

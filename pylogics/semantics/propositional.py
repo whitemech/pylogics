@@ -28,8 +28,15 @@ from typing import Dict, Set, Union, cast
 from pylogics.exceptions import PylogicsError
 from pylogics.helpers.misc import enforce
 from pylogics.semantics.base import base_semantics
-from pylogics.syntax.base import BinaryOp, FalseFormula, Formula, TrueFormula, UnaryOp
-from pylogics.syntax.propositional import Atomic, AtomName
+from pylogics.syntax.base import (
+    AtomName,
+    BinaryOp,
+    FalseFormula,
+    Formula,
+    TrueFormula,
+    UnaryOp,
+)
+from pylogics.syntax.propositional import Atomic
 
 _PropInterpretation = Union[Dict, Set]
 

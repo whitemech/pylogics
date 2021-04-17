@@ -1,0 +1,61 @@
+start: ltlf_formula
+
+?ltlf_formula:         ltlf_equivalence
+?ltlf_equivalence:     ltlf_implication (EQUIVALENCE ltlf_implication)*
+?ltlf_implication:     ltlf_or (IMPLY ltlf_or)*
+?ltlf_or:              ltlf_and (OR ltlf_and)*
+?ltlf_and:             ltlf_weak_until (AND ltlf_weak_until)*
+?ltlf_weak_until:      ltlf_until (WEAK_UNTIL ltlf_until)*
+?ltlf_until:           ltlf_release (UNTIL ltlf_release)*
+?ltlf_release:         ltlf_strong_release (RELEASE ltlf_strong_release)*
+?ltlf_strong_release:  ltlf_unaryop (STRONG_RELEASE ltlf_unaryop)*
+
+?ltlf_unaryop:     ltlf_always
+             |     ltlf_eventually
+             |     ltlf_next
+             |     ltlf_weak_next
+             |     ltlf_not
+             |     ltlf_wrapped
+
+?ltlf_always:      ALWAYS ltlf_unaryop
+?ltlf_eventually:  EVENTUALLY ltlf_unaryop
+?ltlf_next:        NEXT ltlf_unaryop
+?ltlf_weak_next:   WEAK_NEXT ltlf_unaryop
+?ltlf_not:         NOT ltlf_unaryop
+?ltlf_wrapped:     ltlf_atom
+             |     LSEPARATOR ltlf_formula RSEPARATOR
+?ltlf_atom:        ltlf_symbol
+          |        ltlf_true
+          |        ltlf_false
+          |        ltlf_last
+
+ltlf_symbol: SYMBOL_NAME
+ltlf_true: prop_true
+ltlf_false: prop_false
+ltlf_last: LAST
+
+// Operators must not be part of a word
+UNTIL.2: "U"
+RELEASE.2: "R"
+ALWAYS.2: "G"
+EVENTUALLY.2: "F"
+NEXT.2: "X"
+WEAK_NEXT.2: "N"
+WEAK_UNTIL.2: "W"
+STRONG_RELEASE.2: "M"
+END.2: /(?i:end)/
+LAST.2: /(?i:last)/
+
+SYMBOL_NAME: /([A-Za-z][A-Za-z0-9_]*)/
+
+%ignore /\s+/
+
+%import .propositional.prop_true -> prop_true
+%import .propositional.prop_false -> prop_false
+%import .propositional.NOT -> NOT
+%import .propositional.OR -> OR
+%import .propositional.AND -> AND
+%import .propositional.EQUIVALENCE -> EQUIVALENCE
+%import .propositional.IMPLY -> IMPLY
+%import .propositional.LSEPARATOR -> LSEPARATOR
+%import .propositional.RSEPARATOR -> RSEPARATOR

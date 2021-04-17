@@ -26,6 +26,7 @@ from typing import Sequence
 
 from pylogics.exceptions import PylogicsError
 from pylogics.syntax.base import (
+    AbstractAtomic,
     And,
     EquivalenceOp,
     FalseFormula,
@@ -35,12 +36,22 @@ from pylogics.syntax.base import (
     Or,
     TrueFormula,
 )
-from pylogics.syntax.propositional import Atomic
+from pylogics.syntax.ltl import (
+    Always,
+    Eventually,
+    Last,
+    Next,
+    Release,
+    StrongRelease,
+    Until,
+    WeakNext,
+    WeakUntil,
+)
 
 
 @functools.singledispatch
 def to_string(formula: Formula) -> str:
-    """Transform a formula to string."""
+    """Transform a formula to a parsable string."""
     raise PylogicsError(f"formula '{formula}' is not supported")
 
 
@@ -79,8 +90,8 @@ def to_string_equivalence(formula: EquivalenceOp) -> str:
     return " <-> ".join(_map_operands_to_string(formula.operands))
 
 
-@to_string.register(Atomic)
-def to_string_atomic(formula: Atomic) -> str:
+@to_string.register(AbstractAtomic)
+def to_string_atomic(formula: AbstractAtomic) -> str:
     """Transform an atomic formula into string."""
     return formula.name
 
@@ -95,3 +106,57 @@ def to_string_true(_formula: TrueFormula) -> str:
 def to_string_false(_formula: FalseFormula) -> str:
     """Transform the "false" formula into string."""
     return "false"
+
+
+@to_string.register(Next)
+def to_string_next(formula: Next) -> str:
+    """Transform a next formula into string."""
+    return f"X({to_string(formula.argument)})"
+
+
+@to_string.register(WeakNext)
+def to_string_weak_next(formula: WeakNext) -> str:
+    """Transform a weak next formula into string."""
+    return f"N({to_string(formula.argument)})"
+
+
+@to_string.register(Until)
+def to_string_until(formula: Until) -> str:
+    """Transform a until formula into string."""
+    return " U ".join(_map_operands_to_string(formula.operands))
+
+
+@to_string.register(WeakUntil)
+def to_string_weak_until(formula: WeakUntil) -> str:
+    """Transform a weak until formula into string."""
+    return " W ".join(_map_operands_to_string(formula.operands))
+
+
+@to_string.register(Release)
+def to_string_release(formula: Release) -> str:
+    """Transform a release formula into string."""
+    return " R ".join(_map_operands_to_string(formula.operands))
+
+
+@to_string.register(StrongRelease)
+def to_string_strong_release(formula: StrongRelease) -> str:
+    """Transform a strong release formula into string."""
+    return " M ".join(_map_operands_to_string(formula.operands))
+
+
+@to_string.register(Eventually)
+def to_string_eventually(formula: Eventually) -> str:
+    """Transform a eventually formula into string."""
+    return f"F({to_string(formula.argument)})"
+
+
+@to_string.register(Always)
+def to_string_always(formula: Always) -> str:
+    """Transform a always formula into string."""
+    return f"G({to_string(formula.argument)})"
+
+
+@to_string.register(Last)
+def to_string_last(formula: Last) -> str:
+    """Transform a last formula into string."""
+    return "last"

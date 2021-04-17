@@ -21,56 +21,14 @@
 #
 
 """Classes for propositional logic."""
-import re
-from typing import Union
 
-from pylogics.helpers.misc import RegexConstrainedString
-from pylogics.syntax.base import Formula, Logic
+from pylogics.syntax.base import AbstractAtomic, Logic
 
 
-class AtomName(RegexConstrainedString):
-    """A string that denotes an atomic propositional symbol."""
-
-    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_]*")
-
-
-_AtomNameOrStr = Union[str, AtomName]
-
-
-class Atomic(Formula):
+class Atomic(AbstractAtomic):
     """An atomic proposition."""
-
-    def __init__(self, name: _AtomNameOrStr):
-        """
-        Initialize the atomic proposition.
-
-        :param name: the symbol name.
-        """
-        super().__init__()
-        self._name = str(AtomName(name))
 
     @property
     def logic(self) -> Logic:
         """Get the logic formalism."""
         return Logic.PL
-
-    @property
-    def name(self) -> str:
-        """Get the name."""
-        return self._name
-
-    def __hash__(self) -> int:
-        """Compute the hash."""
-        return hash((Atomic, self.name))
-
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return f"{self.name}"
-
-    def __repr__(self) -> str:
-        """Get an unambiguous string representation."""
-        return f"Atomic({self.name})"
-
-    def __eq__(self, other) -> bool:
-        """Compare with another object."""
-        return isinstance(other, Atomic) and self.name == other.name

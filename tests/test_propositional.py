@@ -21,28 +21,29 @@
 #
 
 """Tests on the pylogics.syntax.propositional module."""
-from hypothesis import HealthCheck, given, settings
+from hypothesis import given
 from hypothesis.extra.lark import from_lark
 from hypothesis.strategies import booleans, dictionaries, from_regex, one_of, sets
 
 from pylogics.parsers.propositional import __parser as prop_parser
 from pylogics.parsers.propositional import parse_prop
 from pylogics.semantics.propositional import evaluate_prop
-from pylogics.syntax.base import get_cache_context
-from pylogics.syntax.propositional import AtomName
+from pylogics.syntax.base import AtomName, Logic, get_cache_context
 from pylogics.utils.to_string import to_string
+from tests.conftest import suppress_health_checks_for_lark
 
 
-@settings(suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much])
+@suppress_health_checks_for_lark
 @given(from_lark(prop_parser._parser))
 def test_parser(formula):
     """Test parsing is deterministic."""
     formula_1 = parse_prop(formula)
     formula_2 = parse_prop(formula)
     assert formula_1 == formula_2
+    assert Logic.PL == formula_1.logic == formula_2.logic
 
 
-@settings(suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much])
+@suppress_health_checks_for_lark
 @given(from_lark(prop_parser._parser))
 def test_to_string(formula):
     """Test that the output of 'to_string' is parsable."""
@@ -52,7 +53,7 @@ def test_to_string(formula):
     assert actual_formula == expected_formula
 
 
-@settings(suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much])
+@suppress_health_checks_for_lark
 @given(
     from_lark(prop_parser._parser),
     one_of(

@@ -23,7 +23,7 @@ IMPLY : ">>"|"->"
 OR: "||"|"|"
 AND: "&&"|"&"
 NOT: "!"|"~"
-SYMBOL_NAME: /([A-Za-z_][A-Za-z0-9_]*)/
+SYMBOL_NAME: /([A-Za-z][A-Za-z0-9_]*)/
 TRUE.2: /(?i:true)/
 FALSE.2: /(?i:false)/
 

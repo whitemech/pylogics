@@ -35,7 +35,20 @@ class Logic(Enum):
     LDL = "linear dynamic logic"
 
 
-class Formula(ABC, metaclass=Hashable):
+class _HashConsing(Hashable):
+    """
+    This metaclass implements hash consing for logic formulae.
+
+    It makes sure the same formula is not repeated across the intepreter.
+    """
+
+    def __call__(cls, *args, **kwargs):
+        """Init the subclass object."""
+        instance = super().__call__(*args, **kwargs)
+        return instance
+
+
+class Formula(ABC, metaclass=_HashConsing):
     """Base class for all the formulas."""
 
     @property
@@ -220,7 +233,7 @@ TRUE = TrueFormula()
 FALSE = FalseFormula()
 
 
-class _MonotoneBinaryOp(Hashable):
+class _MonotoneBinaryOp(_HashConsing):
     """
     Metaclass to simplify binary monotone operator instantiations.
 
@@ -354,7 +367,7 @@ class Not(UnaryOp):
         return self.argument.logic
 
 
-class _MetaImpliesOp(Hashable):
+class _MetaImpliesOp(_HashConsing):
     """
     Metaclass for the imply operator.
 
@@ -374,7 +387,6 @@ class _MetaImpliesOp(Hashable):
     @staticmethod
     def _simplify_operands(*operands):
         """Simplify operands."""
-        operands = list(dict.fromkeys(operands))
         if len(operands) == 0:
             return []
         if len(operands) == 1:
@@ -400,7 +412,7 @@ class ImpliesOp(BinaryOp, metaclass=_MetaImpliesOp):
     SYMBOL = "implies"
 
 
-class _MetaEquivalenceOp(Hashable):
+class _MetaEquivalenceOp(_HashConsing):
     """
     Metaclass for the equivalence operator.
 

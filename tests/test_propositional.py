@@ -49,7 +49,7 @@ def test_to_string(formula):
     expected_formula = parse_prop(formula)
     formula_str = to_string(expected_formula)
     actual_formula = parse_prop(formula_str)
-    assert expected_formula == actual_formula
+    assert actual_formula == expected_formula
 
 
 @settings(suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much])

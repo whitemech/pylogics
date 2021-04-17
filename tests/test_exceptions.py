@@ -20,15 +20,11 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Tests on the pylogics.syntax.propositional package."""
-from pylogics.parsers.propositional import parse_prop
-from pylogics.semantics.propositional import evaluate_prop
+"""Tests on the pylogics.exceptions module."""
+from pylogics.exceptions import ParsingError
 
 
-def test_propositional():
-    """Simple test of propositional logic."""
-    f = parse_prop("a & b & (a & b)")
-    assert str(f) == "(and a b)"
-
-    assert not evaluate_prop(f, {"a"})
-    assert evaluate_prop(f, {"a", "b"})
+def test_parsing_exception_init():
+    """Test initialization of parsing exception."""
+    e = ParsingError()
+    assert e.args == ("parsing error",)

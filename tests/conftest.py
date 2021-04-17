@@ -20,4 +20,4 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Tests on the pylogics.syntax package."""
+"""The conftest.py module for pytest."""

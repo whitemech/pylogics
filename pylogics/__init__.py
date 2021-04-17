@@ -20,4 +20,6 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Test for the pylogics project."""
+"""A Python ."""
+
+__version__ = "0.0.1"

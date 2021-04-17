@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Marco Favorito
+# Copyright 2021 WhiteMech
 #
 # ------------------------------
 #
@@ -20,8 +20,4 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Main tests."""
-
-
-def test_example():
-    """Test example."""
+"""This package contains the parsers for the supported logics."""

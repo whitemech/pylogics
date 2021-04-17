@@ -53,39 +53,19 @@ class _PLTransformer(AbstractTransformer):
     @classmethod
     def prop_equivalence(cls, args):
         """Parse the 'prop_equivalence' tag."""
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return EquivalenceOp(*subformulas)
-        cls._raise_parsing_error(cls.prop_equivalence.__name__, args)
+        return cls._starred_binaryop(args, EquivalenceOp, cls.prop_equivalence.__name__)
 
     @classmethod
     def prop_implication(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return ImpliesOp(*subformulas)
-        cls._raise_parsing_error(cls.prop_implication.__name__, args)
+        return cls._starred_binaryop(args, ImpliesOp, cls.prop_implication.__name__)
 
     @classmethod
     def prop_or(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return Or(*subformulas)
-        cls._raise_parsing_error(cls.prop_or.__name__, args)
+        return cls._starred_binaryop(args, Or, cls.prop_or.__name__)
 
     @classmethod
     def prop_and(cls, args):
-        if len(args) == 1:
-            return args[0]
-        if (len(args) - 1) % 2 == 0:
-            subformulas = args[::2]
-            return And(*subformulas)
-        cls._raise_parsing_error(cls.prop_and.__name__, args)
+        return cls._starred_binaryop(args, And, cls.prop_and.__name__)
 
     @classmethod
     def prop_not(cls, args):

@@ -20,4 +20,11 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Test for the pylogics project."""
+"""Tests on the pylogics.exceptions module."""
+from pylogics.exceptions import ParsingError
+
+
+def test_parsing_exception_init():
+    """Test initialization of parsing exception."""
+    e = ParsingError()
+    assert e.args == ("parsing error",)

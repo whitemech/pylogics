@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Marco Favorito
+# Copyright 2021 WhiteMech
 #
 # ------------------------------
 #
@@ -42,7 +42,7 @@ HEADER_REGEX = re.compile(
     r"""(#!/usr/bin/env python3
 )?# -\*- coding: utf-8 -\*-
 #
-# Copyright 2021 Marco Favorito
+# Copyright 2021 WhiteMech
 #
 # ------------------------------
 #

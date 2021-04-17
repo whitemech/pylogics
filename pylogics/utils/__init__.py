@@ -20,4 +20,4 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Test for the pylogics project."""
+"""Utility functions."""

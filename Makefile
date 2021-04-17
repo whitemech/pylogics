@@ -60,39 +60,39 @@ clean-test: ## remove test and coverage artifacts
 lint-all: black isort lint static bandit safety vulture pylint ## run all linters
 
 lint: ## check style with flake8
-	flake8 src/pylogics tests scripts
+	flake8 pylogics tests scripts
 
 static: ## static type checking with mypy
-	mypy src/pylogics tests scripts
+	mypy pylogics tests scripts
 
 isort: ## sort import statements with isort
-	isort src/pylogics tests scripts
+	isort pylogics tests scripts
 
 isort-check: ## check import statements order with isort
-	isort --check-only src/pylogics tests scripts
+	isort --check-only pylogics tests scripts
 
 black: ## apply black formatting
-	black src/pylogics tests scripts
+	black pylogics tests scripts
 
 black-check: ## check black formatting
-	black --check --verbose src/pylogics tests scripts
+	black --check --verbose pylogics tests scripts
 
 bandit: ## run bandit
-	bandit src/pylogics tests scripts
+	bandit pylogics tests scripts
 
 safety: ## run safety
-	safety
+	safety check
 
 pylint: ## run pylint
-	pylint src/pylogics tests scripts
+	pylint pylogics tests scripts
 
 vulture: ## run vulture
-	vulture src/pylogics scripts/whitelist.py
+	vulture pylogics scripts/whitelist.py
 
 test: ## run tests quickly with the default Python
 	pytest tests --doctest-modules \
-        src/pylogics tests/ \
-        --cov=src/pylogics \
+        pylogics tests/ \
+        --cov=pylogics \
         --cov-report=xml \
         --cov-report=html \
         --cov-report=term
@@ -101,7 +101,7 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source src/pylogics -m pytest
+	coverage run --source pylogics -m pytest
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html

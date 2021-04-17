@@ -20,4 +20,16 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Test for the pylogics project."""
+"""Custom library exceptions."""
+
+
+class PylogicsError(Exception):
+    """Generic library error."""
+
+
+class ParsingError(PylogicsError):
+    """Parsing error."""
+
+    def __init__(self, msg: str = "parsing error"):
+        """Initialize the exception."""
+        super().__init__(msg)

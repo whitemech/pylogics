@@ -53,19 +53,19 @@ class _PLTransformer(AbstractTransformer):
     @classmethod
     def prop_equivalence(cls, args):
         """Parse the 'prop_equivalence' tag."""
-        cls._starred_binaryop(args, EquivalenceOp, cls.prop_equivalence.__name__)
+        return cls._starred_binaryop(args, EquivalenceOp, cls.prop_equivalence.__name__)
 
     @classmethod
     def prop_implication(cls, args):
-        cls._starred_binaryop(args, ImpliesOp, cls.prop_implication.__name__)
+        return cls._starred_binaryop(args, ImpliesOp, cls.prop_implication.__name__)
 
     @classmethod
     def prop_or(cls, args):
-        cls._starred_binaryop(args, Or, cls.prop_or.__name__)
+        return cls._starred_binaryop(args, Or, cls.prop_or.__name__)
 
     @classmethod
     def prop_and(cls, args):
-        cls._starred_binaryop(args, And, cls.prop_and.__name__)
+        return cls._starred_binaryop(args, And, cls.prop_and.__name__)
 
     @classmethod
     def prop_not(cls, args):

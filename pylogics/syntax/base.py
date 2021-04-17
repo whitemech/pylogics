@@ -275,16 +275,17 @@ class CommutativeBinaryOp(BinaryOp):
 
     @property
     def _frozenset_operands(self) -> FrozenSet[Formula]:
-        """Get the operands in a frozenset."""
+        """
+        Get the operands in a frozenset.
+
+        It is useful for canonical representation of the same
+        (commutative) operator.
+        """
         return frozenset(self.operands)
 
     def __hash__(self) -> int:
         """Compute the hash."""
         return hash((type(self), self._frozenset_operands))
-
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return f"({self.SYMBOL} {' '.join(map(str, self._frozenset_operands))})"
 
     def __repr__(self) -> str:
         """Get an unambiguous string representation."""

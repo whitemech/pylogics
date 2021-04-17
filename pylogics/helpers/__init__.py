@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Marco Favorito
+# Copyright 2021 WhiteMech
 #
 # ------------------------------
 #
@@ -20,6 +20,4 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""A Python ."""
-
-__version__ = "0.0.1"
+"""This subpackage contains helper modules and functions."""

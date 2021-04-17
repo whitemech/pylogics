@@ -20,4 +20,13 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Test for the pylogics project."""
+"""The conftest.py module for pytest."""
+import pytest
+
+from pylogics.syntax.base import reset_cache
+
+
+@pytest.fixture(scope="class", autouse=True)
+def reset_cache_fixture():
+    """Reset hash-consing global cache after each test function/class call."""
+    reset_cache()

@@ -3,7 +3,6 @@
 ## Maintainers
 
 - [Marco Favorito](https://github.com/marcofavorito)
-- [Francesco Fuggitti](https://github.com/francescofuggitti)
 
 ## Contributors
 

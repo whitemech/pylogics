@@ -405,6 +405,48 @@ version = "3.1.14"
 gitdb = ">=4.0.1,<5"
 
 [[package]]
+category = "dev"
+description = "A library for property-based testing"
+name = "hypothesis"
+optional = false
+python-versions = ">=3.6"
+version = "6.10.0"
+
+[package.dependencies]
+attrs = ">=19.2.0"
+sortedcontainers = ">=2.1.0,<3.0.0"
+
+[package.extras]
+all = ["black (>=19.10b0)", "click (>=7.0)", "django (>=2.2)", "dpcontracts (>=0.4)", "lark-parser (>=0.6.5)", "libcst (>=0.3.16)", "numpy (>=1.9.0)", "pandas (>=0.25)", "pytest (>=4.6)", "python-dateutil (>=1.4)", "pytz (>=2014.1)", "redis (>=3.0.0)", "rich (>=9.0.0)", "importlib-resources (>=3.3.0)", "importlib-metadata", "backports.zoneinfo (>=0.2.1)", "tzdata (>=2020.4)"]
+cli = ["click (>=7.0)", "black (>=19.10b0)", "rich (>=9.0.0)"]
+codemods = ["libcst (>=0.3.16)"]
+dateutil = ["python-dateutil (>=1.4)"]
+django = ["pytz (>=2014.1)", "django (>=2.2)"]
+dpcontracts = ["dpcontracts (>=0.4)"]
+ghostwriter = ["black (>=19.10b0)"]
+lark = ["lark-parser (>=0.6.5)"]
+numpy = ["numpy (>=1.9.0)"]
+pandas = ["pandas (>=0.25)"]
+pytest = ["pytest (>=4.6)"]
+pytz = ["pytz (>=2014.1)"]
+redis = ["redis (>=3.0.0)"]
+zoneinfo = ["importlib-resources (>=3.3.0)", "backports.zoneinfo (>=0.2.1)", "tzdata (>=2020.4)"]
+
+[[package]]
+category = "dev"
+description = "Pytest plugin for better integration with hypothesis"
+name = "hypothesis-pytest"
+optional = false
+python-versions = "*"
+version = "0.19.0"
+
+[package.dependencies]
+hypothesis = ">=1.11.2"
+pytest = ">=2.7.0"
+
+[[package]]
+category = "dev"
+description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
 version = "2.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -722,6 +764,20 @@ docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [[package]]
+category = "main"
+description = "a modern parsing library"
+name = "lark-parser"
+optional = false
+python-versions = "*"
+version = "0.11.2"
+
+[package.extras]
+nearley = ["js2py"]
+regex = ["regex"]
+
+[[package]]
+category = "dev"
+description = "A fast and thorough lazy object proxy."
 name = "lazy-object-proxy"
 version = "1.4.3"
 description = "A fast and thorough lazy object proxy."
@@ -831,7 +887,7 @@ description = "A Material Design theme for MkDocs"
 category = "dev"
 optional = false
 python-versions = "*"
-version = "6.2.8"
+version = "7.1.1"
 
 [package.dependencies]
 markdown = ">=3.2"
@@ -1143,6 +1199,9 @@ version = "3.0.18"
 wcwidth = "*"
 
 [[package]]
+category = "dev"
+description = "Run a subprocess in a pseudo terminal"
+marker = "python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\" or os_name != \"nt\" or python_version >= \"3.3\" and sys_platform != \"win32\" and (python_version >= \"3.3\" and sys_platform != \"win32\" or sys_platform != \"win32\")"
 name = "ptyprocess"
 version = "0.7.0"
 description = "Run a subprocess in a pseudo terminal"
@@ -1528,6 +1587,16 @@ python-versions = "*"
 version = "2.1.0"
 
 [[package]]
+category = "dev"
+description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
+name = "sortedcontainers"
+optional = false
+python-versions = "*"
+version = "2.3.0"
+
+[[package]]
+category = "dev"
+description = "Manage dynamic plugins for Python applications"
 name = "stevedore"
 version = "3.3.0"
 description = "Manage dynamic plugins for Python applications"
@@ -1787,7 +1856,7 @@ docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "pytest-enabler", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
-lock-version = "1.1"
+content-hash = "30ceac2aede8ee97987764c0730bd8475f3c44e92dc6100c39cf7c7af47f50c5"
 python-versions = "^3.7"
 content-hash = "4b49c56fa01a4b1afcad33a2c6cd6ddd5cb0d7eef2135e45c277d2af6478a5d4"
 
@@ -2041,6 +2110,13 @@ gitpython = [
     {file = "GitPython-3.1.14-py3-none-any.whl", hash = "sha256:3283ae2fba31c913d857e12e5ba5f9a7772bbc064ae2bb09efafa71b0dd4939b"},
     {file = "GitPython-3.1.14.tar.gz", hash = "sha256:be27633e7509e58391f10207cd32b2a6cf5b908f92d9cd30da2e514e1137af61"},
 ]
+hypothesis = [
+    {file = "hypothesis-6.10.0-py3-none-any.whl", hash = "sha256:1a00a4e3ef40041b2c072deab9c71e307bc5354bb4a102ef22ae8c23fa8b3970"},
+    {file = "hypothesis-6.10.0.tar.gz", hash = "sha256:9f8c130b1278d30cb3cc64e3a4aacb88c4906155772beed90ce33e06794e1ee0"},
+]
+hypothesis-pytest = [
+    {file = "hypothesis-pytest-0.19.0.tar.gz", hash = "sha256:550fd3a651eb13d399efba3172bd010a42f6c34c2baa04cf072bda0911054e06"},
+]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
     {file = "idna-2.10.tar.gz", hash = "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"},
@@ -2121,6 +2197,9 @@ jupyterlab-widgets = [
 keyring = [
     {file = "keyring-23.0.1-py3-none-any.whl", hash = "sha256:8f607d7d1cc502c43a932a275a56fe47db50271904513a379d39df1af277ac48"},
     {file = "keyring-23.0.1.tar.gz", hash = "sha256:045703609dd3fccfcdb27da201684278823b72af515aedec1a8515719a038cb8"},
+]
+lark-parser = [
+    {file = "lark-parser-0.11.2.tar.gz", hash = "sha256:ef610461ebf2b243502f337d9d49879e39f9add846a4749e88c8dcdc1378bb6b"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.6.0.tar.gz", hash = "sha256:489000d368377571c6f982fba6497f2aa13c6d1facc40660963da62f5c379726"},
@@ -2227,8 +2306,8 @@ mkdocs = [
     {file = "mkdocs-1.1.2.tar.gz", hash = "sha256:f0b61e5402b99d7789efa032c7a74c90a20220a9c81749da06dbfbcbd52ffb39"},
 ]
 mkdocs-material = [
-    {file = "mkdocs-material-6.2.8.tar.gz", hash = "sha256:ce2f4a71e5db49540d71fd32f9afba7645765f7eca391e560d1d27f947eb344c"},
-    {file = "mkdocs_material-6.2.8-py2.py3-none-any.whl", hash = "sha256:c9b63d709d29778aa3dafc7178b6a8c655b00937be2594aab016d1423696c792"},
+    {file = "mkdocs-material-7.1.1.tar.gz", hash = "sha256:925221cf1877a50f72d9bf64a7a26c407d4b14fdc6a16e27fe7547178613e56c"},
+    {file = "mkdocs_material-7.1.1-py2.py3-none-any.whl", hash = "sha256:1798d9a0a01f54db575801826d6b1b99a1185fef58bcaca36625ee1d519df83c"},
 ]
 mkdocs-material-extensions = [
     {file = "mkdocs-material-extensions-1.0.1.tar.gz", hash = "sha256:6947fb7f5e4291e3c61405bad3539d81e0b3cd62ae0d66ced018128af509c68f"},
@@ -2566,6 +2645,10 @@ smmap = [
 snowballstemmer = [
     {file = "snowballstemmer-2.1.0-py2.py3-none-any.whl", hash = "sha256:b51b447bea85f9968c13b650126a888aabd4cb4463fca868ec596826325dedc2"},
     {file = "snowballstemmer-2.1.0.tar.gz", hash = "sha256:e997baa4f2e9139951b6f4c631bad912dfd3c792467e2f03d7239464af90e914"},
+]
+sortedcontainers = [
+    {file = "sortedcontainers-2.3.0-py2.py3-none-any.whl", hash = "sha256:37257a32add0a3ee490bb170b599e93095eed89a55da91fa9f48753ea12fd73f"},
+    {file = "sortedcontainers-2.3.0.tar.gz", hash = "sha256:59cc937650cf60d677c16775597c89a960658a09cf7c1a668f86e1e4464b10a1"},
 ]
 stevedore = [
     {file = "stevedore-3.3.0-py3-none-any.whl", hash = "sha256:50d7b78fbaf0d04cd62411188fa7eedcb03eb7f4c4b37005615ceebe582aa82a"},

@@ -81,7 +81,7 @@ bandit: ## run bandit
 	bandit pylogics tests scripts
 
 safety: ## run safety
-	safety
+	safety check
 
 pylint: ## run pylint
 	pylint pylogics tests scripts

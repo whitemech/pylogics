@@ -63,6 +63,16 @@ def _getstate(fn):
     return __getstate__
 
 
+def default_getstate(self):
+    """Implement the default getstate."""
+    return self.__dict__
+
+
+def default_setstate(self, state):
+    """Implement the default getstate."""
+    self.__dict__ = state
+
+
 def _setstate(fn):
     """
     Set the state.
@@ -74,9 +84,10 @@ def _setstate(fn):
     """
 
     @wraps(fn)
-    def __setstate__(self):
-        fn(self)
-        self.__hash = None
+    def __setstate__(self, state):
+        fn(self, state)
+        if hasattr(self, "__hash"):
+            delattr(self, "__hash")
 
     return __setstate__
 
@@ -97,6 +108,14 @@ class Hashable(ABCMeta):
         class_ = super().__new__(mcs, *args, **kwargs)
 
         class_.__hash__ = _cache_hash(class_.__hash__)
-        class_.__getstate__ = _getstate
-        class_.__setstate__ = _setstate
+
+        getstate_fn = (
+            class_.__getstate__ if hasattr(class_, "__getstate__") else default_getstate
+        )
+        class_.__getstate__ = _getstate(getstate_fn)
+
+        setstate_fn = (
+            class_.__setstate__ if hasattr(class_, "__setstate__") else default_setstate
+        )
+        class_.__setstate__ = _setstate(setstate_fn)
         return class_

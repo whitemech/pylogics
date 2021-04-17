@@ -21,7 +21,7 @@
 
 import re
 from pathlib import Path
-from typing import AbstractSet, Any, Callable, Collection, Optional, Sequence
+from typing import AbstractSet, Any, Callable, Collection, Optional, Sequence, Type
 
 
 def _get_current_path() -> Path:
@@ -32,10 +32,12 @@ def _get_current_path() -> Path:
     return Path(os.path.dirname(inspect.getfile(inspect.currentframe())))  # type: ignore
 
 
-def enforce(condition: bool, message: str = ""):
+def enforce(
+    condition: bool, message: str = "", exception_cls: Type[Exception] = AssertionError
+):
     """User-defined assert."""
     if not condition:
-        raise AssertionError(message)
+        raise exception_cls(message)
 
 
 def ensure(arg: Optional[Any], default: Any):

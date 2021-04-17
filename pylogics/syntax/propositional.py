@@ -27,7 +27,7 @@ from pylogics.syntax.base import Formula, Logic
 class AtomName(RegexConstrainedString):
     """A string that denotes an atomic propositional symbol."""
 
-    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_]+")
+    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_]*")
 
 
 _AtomNameOrStr = Union[str, AtomName]
@@ -43,7 +43,7 @@ class Atomic(Formula):
         :param name: the symbol name.
         """
         super().__init__()
-        self._name = name
+        self._name = str(AtomName(name))
 
     @property
     def logic(self) -> Logic:

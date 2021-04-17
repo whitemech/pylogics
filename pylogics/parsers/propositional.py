@@ -107,7 +107,7 @@ class _PLTransformer(Transformer):
     @classmethod
     def prop_atom(cls, args):
         assert len(args) == 1
-        return args[0]
+        return Atomic(args[0])
 
     @classmethod
     def prop_true(cls, args):

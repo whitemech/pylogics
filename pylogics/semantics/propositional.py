@@ -24,7 +24,7 @@ from typing import Dict, Set, Union, cast
 from pylogics.exceptions import PylogicsError
 from pylogics.helpers.misc import enforce
 from pylogics.semantics.base import base_semantics
-from pylogics.syntax.base import BinaryOp, Formula, UnaryOp
+from pylogics.syntax.base import BinaryOp, FalseFormula, Formula, TrueFormula, UnaryOp
 from pylogics.syntax.propositional import Atomic, AtomName
 
 _PropInterpretation = Union[Dict, Set]
@@ -39,16 +39,17 @@ class _PropInterpretationWrapper:
     def __init__(self, interpretation: _PropInterpretation):
         """Initialize the object."""
         enforce(
-            isinstance(self._interpretation, (dict, set)),
+            isinstance(interpretation, (dict, set)),
             "interpretation must be either a dictionary or a set",
         )
-        if isinstance(self._interpretation, set):
+        if isinstance(interpretation, set):
             self._interpretation = dict.fromkeys(interpretation, True)
         else:
             self._interpretation = cast(Dict[AtomName, bool], interpretation)
 
-    def __contains__(self, item: AtomName):
+    def __contains__(self, item: str):
         """Check an atom name is present in the interpretation."""
+        item = AtomName(item)
         return self._interpretation.get(item, False)
 
 
@@ -75,4 +76,18 @@ def evaluate_unary_op(formula: UnaryOp, interpretation: _PropInterpretation) -> 
 @evaluate_prop.register(Atomic)
 def evaluate_atomic(formula: Atomic, interpretation: _PropInterpretation) -> bool:
     """Evaluate a propositional formula over an atomic formula."""
-    return formula.name in interpretation
+    return formula.name in _PropInterpretationWrapper(interpretation)
+
+
+@evaluate_prop.register(TrueFormula)
+def evaluate_true(_formula: TrueFormula, _interpretation: _PropInterpretation) -> bool:
+    """Evaluate a "true" formula."""
+    return True
+
+
+@evaluate_prop.register(FalseFormula)
+def evaluate_false(
+    _formula: FalseFormula, _interpretation: _PropInterpretation
+) -> bool:
+    """Evaluate a "false" formula."""
+    return False

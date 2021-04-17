@@ -72,6 +72,10 @@ class BinaryOp(Formula):
         :param operands: the operands.
         """
         super().__init__()
+        enforce(
+            len(operands) >= 2,
+            f"expected at least 2 operands, found {len(operands)} operands",
+        )
         self._operands = list(operands)
 
     @property
@@ -249,7 +253,7 @@ class _MonotoneBinaryOp(Hashable):
         elif len(operands) == 1:
             return [operands[0]]
         elif cls._absorbing in operands:
-            return cls._absorbing
+            return [cls._absorbing]
 
         # shift-up subformulas with same operator. DFS on expression tree.
         new_operands = []
@@ -360,7 +364,7 @@ class _MetaImpliesOp(Hashable):
     def __call__(cls, *args, **kwargs):
         """Init the subclass object."""
         operands = cls._simplify_operands(*args)
-        if len(args) == 0:
+        if len(operands) == 0:
             raise ValueError("cannot accept zero arguments")
         if len(operands) == 1:
             return operands[0]
@@ -379,6 +383,8 @@ class _MetaImpliesOp(Hashable):
         new_operands = []
         for operand in operands:
             if operand == FALSE:
+                # ex falso sequitur quodlibet
+                new_operands.append(TRUE)
                 return new_operands
             new_operands.append(operand)
         return operands

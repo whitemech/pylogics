@@ -23,14 +23,13 @@
 """Tests on the pylogics.syntax.propositional module."""
 from hypothesis import HealthCheck, given, settings
 from hypothesis.extra.lark import from_lark
-from hypothesis.strategies import booleans, dictionaries, one_of, sampled_from, sets
+from hypothesis.strategies import booleans, dictionaries, from_regex, one_of, sets
 
 from pylogics.parsers.propositional import __parser as prop_parser
 from pylogics.parsers.propositional import parse_prop
 from pylogics.semantics.propositional import evaluate_prop
+from pylogics.syntax.propositional import AtomName
 from pylogics.utils.to_string import to_string
-
-SYMBOLS = ["A", "B", "C"]
 
 
 @settings(suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much])
@@ -56,8 +55,8 @@ def test_to_string(formula):
 @given(
     from_lark(prop_parser._parser),
     one_of(
-        sets(sampled_from(SYMBOLS)),
-        dictionaries(keys=sampled_from(SYMBOLS), values=booleans()),
+        sets(from_regex(AtomName.REGEX)),
+        dictionaries(keys=from_regex(AtomName.REGEX), values=booleans()),
     ),
 )
 def test_semantics_negation(formula, interpretation):

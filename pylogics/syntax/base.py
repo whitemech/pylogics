@@ -19,8 +19,9 @@
 """Base classes for pylogics logic formulas."""
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import FrozenSet, Optional, Sequence
+from typing import Dict, FrozenSet, Optional, Sequence, cast
 
+from pylogics.exceptions import PylogicsError
 from pylogics.helpers.cache_hash import Hashable
 from pylogics.helpers.misc import enforce
 
@@ -42,10 +43,40 @@ class _HashConsing(Hashable):
     It makes sure the same formula is not repeated across the intepreter.
     """
 
+    _context: Dict[Logic, Dict["Formula", None]] = {}
+
+    def __new__(mcs, *args, **kwargs):
+        """Instantiate a new class."""
+        instance = super().__new__(mcs, *args, **kwargs)
+        instance.__context = mcs._context
+        return instance
+
     def __call__(cls, *args, **kwargs):
         """Init the subclass object."""
-        instance = super().__call__(*args, **kwargs)
-        return instance
+        enforce(
+            issubclass(cls, Formula),
+            "this class cannot be the metaclass of a class that is not a subclass of 'Formula'",
+            PylogicsError,
+        )
+        instance = cast(Formula, super().__call__(*args, **kwargs))
+        cached_instance = cls._context.setdefault(instance.logic, {}).get(
+            instance, None
+        )
+        if cached_instance is None:
+            # cache the instance.
+            cls._context[instance.logic][instance] = None
+            cached_instance = instance
+        return cached_instance
+
+
+def reset_cache():
+    """Reset hash consing cache."""
+    _HashConsing._context = {}
+
+
+def get_cache_context():
+    """Get cache context."""
+    return _HashConsing._context
 
 
 class Formula(ABC, metaclass=_HashConsing):

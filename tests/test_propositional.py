@@ -28,6 +28,7 @@ from hypothesis.strategies import booleans, dictionaries, from_regex, one_of, se
 from pylogics.parsers.propositional import __parser as prop_parser
 from pylogics.parsers.propositional import parse_prop
 from pylogics.semantics.propositional import evaluate_prop
+from pylogics.syntax.base import get_cache_context
 from pylogics.syntax.propositional import AtomName
 from pylogics.utils.to_string import to_string
 
@@ -66,3 +67,17 @@ def test_semantics_negation(formula, interpretation):
     assert evaluate_prop(positive_formula, interpretation) != evaluate_prop(
         negative_formula, interpretation
     )
+
+
+def test_hash_consing():
+    """Test that hash consing works as expected."""
+    a1 = parse_prop("A")
+    context = get_cache_context()
+    assert len(context[a1.logic]) == 1
+    assert context[a1.logic][a1] is None
+    assert list(context[a1.logic])[0] == a1
+
+    a2 = parse_prop("A")
+    assert len(context[a1.logic]) == 1
+    assert context[a1.logic][a1] is None
+    assert list(context[a1.logic])[0] == a1 == a2

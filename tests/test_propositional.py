@@ -28,8 +28,7 @@ from hypothesis.strategies import booleans, dictionaries, from_regex, one_of, se
 from pylogics.parsers.propositional import __parser as prop_parser
 from pylogics.parsers.propositional import parse_prop
 from pylogics.semantics.propositional import evaluate_prop
-from pylogics.syntax.base import get_cache_context
-from pylogics.syntax.propositional import AtomName
+from pylogics.syntax.base import AtomName, Logic, get_cache_context
 from pylogics.utils.to_string import to_string
 
 
@@ -40,6 +39,7 @@ def test_parser(formula):
     formula_1 = parse_prop(formula)
     formula_2 = parse_prop(formula)
     assert formula_1 == formula_2
+    assert Logic.PL == formula_1.logic == formula_2.logic
 
 
 @settings(suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much])

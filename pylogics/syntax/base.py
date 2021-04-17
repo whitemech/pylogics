@@ -21,13 +21,14 @@
 #
 
 """Base classes for pylogics logic formulas."""
+import re
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Dict, FrozenSet, Optional, Sequence, cast
+from typing import Dict, FrozenSet, Optional, Sequence, Union, cast
 
 from pylogics.exceptions import PylogicsError
 from pylogics.helpers.cache_hash import Hashable
-from pylogics.helpers.misc import enforce
+from pylogics.helpers.misc import RegexConstrainedString, enforce
 
 
 class Logic(Enum):
@@ -153,7 +154,11 @@ class BinaryOp(Formula):
 
     def __eq__(self, other):
         """Compare with another object."""
-        return isinstance(other, type(self)) and self.operands == other.operands
+        return (
+            isinstance(other, type(self))
+            and self.logic == other.logic
+            and self.operands == other.operands
+        )
 
 
 class UnaryOp(Formula, ABC):
@@ -189,20 +194,29 @@ class UnaryOp(Formula, ABC):
 
     def __eq__(self, other) -> bool:
         """Compare with another object."""
-        return isinstance(other, type(self)) and self.argument == other.argument
+        return (
+            isinstance(other, type(self))
+            and self.logic == other.logic
+            and self.argument == other.argument
+        )
 
 
 class TrueFormula(Formula):
     """A tautology."""
 
+    def __init__(self, logic: Logic = Logic.PL):
+        """Initialize."""
+        super().__init__()
+        self._logic = logic
+
     @property
     def logic(self) -> Logic:
         """Get the logical formalism."""
-        return Logic.PL
+        return self._logic
 
     def __hash__(self) -> int:
         """Compute the hash."""
-        return hash(TrueFormula)
+        return hash((TrueFormula, self.logic))
 
     def __str__(self) -> str:
         """Get the string representation."""
@@ -210,7 +224,7 @@ class TrueFormula(Formula):
 
     def __repr__(self) -> str:
         """Get an unambiguous string representation."""
-        return "TrueFormula()"
+        return f"TrueFormula({self.logic})"
 
     def __eq__(self, other):
         """
@@ -221,24 +235,29 @@ class TrueFormula(Formula):
         the set of instances of this class
         equal between them.
         """
-        return isinstance(other, TrueFormula)
+        return type(other) == TrueFormula and self.logic == other.logic
 
     def __neg__(self) -> Formula:
         """Negate."""
-        return FALSE
+        return make_boolean(False, logic=self.logic)
 
 
 class FalseFormula(Formula):
     """A contradiction."""
 
+    def __init__(self, logic: Logic = Logic.PL):
+        """Initialize."""
+        super().__init__()
+        self._logic = logic
+
     @property
     def logic(self) -> Logic:
         """Get the logical formalism."""
-        return Logic.PL
+        return self._logic
 
     def __hash__(self) -> int:
         """Compute the hash."""
-        return hash(FalseFormula)
+        return hash((FalseFormula, self.logic))
 
     def __str__(self) -> str:
         """Get the string representation."""
@@ -246,7 +265,7 @@ class FalseFormula(Formula):
 
     def __repr__(self) -> str:
         """Get an unambiguous string representation."""
-        return "FalseFormula()"
+        return f"FalseFormula({self.logic})"
 
     def __eq__(self, other):
         """
@@ -257,15 +276,23 @@ class FalseFormula(Formula):
         the set of instances of this class
         equal between them.
         """
-        return isinstance(other, FalseFormula)
+        return type(other) == FalseFormula and self.logic == other.logic
 
     def __neg__(self) -> Formula:
         """Negate."""
-        return TRUE
+        return make_boolean(True, logic=self.logic)
 
 
-TRUE = TrueFormula()
-FALSE = FalseFormula()
+def make_boolean(value: bool, logic: Logic) -> Formula:
+    """
+    Make a boolean formula.
+
+    :param value: the boolean value.
+    :param logic: the logic formalism it belongs to.
+    :return: the formula.
+    """
+    formula_cls = TrueFormula if value else FalseFormula
+    return formula_cls(logic=logic)
 
 
 class _MonotoneBinaryOp(_HashConsing):
@@ -279,10 +306,12 @@ class _MonotoneBinaryOp(_HashConsing):
       consider them only once (idempotence).
     """
 
-    _absorbing: Optional[Formula] = None
+    _absorbing: bool
 
     def __call__(cls, *args, **kwargs):
         """Init the subclass object."""
+        if len(args) == 0:
+            raise ValueError("cannot accept zero arguments")
         cls._check_operands_same_logic()
         operands = cls._simplify_monotone_op_operands(cls, *args)
         if len(operands) == 1:
@@ -294,14 +323,16 @@ class _MonotoneBinaryOp(_HashConsing):
     def _simplify_monotone_op_operands(cls, *operands):
         operands = list(dict.fromkeys(operands))
         # filter out the identity element
-        identity = ~cls._absorbing
+        logic = operands[0].logic
+        absorbing = make_boolean(cls._absorbing, logic=logic)
+        identity = ~absorbing
         operands = list(filter(lambda x: x != identity, operands))
         if len(operands) == 0:
-            return [~cls._absorbing]
+            return [~absorbing]
         elif len(operands) == 1:
             return [operands[0]]
-        elif cls._absorbing in operands:
-            return [cls._absorbing]
+        elif absorbing in operands:
+            return [absorbing]
 
         # shift-up subformulas with same operator. DFS on expression tree.
         new_operands = []
@@ -373,14 +404,14 @@ class CommutativeBinaryOp(BinaryOp):
 class And(CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
     """And operator."""
 
-    _absorbing = FALSE
+    _absorbing = False
     SYMBOL = "and"
 
 
 class Or(CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
     """Or operator."""
 
-    _absorbing = TRUE
+    _absorbing = True
     SYMBOL = "or"
 
 
@@ -427,11 +458,13 @@ class _MetaImpliesOp(_HashConsing):
         if len(operands) == 1:
             return [operands[0]]
 
+        logic = operands[0].logic
+        false = make_boolean(False, logic=logic)
         new_operands = []
         for operand in operands:
-            if operand == FALSE:
+            if operand == false:
                 # ex falso sequitur quodlibet
-                new_operands.append(TRUE)
+                new_operands.append(~false)
                 return new_operands
             new_operands.append(operand)
         return operands
@@ -491,3 +524,50 @@ def ensure_formula(f: Optional[Formula], is_none_true: bool) -> Formula:
     :return: the same set, or an empty set if the arg was None.
     """
     return f if f is not None else TrueFormula() if is_none_true else FalseFormula()
+
+
+class AtomName(RegexConstrainedString):
+    """A string that denotes an atomic propositional symbol."""
+
+    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_]*")
+
+
+_AtomNameOrStr = Union[str, AtomName]
+
+
+class AbstractAtomic(Formula, ABC):
+    """An abstract atomic proposition."""
+
+    def __init__(self, name: _AtomNameOrStr):
+        """
+        Initialize the atomic proposition.
+
+        :param name: the symbol name.
+        """
+        super().__init__()
+        self._name = str(AtomName(name))
+
+    @property
+    def name(self) -> str:
+        """Get the name."""
+        return self._name
+
+    def __hash__(self) -> int:
+        """Compute the hash."""
+        return hash((type(self), self.logic, self.name))
+
+    def __str__(self) -> str:
+        """Get the string representation."""
+        return f"{self.name}"
+
+    def __repr__(self) -> str:
+        """Get an unambiguous string representation."""
+        return f"Atomic({self.logic}, {self.name})"
+
+    def __eq__(self, other) -> bool:
+        """Compare with another object."""
+        return (
+            isinstance(other, type(self))
+            and self.logic == other.logic
+            and self.name == other.name
+        )

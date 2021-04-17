@@ -22,24 +22,21 @@
 
 """Parser for propositional logic."""
 
-from lark import Transformer
-
-from pylogics.exceptions import ParsingError
-from pylogics.parsers.base import AbstractParser
+from pylogics.parsers.base import AbstractParser, AbstractTransformer
 from pylogics.syntax.base import (
-    FALSE,
-    TRUE,
     And,
     EquivalenceOp,
     Formula,
     ImpliesOp,
+    Logic,
     Not,
     Or,
+    make_boolean,
 )
 from pylogics.syntax.propositional import Atomic
 
 
-class _PLTransformer(Transformer):
+class _PLTransformer(AbstractTransformer):
     """Lark Transformer for propositional logic."""
 
     @classmethod
@@ -116,22 +113,17 @@ class _PLTransformer(Transformer):
     @classmethod
     def prop_true(cls, args):
         assert len(args) == 1
-        return TRUE
+        return make_boolean(True, logic=Logic.PL)
 
     @classmethod
     def prop_false(cls, args):
         assert len(args) == 1
-        return FALSE
+        return make_boolean(False, logic=Logic.PL)
 
     @classmethod
     def atom(cls, args):
         assert len(args) == 1
         return Atomic(str(args[0]))
-
-    @classmethod
-    def _raise_parsing_error(cls, tag_name, args):
-        """Raise a parsing error."""
-        raise ParsingError(f"error while parsing a '{tag_name}' with tokens: {args}")
 
 
 class _PLParser(AbstractParser):

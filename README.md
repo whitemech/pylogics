@@ -91,4 +91,3 @@ Copyright 2021 WhiteMech
 ## Authors
 
 - [Marco Favorito](https://github.com/marcofavorito)
-- [Francesco Fuggitti](https://github.com/francescofuggitti)

@@ -22,9 +22,13 @@
 
 """Tests on the pylogics.syntax.propositional package."""
 from pylogics.parsers.propositional import parse_prop
+from pylogics.semantics.propositional import evaluate_prop
 
 
-def test_parser():
-    """Simple test of parser."""
+def test_propositional():
+    """Simple test of propositional logic."""
     f = parse_prop("a & b & (a & b)")
     assert str(f) == "(and a b)"
+
+    assert not evaluate_prop(f, {"a"})
+    assert evaluate_prop(f, {"a", "b"})

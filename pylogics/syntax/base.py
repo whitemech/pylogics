@@ -89,7 +89,7 @@ class BinaryOp(Formula):
 
     def __hash__(self) -> int:
         """Compute the hash."""
-        return hash((type(self), self.operands))
+        return hash((type(self), self.logic, self.operands))
 
     def __str__(self) -> str:
         """Get the string representation."""
@@ -125,7 +125,7 @@ class UnaryOp(Formula, ABC):
 
     def __hash__(self) -> int:
         """Compute the hash."""
-        return hash((type(self), self.argument))
+        return hash((type(self), self.logic, self.argument))
 
     def __str__(self) -> str:
         """Get the string representation."""
@@ -231,6 +231,7 @@ class _MonotoneBinaryOp(Hashable):
 
     def __call__(cls, *args, **kwargs):
         """Init the subclass object."""
+        cls._check_operands_same_logic()
         operands = cls._simplify_monotone_op_operands(cls, *args)
         if len(operands) == 1:
             return operands[0]
@@ -240,19 +241,15 @@ class _MonotoneBinaryOp(Hashable):
     @staticmethod
     def _simplify_monotone_op_operands(cls, *operands):
         operands = list(dict.fromkeys(operands))
+        # filter out the identity element
+        identity = ~cls._absorbing
+        operands = list(filter(lambda x: x != identity, operands))
         if len(operands) == 0:
             return [~cls._absorbing]
         elif len(operands) == 1:
             return [operands[0]]
         elif cls._absorbing in operands:
             return cls._absorbing
-
-        # assert operands belong to the same logic
-        logic = operands[0].logic
-        enforce(
-            all(sub_formula.logic == logic for sub_formula in operands),
-            message="operands do not belong to the same logic",
-        )
 
         # shift-up subformulas with same operator. DFS on expression tree.
         new_operands = []
@@ -268,6 +265,28 @@ class _MonotoneBinaryOp(Hashable):
             stack.extend(reversed(element.operands))  # see above regarding reversed.
 
         return new_operands
+
+    @classmethod
+    def _check_operands_same_logic(mcs, *operands: Formula):
+        """
+        Check that the operands belong to the same logic.
+
+        TrueFormula and FalseFormula are not considered.
+
+        :param operands: the sequence of operands.
+        :return: None
+        :raises: PylogicsError: if the check fails.
+        """
+        filtered_operands = list(
+            filter(lambda x: not isinstance(x, (TrueFormula, FalseFormula)), operands)
+        )
+        if len(filtered_operands) == 0:
+            return
+        logic = filtered_operands[0]
+        enforce(
+            all(sub_formula.logic == logic for sub_formula in filtered_operands),
+            message="operands do not belong to the same logic",
+        )
 
 
 class CommutativeBinaryOp(BinaryOp):

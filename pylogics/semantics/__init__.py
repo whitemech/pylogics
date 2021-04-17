@@ -16,16 +16,4 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Custom library exceptions."""
-
-
-class PylogicsError(Exception):
-    """Generic library error."""
-
-
-class ParsingError(PylogicsError):
-    """Parsing error."""
-
-    def __init__(self, msg: str = "parsing error"):
-        """Initialize the exception."""
-        super().__init__(msg)
+"""Classes to represent the semantics of several logic formalisms."""

@@ -22,6 +22,7 @@
 
 """The conftest.py module for pytest."""
 import pytest
+from hypothesis import HealthCheck, settings
 
 from pylogics.syntax.base import reset_cache
 
@@ -30,3 +31,8 @@ from pylogics.syntax.base import reset_cache
 def reset_cache_fixture():
     """Reset hash-consing global cache after each test function/class call."""
     reset_cache()
+
+
+suppress_health_checks_for_lark = settings(
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much]
+)

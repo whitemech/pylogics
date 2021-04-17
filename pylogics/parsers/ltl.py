@@ -187,7 +187,7 @@ class _LTLTransformer(AbstractTransformer):
     @classmethod
     def ltlf_atom(cls, args):
         assert len(args) == 1
-        return args[0]
+        return Atomic(args[0])
 
     @classmethod
     def ltlf_true(cls, _args):

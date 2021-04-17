@@ -23,10 +23,11 @@
 """Classes for propositional logic."""
 from abc import ABC
 
+from pylogics.helpers.misc import enforce
 from pylogics.syntax.base import AbstractAtomic, BinaryOp, Formula, Logic, UnaryOp
 
 
-class LTL(Formula, ABC):
+class _LTL(Formula, ABC):
     """Interface for LTL formulae."""
 
     @property
@@ -39,59 +40,80 @@ class LTL(Formula, ABC):
         return super(Formula, self).__hash__()
 
 
-class Atomic(AbstractAtomic, LTL):
+class _LTLUnaryOp(UnaryOp, _LTL):
+    """LTL Unary operation."""
+
+    def __post_init__(self):
+        """Check that the agument is of LTL logic."""
+        enforce(
+            self.argument.logic == Logic.LTL, "operand does not belong to LTL logic"
+        )
+
+
+class _LTLBinaryOp(BinaryOp, _LTL):
+    """LTL Unary operation."""
+
+    def __post_init__(self):
+        """Check that the agument is of LTL logic."""
+        enforce(
+            all(op.logic == Logic.LTL for op in self.operands),
+            "operands do not belong to LTL logic",
+        )
+
+
+class Atomic(AbstractAtomic, _LTL):
     """An atomic proposition of LTL."""
 
 
-class Next(UnaryOp, LTL):
+class Next(_LTLUnaryOp):
     """The "next" formula in LTL."""
 
     SYMBOL = "next"
 
 
-class WeakNext(UnaryOp, LTL):
+class WeakNext(_LTLUnaryOp):
     """The "weak next" formula in LTL."""
 
     SYMBOL = "weak_next"
 
 
-class Until(BinaryOp, LTL):
+class Until(_LTLBinaryOp):
     """The "next" formula in LTL."""
 
     SYMBOL = "until"
 
 
-class Release(BinaryOp, LTL):
+class Release(_LTLBinaryOp):
     """The "release" formula in LTL."""
 
     SYMBOL = "release"
 
 
-class Eventually(UnaryOp, LTL):
+class Eventually(_LTLUnaryOp):
     """The "eventually" formula in LTL."""
 
     SYMBOL = "eventually"
 
 
-class Always(UnaryOp, LTL):
+class Always(_LTLUnaryOp):
     """The "always" formula in LTL."""
 
     SYMBOL = "always"
 
 
-class WeakUntil(BinaryOp, LTL):
+class WeakUntil(_LTLBinaryOp):
     """The "weak until" formula in LTL."""
 
     SYMBOL = "weak_until"
 
 
-class StrongRelease(BinaryOp, LTL):
+class StrongRelease(_LTLBinaryOp):
     """The "strong release" formula in LTL."""
 
     SYMBOL = "strong_release"
 
 
-class Last(LTL, Formula):
+class Last(_LTL, Formula):
     """The "last" formula (i.e. weak_next(false)) in LTL."""
 
     def __hash__(self):

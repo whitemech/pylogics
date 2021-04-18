@@ -32,12 +32,16 @@ from pylogics.helpers.misc import RegexConstrainedString, enforce
 
 
 class Logic(Enum):
-    """This enumeration lists the supported logics."""
+    """Enumeration of logic formalisms."""
 
-    PL = "propositional logic"
-    LTL = "linear temporal logic"
-    LDL = "linear dynamic logic"
-    RE = "regular expressions"
+    PL = "pl"
+    LTL = "ltl"
+    LDL = "ldl"
+    PLTL = "pltl"
+    PLDL = "pldl"
+    FOL = "fol"
+    SOL = "sol"
+    RE = "re"
 
 
 class _HashConsing(Hashable):

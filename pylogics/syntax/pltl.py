@@ -24,14 +24,13 @@
 from abc import ABC
 from functools import partial
 
-from pylogics.helpers.misc import enforce
 from pylogics.syntax.base import (
     AbstractAtomic,
-    BinaryOp,
     FalseFormula,
     Formula,
     Logic,
-    UnaryOp,
+    _BinaryOp,
+    _UnaryOp,
 )
 
 
@@ -48,25 +47,16 @@ class _PLTL(Formula, ABC):
         return super(Formula, self).__hash__()
 
 
-class _PLTLUnaryOp(UnaryOp, _PLTL):
+class _PLTLUnaryOp(_UnaryOp, _PLTL):
     """PLTL Unary operation."""
 
-    def __post_init__(self):
-        """Check that the argument is of PLTL logic."""
-        enforce(
-            self.argument.logic == Logic.PLTL, "operand does not belong to PLTL logic"
-        )
+    ALLOWED_LOGICS = {Logic.PLTL}
 
 
-class _PLTLBinaryOp(BinaryOp, _PLTL):
+class _PLTLBinaryOp(_BinaryOp, _PLTL):
     """PLTL Unary operation."""
 
-    def __post_init__(self):
-        """Check that the argument is of PLTL logic."""
-        enforce(
-            all(op.logic == Logic.PLTL for op in self.operands),
-            "operands do not belong to PLTL logic",
-        )
+    ALLOWED_LOGICS = {Logic.PLTL}
 
 
 class Atomic(AbstractAtomic, _PLTL):

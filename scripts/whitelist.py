@@ -44,7 +44,7 @@ _.prop_atom  # unused method (/home/marcofavorito/workfolder/pylogics/pylogics/p
 _.prop_true  # unused method (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pl.py:88)
 _.prop_false  # unused method (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pl.py:93)
 _.atom  # unused method (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pl.py:98)
-parse_prop  # unused function (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pl.py:114)
+parse_pl  # unused function (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pl.py:114)
 _.start  # unused method (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pltl.py:40)
 _.pltlf_formula  # unused method (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pltl.py:45)
 _.pltlf_historically  # unused method (/home/marcofavorito/workfolder/pylogics/pylogics/parsers/pltl.py:72)

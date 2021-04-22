@@ -24,5 +24,5 @@
 
 from .ldl import parse_ldl  # noqa: ignore
 from .ltl import parse_ltl  # noqa: ignore
-from .pl import parse_prop  # noqa: ignore
+from .pl import parse_pl  # noqa: ignore
 from .pltl import parse_pltl  # noqa: ignore

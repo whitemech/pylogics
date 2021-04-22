@@ -111,7 +111,7 @@ class _PLParser(AbstractParser):
 __parser = _PLParser()
 
 
-def parse_prop(formula: str) -> Formula:
+def parse_pl(formula: str) -> Formula:
     """
     Parse the propositional formula.
 

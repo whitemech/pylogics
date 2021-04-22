@@ -99,3 +99,22 @@ class AbstractTransformer(Transformer, ABC):
             subformulas = args[::2]
             return formula_type(*subformulas)
         cls._raise_parsing_error(func_name, args)
+
+    @classmethod
+    def _process_unaryop(cls, args, formula_type):
+        """
+        Process a unary operator.
+
+        This parses rules of the form:   rule -> a (OP b)*
+
+        :param args: The parsing Tree.
+        :param formula_type: Constructor of the OP class. It must accept
+            a list of arguments.
+        :return: a Formula.
+        """
+        if len(args) == 1:
+            return args[0]
+        f = args[-1]
+        for _ in args[:-1]:
+            f = formula_type(f)
+        return f

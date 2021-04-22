@@ -34,7 +34,6 @@ ltlf_true: prop_true
 ltlf_false: prop_false
 ltlf_last: LAST
 
-// Operators must not be part of a word
 UNTIL.2: "U"
 RELEASE.2: "R"
 ALWAYS.2: "G"
@@ -43,13 +42,13 @@ NEXT.2: "X"
 WEAK_NEXT.2: "N"
 WEAK_UNTIL.2: "W"
 STRONG_RELEASE.2: "M"
+
 END.2: /(?i:end)/
 LAST.2: /(?i:last)/
 
-SYMBOL_NAME: /([A-Za-z][A-Za-z0-9_]*)/
-
 %ignore /\s+/
 
+%import .propositional.SYMBOL_NAME -> SYMBOL_NAME
 %import .propositional.prop_true -> prop_true
 %import .propositional.prop_false -> prop_false
 %import .propositional.NOT -> NOT

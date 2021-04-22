@@ -143,8 +143,13 @@ class _BinaryOp(Formula):
     Binary operator.
 
     SYMBOL: the symbol to represent this operator in the native string representation.
+    ALLOWED_LOGICS: the collection of allowed formalisms whose formulae can be
+      the arguments of the operator. This has to be set in concrete classes.
+      If None, then the FORBIDDEN_LOGICS field is processed.
     FORBIDDEN_LOGICS: the collection of formalisms whose formula cannot be
       the arguments of the operator. This has to be set in concrete classes.
+      If ALLOWED_LOGICS is specified, this field is ignored.
+      If this field is None, then no check is applied.
     """
 
     SYMBOL: str
@@ -203,8 +208,13 @@ class _UnaryOp(Formula, ABC):
     Unary operator.
 
     SYMBOL: the symbol to represent this operator in the native string representation.
+    ALLOWED_LOGICS: the collection of allowed formalisms whose formulae can be
+      the argument of the operator. This has to be set in concrete classes.
+      If None, then the FORBIDDEN_LOGICS field is processed.
     FORBIDDEN_LOGICS: the collection of formalisms whose formula cannot be
       the argument of the operator. This has to be set in concrete classes.
+      If ALLOWED_LOGICS is specified, this field is ignored.
+      If this field is None, then no check is applied.
     """
 
     SYMBOL: str

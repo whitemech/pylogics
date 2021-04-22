@@ -33,7 +33,7 @@ from pylogics.syntax.base import (
     Or,
     make_boolean,
 )
-from pylogics.syntax.ltl import Always, Atomic, Eventually, Last, Next, Until
+from pylogics.syntax.pltl import Atomic, Before, Historically, Once, Since, Start
 
 
 class _PLTLTransformer(AbstractTransformer):
@@ -67,7 +67,7 @@ class _PLTLTransformer(AbstractTransformer):
 
     @classmethod
     def pltlf_since(cls, args):
-        return cls._starred_binaryop(args, Until, cls.pltlf_since.__name__)
+        return cls._starred_binaryop(args, Since, cls.pltlf_since.__name__)
 
     @classmethod
     def pltlf_historically(cls, args):
@@ -75,7 +75,7 @@ class _PLTLTransformer(AbstractTransformer):
             return args[0]
         f = args[-1]
         for _ in args[:-1]:
-            f = Always(f)
+            f = Historically(f)
         return f
 
     @classmethod
@@ -84,7 +84,7 @@ class _PLTLTransformer(AbstractTransformer):
             return args[0]
         f = args[-1]
         for _ in args[:-1]:
-            f = Eventually(f)
+            f = Once(f)
         return f
 
     @classmethod
@@ -93,7 +93,7 @@ class _PLTLTransformer(AbstractTransformer):
             return args[0]
         f = args[-1]
         for _ in args[:-1]:
-            f = Next(f)
+            f = Before(f)
         return f
 
     @classmethod
@@ -121,15 +121,15 @@ class _PLTLTransformer(AbstractTransformer):
 
     @classmethod
     def pltlf_true(cls, _args):
-        return make_boolean(True, logic=Logic.LTL)
+        return make_boolean(True, logic=Logic.PLTL)
 
     @classmethod
     def pltlf_false(cls, _args):
-        return make_boolean(False, logic=Logic.LTL)
+        return make_boolean(False, logic=Logic.PLTL)
 
     @classmethod
     def pltlf_start(cls, _args):
-        return Last()
+        return Start()
 
     @classmethod
     def pltlf_symbol(cls, args):

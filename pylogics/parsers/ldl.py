@@ -24,7 +24,7 @@
 
 from pylogics.exceptions import ParsingError
 from pylogics.parsers.base import AbstractParser, AbstractTransformer
-from pylogics.parsers.propositional import _PLTransformer
+from pylogics.parsers.pl import _PLTransformer
 from pylogics.syntax.base import (
     And,
     EquivalenceOp,
@@ -48,7 +48,7 @@ from pylogics.syntax.ldl import (
     Test,
     Union,
 )
-from pylogics.syntax.propositional import Atomic
+from pylogics.syntax.pl import Atomic
 
 
 class _LDLTransformer(AbstractTransformer):

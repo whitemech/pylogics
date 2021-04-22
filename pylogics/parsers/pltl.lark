@@ -38,13 +38,13 @@ START.2: /(?i:start)/
 
 %ignore /\s+/
 
-%import .propositional.SYMBOL_NAME -> SYMBOL_NAME
-%import .propositional.prop_true -> prop_true
-%import .propositional.prop_false -> prop_false
-%import .propositional.NOT -> NOT
-%import .propositional.OR -> OR
-%import .propositional.AND -> AND
-%import .propositional.EQUIVALENCE -> EQUIVALENCE
-%import .propositional.IMPLY -> IMPLY
-%import .propositional.LSEPARATOR -> LSEPARATOR
-%import .propositional.RSEPARATOR -> RSEPARATOR
+%import  .pl.SYMBOL_NAME -> SYMBOL_NAME
+%import  .pl.prop_true -> prop_true
+%import  .pl.prop_false -> prop_false
+%import  .pl.NOT -> NOT
+%import  .pl.OR -> OR
+%import  .pl.AND -> AND
+%import  .pl.EQUIVALENCE -> EQUIVALENCE
+%import  .pl.IMPLY -> IMPLY
+%import  .pl.LSEPARATOR -> LSEPARATOR
+%import  .pl.RSEPARATOR -> RSEPARATOR

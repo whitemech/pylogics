@@ -33,7 +33,7 @@ from pylogics.syntax.base import (
     Or,
     make_boolean,
 )
-from pylogics.syntax.propositional import Atomic
+from pylogics.syntax.pl import Atomic
 
 
 class _PLTransformer(AbstractTransformer):
@@ -105,7 +105,7 @@ class _PLParser(AbstractParser):
     """Parser for propositional logic."""
 
     transformer_cls = _PLTransformer
-    lark_path = "propositional.lark"
+    lark_path = "pl.lark"
 
 
 __parser = _PLParser()

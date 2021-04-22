@@ -25,9 +25,9 @@ from hypothesis import given
 from hypothesis.extra.lark import from_lark
 from hypothesis.strategies import booleans, dictionaries, from_regex, one_of, sets
 
-from pylogics.parsers.propositional import __parser as prop_parser
-from pylogics.parsers.propositional import parse_prop
-from pylogics.semantics.propositional import evaluate_prop
+from pylogics.parsers.pl import __parser as prop_parser
+from pylogics.parsers.pl import parse_prop
+from pylogics.semantics.pl import evaluate_prop
 from pylogics.syntax.base import AtomName, Logic, get_cache_context
 from pylogics.utils.to_string import to_string
 from tests.conftest import suppress_health_checks_for_lark

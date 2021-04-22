@@ -36,7 +36,7 @@ from pylogics.syntax.base import (
     _BinaryOp,
     _UnaryOp,
 )
-from pylogics.syntax.propositional import Atomic
+from pylogics.syntax.pl import Atomic
 
 _PropInterpretation = Union[Dict, Set]
 

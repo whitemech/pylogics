@@ -57,16 +57,16 @@ FF.2: /(?i:ff)/
 
 %ignore /\s+/
 
-%import .propositional.propositional_formula
-%import .propositional.TRUE -> TRUE
-%import .propositional.FALSE -> FALSE
-%import .propositional.SYMBOL_NAME -> SYMBOL_NAME
-%import .propositional.EQUIVALENCE -> EQUIVALENCE
-%import .propositional.IMPLY -> IMPLY
-%import .propositional.OR -> OR
-%import .propositional.AND -> AND
-%import .propositional.NOT -> NOT
-%import .propositional.LSEPARATOR -> LSEPARATOR
-%import .propositional.RSEPARATOR -> RSEPARATOR
+%import  .pl.propositional_formula
+%import  .pl.TRUE -> TRUE
+%import  .pl.FALSE -> FALSE
+%import  .pl.SYMBOL_NAME -> SYMBOL_NAME
+%import  .pl.EQUIVALENCE -> EQUIVALENCE
+%import  .pl.IMPLY -> IMPLY
+%import  .pl.OR -> OR
+%import  .pl.AND -> AND
+%import  .pl.NOT -> NOT
+%import  .pl.LSEPARATOR -> LSEPARATOR
+%import  .pl.RSEPARATOR -> RSEPARATOR
 %import .ltl.LAST -> LAST
 %import .ltl.END -> END

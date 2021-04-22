@@ -25,9 +25,9 @@
 from pylogics.parsers.base import AbstractParser, AbstractTransformer
 from pylogics.syntax.base import (
     And,
-    EquivalenceOp,
+    Equivalence,
     Formula,
-    ImpliesOp,
+    Implies,
     Logic,
     Not,
     Or,
@@ -60,11 +60,11 @@ class _LTLTransformer(AbstractTransformer):
 
     @classmethod
     def ltlf_equivalence(cls, args):
-        return cls._starred_binaryop(args, EquivalenceOp, cls.ltlf_equivalence.__name__)
+        return cls._starred_binaryop(args, Equivalence, cls.ltlf_equivalence.__name__)
 
     @classmethod
     def ltlf_implication(cls, args):
-        return cls._starred_binaryop(args, ImpliesOp, cls.ltlf_implication.__name__)
+        return cls._starred_binaryop(args, Implies, cls.ltlf_implication.__name__)
 
     @classmethod
     def ltlf_or(cls, args):

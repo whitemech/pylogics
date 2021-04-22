@@ -4,6 +4,12 @@ repo_url: https://github.com/marcofavorito/pylogics
 
 nav:
 - Home: index.md
+- Introduction: introduction.md
+- Supported Logics: supported_logics.md
+- Parsing: parsing.md
+- Grammars: grammars.md
+- Syntax: syntax.md
+- References: references.md
 
 plugins:
 - search
@@ -14,6 +20,11 @@ theme:
 markdown_extensions:
 - codehilite
 - pymdownx.arithmatex
+- pymdownx.highlight
+- pymdownx.superfences
+- pymdownx.emoji:
+    emoji_index: !!python/name:materialx.emoji.twemoji
+    emoji_generator: !!python/name:materialx.emoji.to_svg
 - markdown_include.include:
     base_path: docs
 

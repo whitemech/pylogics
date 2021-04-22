@@ -27,7 +27,7 @@ from hypothesis.strategies import booleans, dictionaries, from_regex, one_of, se
 
 from pylogics.parsers.pl import __parser as prop_parser
 from pylogics.parsers.pl import parse_pl
-from pylogics.semantics.pl import evaluate_prop
+from pylogics.semantics.pl import evaluate_pl
 from pylogics.syntax.base import AtomName, Logic, get_cache_context
 from pylogics.utils.to_string import to_string
 from tests.conftest import suppress_health_checks_for_lark
@@ -65,7 +65,7 @@ def test_semantics_negation(formula, interpretation):
     """Test that for all models I, (I |= phi) != (I |= ~phi)."""
     positive_formula = parse_pl(formula)
     negative_formula = ~positive_formula
-    assert evaluate_prop(positive_formula, interpretation) != evaluate_prop(
+    assert evaluate_pl(positive_formula, interpretation) != evaluate_pl(
         negative_formula, interpretation
     )
 

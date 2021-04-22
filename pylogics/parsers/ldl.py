@@ -56,7 +56,7 @@ class _LDLTransformer(AbstractTransformer):
 
     _pl_transformer = _PLTransformer()
     _pl_imported = ("prop_atom", "propositional_formula")
-    _prefix = "propositional__"
+    _prefix = "pl__"
 
     @classmethod
     def start(cls, args):

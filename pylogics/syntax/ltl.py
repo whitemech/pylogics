@@ -27,11 +27,11 @@ from functools import partial
 from pylogics.helpers.misc import enforce
 from pylogics.syntax.base import (
     AbstractAtomic,
-    BinaryOp,
     FalseFormula,
     Formula,
     Logic,
-    UnaryOp,
+    _BinaryOp,
+    _UnaryOp,
 )
 
 
@@ -48,7 +48,7 @@ class _LTL(Formula, ABC):
         return super(Formula, self).__hash__()
 
 
-class _LTLUnaryOp(UnaryOp, _LTL):
+class _LTLUnaryOp(_UnaryOp, _LTL):
     """LTL Unary operation."""
 
     def __post_init__(self):
@@ -58,7 +58,7 @@ class _LTLUnaryOp(UnaryOp, _LTL):
         )
 
 
-class _LTLBinaryOp(BinaryOp, _LTL):
+class _LTLBinaryOp(_BinaryOp, _LTL):
     """LTL Unary operation."""
 
     def __post_init__(self):

@@ -26,13 +26,13 @@ from functools import partial
 
 from pylogics.helpers.misc import enforce
 from pylogics.syntax.base import (
-    BinaryOp,
-    CommutativeBinaryOp,
     FalseFormula,
     Formula,
     Logic,
     TrueFormula,
-    UnaryOp,
+    _BinaryOp,
+    _CommutativeBinaryOp,
+    _UnaryOp,
 )
 
 
@@ -98,7 +98,7 @@ class LDLFalse(FalseFormula):
         return LDLTrue()
 
 
-class Seq(BinaryOp, _RegularExpression):
+class Seq(_BinaryOp, _RegularExpression):
     """Sequence of regular expressions."""
 
     SYMBOL = "seq"
@@ -111,7 +111,7 @@ class Seq(BinaryOp, _RegularExpression):
         )
 
 
-class Union(CommutativeBinaryOp, _RegularExpression):
+class Union(_CommutativeBinaryOp, _RegularExpression):
     """Union of regular expressions."""
 
     SYMBOL = "union"
@@ -124,19 +124,19 @@ class Union(CommutativeBinaryOp, _RegularExpression):
         )
 
 
-class Test(UnaryOp, _RegularExpression):
+class Test(_UnaryOp, _RegularExpression):
     """Test of an LDL formula."""
 
     SYMBOL = "test"
 
 
-class Star(UnaryOp, _RegularExpression):
+class Star(_UnaryOp, _RegularExpression):
     """Kleene star of regular expressions."""
 
     SYMBOL = "star"
 
 
-class Prop(UnaryOp, _RegularExpression):
+class Prop(_UnaryOp, _RegularExpression):
     """The propositional regular expression."""
 
     SYMBOL = "prop"

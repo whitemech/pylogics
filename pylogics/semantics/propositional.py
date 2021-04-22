@@ -30,11 +30,11 @@ from pylogics.helpers.misc import enforce
 from pylogics.semantics.base import base_semantics
 from pylogics.syntax.base import (
     AtomName,
-    BinaryOp,
     FalseFormula,
     Formula,
     TrueFormula,
-    UnaryOp,
+    _BinaryOp,
+    _UnaryOp,
 )
 from pylogics.syntax.propositional import Atomic
 
@@ -72,14 +72,14 @@ def evaluate_prop(formula: Formula, _interpretation: _PropInterpretation) -> boo
     )
 
 
-@evaluate_prop.register(BinaryOp)
-def evaluate_binary_op(formula: BinaryOp, interpretation: _PropInterpretation) -> bool:
+@evaluate_prop.register(_BinaryOp)
+def evaluate_binary_op(formula: _BinaryOp, interpretation: _PropInterpretation) -> bool:
     """Evaluate a propositional formula over a binary operator."""
     return base_semantics(formula, evaluate_prop, interpretation)
 
 
-@evaluate_prop.register(UnaryOp)
-def evaluate_unary_op(formula: UnaryOp, interpretation: _PropInterpretation) -> bool:
+@evaluate_prop.register(_UnaryOp)
+def evaluate_unary_op(formula: _UnaryOp, interpretation: _PropInterpretation) -> bool:
     """Evaluate a propositional formula over a unary operator."""
     return base_semantics(formula, evaluate_prop, interpretation)
 

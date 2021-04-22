@@ -123,11 +123,18 @@ class _MetaOp(_HashConsing):
     def _check_not_forbidden_formalism(cls, *operands):
         """Check operands belong to same formalism."""
         enforce(len(operands) >= 1, "expected at least one operand.")
-        logic = operands[0]
-        if logic in getattr(cls, "FORBIDDEN_FORMALISMS", set()):
+        logic = operands[0].logic
+        allowed = getattr(cls, "ALLOWED_LOGICS", None)
+        forbidden = getattr(cls, "FORBIDDEN_LOGICS", None)
+        if allowed is not None:
+            forbidden = []
+
+        is_logic_allowed = allowed is not None and logic in allowed
+        is_logic_forbidden = forbidden is not None and logic in forbidden
+        if is_logic_allowed and not is_logic_forbidden:
             raise ValueError(
                 f"error during instantiation of class {cls.__name__}: "
-                f"found operand of logic {logic}, which is forbidden"
+                f"found operand belonging to logic {logic}, which is forbidden"
             )
 
 
@@ -136,12 +143,13 @@ class _BinaryOp(Formula):
     Binary operator.
 
     SYMBOL: the symbol to represent this operator in the native string representation.
-    FORBIDDEN_FORMALISMS: the collection of formalisms whose formula cannot be
+    FORBIDDEN_LOGICS: the collection of formalisms whose formula cannot be
       the arguments of the operator. This has to be set in concrete classes.
     """
 
     SYMBOL: str
-    FORBIDDEN_FORMALISMS: Container[Logic] = set()
+    ALLOWED_LOGICS: Optional[Container[Logic]] = None
+    FORBIDDEN_LOGICS: Optional[Container[Logic]] = None
 
     def __init__(self, *operands: Formula):
         """
@@ -195,12 +203,13 @@ class _UnaryOp(Formula, ABC):
     Unary operator.
 
     SYMBOL: the symbol to represent this operator in the native string representation.
-    FORBIDDEN_FORMALISMS: the collection of formalisms whose formula cannot be
+    FORBIDDEN_LOGICS: the collection of formalisms whose formula cannot be
       the argument of the operator. This has to be set in concrete classes.
     """
 
     SYMBOL: str
-    FORBIDDEN_FORMALISMS: Container[Logic] = set()
+    ALLOWED_LOGICS: Optional[Container[Logic]] = None
+    FORBIDDEN_LOGICS: Optional[Container[Logic]] = None
 
     def __init__(self, arg: Formula):
         """
@@ -331,7 +340,7 @@ def make_boolean(value: bool, logic: Logic) -> Formula:
     return formula_cls(logic=logic)
 
 
-class _MonotoneBinaryOp(_HashConsing):
+class _MonotoneBinaryOp(_MetaOp):
     """
     Metaclass to simplify binary monotone operator instantiations.
 
@@ -442,7 +451,7 @@ class And(_CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
 
     _absorbing = False
     SYMBOL = "and"
-    FORBIDDEN_FORMALISMS = {Logic.RE}
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
 class Or(_CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
@@ -450,14 +459,14 @@ class Or(_CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
 
     _absorbing = True
     SYMBOL = "or"
-    FORBIDDEN_FORMALISMS = {Logic.RE}
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
 class Not(_UnaryOp):
     """Not operator."""
 
     SYMBOL = "not"
-    FORBIDDEN_FORMALISMS = {Logic.RE}
+    FORBIDDEN_LOGICS = {Logic.RE}
 
     def __new__(cls, arg, **kwargs):
         """Instantiate the object."""
@@ -517,7 +526,7 @@ class ImpliesOp(_BinaryOp, metaclass=_MetaImpliesOp):
     """
 
     SYMBOL = "implies"
-    FORBIDDEN_FORMALISMS = {Logic.RE}
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
 class _MetaEquivalenceOp(_MetaOp):
@@ -552,7 +561,7 @@ class EquivalenceOp(_CommutativeBinaryOp, metaclass=_MetaEquivalenceOp):
     """Equivalence operator."""
 
     SYMBOL = "equivalence"
-    FORBIDDEN_FORMALISMS = {Logic.RE}
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
 def ensure_formula(f: Optional[Formula], is_none_true: bool) -> Formula:

@@ -34,16 +34,14 @@ ltlf_true: prop_true
 ltlf_false: prop_false
 ltlf_last: LAST
 
-// Operators must not be part of a word
-// For unary operator, we also check if we are at the beginning
-UNTIL.2: /(?<=\W)U(?=[^a-zA-Z])/
-RELEASE.2: /(?<=\W)R(?=[^a-zA-Z])/
-ALWAYS.2: /(?<=^|\W)G(?=[^a-zA-Z])|^G(?=[^a-zA-Z])/
-EVENTUALLY.2: /(?<=^|\W)F(?=[^a-zA-Z])|^F(?=[^a-zA-Z])/
-NEXT.2: /(?<=^|\W)X(?=[^a-zA-Z])|^X(?=[^a-zA-Z])/
-WEAK_NEXT.2: /(?<=^|\W)N(?=[^a-zA-Z])|^N(?=[^a-zA-Z])/
-WEAK_UNTIL.2: /(?<=\W)W(?=[^a-zA-Z])/
-STRONG_RELEASE.2: /(?<=\W)M(?=[^a-zA-Z])/
+UNTIL.2: "U"
+RELEASE.2: "R"
+ALWAYS.2: "G"
+EVENTUALLY.2: "F"
+NEXT.2: "X"
+WEAK_NEXT.2: "N"
+WEAK_UNTIL.2: "W"
+STRONG_RELEASE.2: "M"
 
 END.2: /(?i:end)/
 LAST.2: /(?i:last)/

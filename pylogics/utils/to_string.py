@@ -28,10 +28,10 @@ from pylogics.exceptions import PylogicsError
 from pylogics.syntax.base import (
     AbstractAtomic,
     And,
-    EquivalenceOp,
+    Equivalence,
     FalseFormula,
     Formula,
-    ImpliesOp,
+    Implies,
     Not,
     Or,
     TrueFormula,
@@ -89,14 +89,14 @@ def to_string_not(formula: Not) -> str:
     return f"~({to_string(formula.argument)})"
 
 
-@to_string.register(ImpliesOp)
-def to_string_implies(formula: ImpliesOp) -> str:
+@to_string.register(Implies)
+def to_string_implies(formula: Implies) -> str:
     """Transform an Implies into string."""
     return " -> ".join(_map_operands_to_string(formula.operands))
 
 
-@to_string.register(EquivalenceOp)
-def to_string_equivalence(formula: EquivalenceOp) -> str:
+@to_string.register(Equivalence)
+def to_string_equivalence(formula: Equivalence) -> str:
     """Transform an Equivalence into string."""
     return " <-> ".join(_map_operands_to_string(formula.operands))
 

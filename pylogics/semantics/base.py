@@ -25,7 +25,7 @@ import functools
 from typing import Callable
 
 from pylogics.exceptions import PylogicsError
-from pylogics.syntax.base import And, EquivalenceOp, Formula, ImpliesOp, Not, Or
+from pylogics.syntax.base import And, Equivalence, Formula, Implies, Not, Or
 
 
 @functools.singledispatch
@@ -52,9 +52,9 @@ def not_semantics(formula: Not, fn: Callable[..., bool], *args, **kwargs) -> boo
     return not fn(formula.argument, *args, **kwargs)
 
 
-@base_semantics.register(ImpliesOp)
+@base_semantics.register(Implies)
 def implies_semantics(
-    formula: ImpliesOp, fn: Callable[..., bool], *args, **kwargs
+    formula: Implies, fn: Callable[..., bool], *args, **kwargs
 ) -> bool:
     """
     Evaluate an implication formula.
@@ -78,9 +78,9 @@ def implies_semantics(
     return any(_visitor())
 
 
-@base_semantics.register(EquivalenceOp)
+@base_semantics.register(Equivalence)
 def equivalence_semantics(
-    formula: EquivalenceOp, fn: Callable[..., bool], *args, **kwargs
+    formula: Equivalence, fn: Callable[..., bool], *args, **kwargs
 ) -> bool:
     """Evaluate an equivalence formula."""
     result = fn(formula.operands[0], *args, **kwargs)

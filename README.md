@@ -58,7 +58,7 @@ A Python library for logic formalisms representation and manipulation.
 
 To install the package from PyPI:
 ```
-pip install pylogics
+pip install pylogics==0.1.0a0
 ```
 
 ## Tests

@@ -528,7 +528,7 @@ class _MetaImpliesOp(_MetaOp):
         return operands
 
 
-class ImpliesOp(_BinaryOp, metaclass=_MetaImpliesOp):
+class Implies(_BinaryOp, metaclass=_MetaImpliesOp):
     """
     Implication operator.
 
@@ -567,7 +567,7 @@ class _MetaEquivalenceOp(_MetaOp):
         return operands
 
 
-class EquivalenceOp(_CommutativeBinaryOp, metaclass=_MetaEquivalenceOp):
+class Equivalence(_CommutativeBinaryOp, metaclass=_MetaEquivalenceOp):
     """Equivalence operator."""
 
     SYMBOL = "equivalence"

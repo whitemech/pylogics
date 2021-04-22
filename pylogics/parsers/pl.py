@@ -25,15 +25,15 @@
 from pylogics.parsers.base import AbstractParser, AbstractTransformer
 from pylogics.syntax.base import (
     And,
-    EquivalenceOp,
+    Equivalence,
     Formula,
-    ImpliesOp,
+    Implies,
     Logic,
     Not,
     Or,
     make_boolean,
 )
-from pylogics.syntax.propositional import Atomic
+from pylogics.syntax.pl import Atomic
 
 
 class _PLTransformer(AbstractTransformer):
@@ -53,11 +53,11 @@ class _PLTransformer(AbstractTransformer):
     @classmethod
     def prop_equivalence(cls, args):
         """Parse the 'prop_equivalence' tag."""
-        return cls._starred_binaryop(args, EquivalenceOp, cls.prop_equivalence.__name__)
+        return cls._starred_binaryop(args, Equivalence, cls.prop_equivalence.__name__)
 
     @classmethod
     def prop_implication(cls, args):
-        return cls._starred_binaryop(args, ImpliesOp, cls.prop_implication.__name__)
+        return cls._starred_binaryop(args, Implies, cls.prop_implication.__name__)
 
     @classmethod
     def prop_or(cls, args):
@@ -105,13 +105,13 @@ class _PLParser(AbstractParser):
     """Parser for propositional logic."""
 
     transformer_cls = _PLTransformer
-    lark_path = "propositional.lark"
+    lark_path = "pl.lark"
 
 
 __parser = _PLParser()
 
 
-def parse_prop(formula: str) -> Formula:
+def parse_pl(formula: str) -> Formula:
     """
     Parse the propositional formula.
 

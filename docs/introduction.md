@@ -9,7 +9,7 @@ on [temporal logics](https://plato.stanford.edu/entries/logic-temporal/).
 > API might be broken frequently or may contain bugs :bug:.
 
 > :warning: Docs are not thorough and might be inaccurate.
-> Apologizes.
+> Apologies.
 
 ## Quickstart
 

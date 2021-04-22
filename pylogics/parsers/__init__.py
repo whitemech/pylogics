@@ -21,3 +21,7 @@
 #
 
 """This package contains the parsers for the supported logics."""
+
+from .propositional import parse_prop
+from .ltl import parse_ltl
+from .ldl import parse_ldl

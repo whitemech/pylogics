@@ -24,13 +24,13 @@
 
 from pylogics.exceptions import ParsingError
 from pylogics.parsers.base import AbstractParser, AbstractTransformer
-from pylogics.parsers.propositional import _PLTransformer
+from pylogics.parsers.pl import _PLTransformer
 from pylogics.syntax.base import (
     And,
-    EquivalenceOp,
+    Equivalence,
     FalseFormula,
     Formula,
-    ImpliesOp,
+    Implies,
     Not,
     Or,
     TrueFormula,
@@ -48,15 +48,15 @@ from pylogics.syntax.ldl import (
     Test,
     Union,
 )
-from pylogics.syntax.propositional import Atomic
+from pylogics.syntax.pl import Atomic
 
 
 class _LDLTransformer(AbstractTransformer):
     """Transformer for LDL."""
 
     _pl_transformer = _PLTransformer()
-    _pl_imported = ("prop_atom", "propositional_formula")
-    _prefix = "propositional__"
+    _pl_imported = ("pl_atom", "propositional_formula")
+    _prefix = "pl__"
 
     @classmethod
     def start(cls, args):
@@ -70,11 +70,11 @@ class _LDLTransformer(AbstractTransformer):
 
     @classmethod
     def ldlf_equivalence(cls, args):
-        return cls._starred_binaryop(args, EquivalenceOp, cls.ldlf_equivalence.__name__)
+        return cls._starred_binaryop(args, Equivalence, cls.ldlf_equivalence.__name__)
 
     @classmethod
     def ldlf_implication(cls, args):
-        return cls._starred_binaryop(args, ImpliesOp, cls.ldlf_implication.__name__)
+        return cls._starred_binaryop(args, Implies, cls.ldlf_implication.__name__)
 
     @classmethod
     def ldlf_or(cls, args):

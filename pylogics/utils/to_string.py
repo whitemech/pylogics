@@ -28,10 +28,10 @@ from pylogics.exceptions import PylogicsError
 from pylogics.syntax.base import (
     AbstractAtomic,
     And,
-    EquivalenceOp,
+    Equivalence,
     FalseFormula,
     Formula,
-    ImpliesOp,
+    Implies,
     Not,
     Or,
     TrueFormula,
@@ -57,6 +57,7 @@ from pylogics.syntax.ltl import (
     WeakNext,
     WeakUntil,
 )
+from pylogics.syntax.pltl import Before, Historically, Once, Since
 
 
 @functools.singledispatch
@@ -88,14 +89,14 @@ def to_string_not(formula: Not) -> str:
     return f"~({to_string(formula.argument)})"
 
 
-@to_string.register(ImpliesOp)
-def to_string_implies(formula: ImpliesOp) -> str:
+@to_string.register(Implies)
+def to_string_implies(formula: Implies) -> str:
     """Transform an Implies into string."""
     return " -> ".join(_map_operands_to_string(formula.operands))
 
 
-@to_string.register(EquivalenceOp)
-def to_string_equivalence(formula: EquivalenceOp) -> str:
+@to_string.register(Equivalence)
+def to_string_equivalence(formula: Equivalence) -> str:
     """Transform an Equivalence into string."""
     return " <-> ".join(_map_operands_to_string(formula.operands))
 
@@ -166,14 +167,38 @@ def to_string_always(formula: Always) -> str:
     return f"G({to_string(formula.argument)})"
 
 
+@to_string.register(Before)
+def to_string_pltl_before(formula: Before) -> str:
+    """Transform a 'before' formula into string."""
+    return f"Y({to_string(formula.argument)})"
+
+
+@to_string.register(Since)
+def to_string_pltl_since(formula: Since) -> str:
+    """Transform a 'since' formula into string."""
+    return " S ".join(_map_operands_to_string(formula.operands))
+
+
+@to_string.register(Once)
+def to_string_pltl_once(formula: Once) -> str:
+    """Transform a 'once' formula into string."""
+    return f"O({to_string(formula.argument)})"
+
+
+@to_string.register(Historically)
+def to_string_pltl_historically(formula: Historically) -> str:
+    """Transform a 'historically' formula into string."""
+    return f"H({to_string(formula.argument)})"
+
+
 @to_string.register(LDLTrue)
-def to_string_ldl_true(formula: LDLTrue) -> str:
+def to_string_ldl_true(_formula: LDLTrue) -> str:
     """Transform an LDL true into string."""
     return "tt"
 
 
 @to_string.register(LDLFalse)
-def to_string_ldl_false(formula: LDLFalse) -> str:
+def to_string_ldl_false(_formula: LDLFalse) -> str:
     """Transform an LDL false into string."""
     return "ff"
 

@@ -21,3 +21,8 @@
 #
 
 """This package contains the parsers for the supported logics."""
+
+from .ldl import parse_ldl  # noqa: ignore
+from .ltl import parse_ltl  # noqa: ignore
+from .pl import parse_pl  # noqa: ignore
+from .pltl import parse_pltl  # noqa: ignore

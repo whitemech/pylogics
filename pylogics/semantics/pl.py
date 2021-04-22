@@ -30,13 +30,13 @@ from pylogics.helpers.misc import enforce
 from pylogics.semantics.base import base_semantics
 from pylogics.syntax.base import (
     AtomName,
-    BinaryOp,
     FalseFormula,
     Formula,
     TrueFormula,
-    UnaryOp,
+    _BinaryOp,
+    _UnaryOp,
 )
-from pylogics.syntax.propositional import Atomic
+from pylogics.syntax.pl import Atomic
 
 _PropInterpretation = Union[Dict, Set]
 
@@ -65,38 +65,38 @@ class _PropInterpretationWrapper:
 
 
 @singledispatch
-def evaluate_prop(formula: Formula, _interpretation: _PropInterpretation) -> bool:
+def evaluate_pl(formula: Formula, _interpretation: _PropInterpretation) -> bool:
     """Evaluate a propositional formula against an interpretation."""
     raise PylogicsError(
-        f"formula '{formula}' cannot be processed by {evaluate_prop.__name__}"  # type: ignore
+        f"formula '{formula}' cannot be processed by {evaluate_pl.__name__}"  # type: ignore
     )
 
 
-@evaluate_prop.register(BinaryOp)
-def evaluate_binary_op(formula: BinaryOp, interpretation: _PropInterpretation) -> bool:
+@evaluate_pl.register(_BinaryOp)
+def evaluate_binary_op(formula: _BinaryOp, interpretation: _PropInterpretation) -> bool:
     """Evaluate a propositional formula over a binary operator."""
-    return base_semantics(formula, evaluate_prop, interpretation)
+    return base_semantics(formula, evaluate_pl, interpretation)
 
 
-@evaluate_prop.register(UnaryOp)
-def evaluate_unary_op(formula: UnaryOp, interpretation: _PropInterpretation) -> bool:
+@evaluate_pl.register(_UnaryOp)
+def evaluate_unary_op(formula: _UnaryOp, interpretation: _PropInterpretation) -> bool:
     """Evaluate a propositional formula over a unary operator."""
-    return base_semantics(formula, evaluate_prop, interpretation)
+    return base_semantics(formula, evaluate_pl, interpretation)
 
 
-@evaluate_prop.register(Atomic)
+@evaluate_pl.register(Atomic)
 def evaluate_atomic(formula: Atomic, interpretation: _PropInterpretation) -> bool:
     """Evaluate a propositional formula over an atomic formula."""
     return formula.name in _PropInterpretationWrapper(interpretation)
 
 
-@evaluate_prop.register(TrueFormula)
+@evaluate_pl.register(TrueFormula)
 def evaluate_true(_formula: TrueFormula, _interpretation: _PropInterpretation) -> bool:
     """Evaluate a "true" formula."""
     return True
 
 
-@evaluate_prop.register(FalseFormula)
+@evaluate_pl.register(FalseFormula)
 def evaluate_false(
     _formula: FalseFormula, _interpretation: _PropInterpretation
 ) -> bool:

@@ -24,7 +24,7 @@
 import re
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Dict, FrozenSet, Optional, Sequence, Union, cast
+from typing import Container, Dict, FrozenSet, Optional, Sequence, Union, cast
 
 from pylogics.exceptions import PylogicsError
 from pylogics.helpers.cache_hash import Hashable
@@ -40,7 +40,7 @@ class Logic(Enum):
     PLTL = "pltl"
     PLDL = "pldl"
     FOL = "fol"
-    SOL = "sol"
+    MSO = "mso"
     RE = "re"
 
 
@@ -112,10 +112,49 @@ class Formula(ABC, metaclass=_HashConsing):
         return Or(Not(self), other)
 
 
-class BinaryOp(Formula):
-    """Binary operator."""
+class _MetaOp(_HashConsing):
+    """Metaclass for (binary and unary) operators."""
+
+    def __call__(cls, *operands, **kwargs):
+        """Init the subclass object."""
+        cls._check_not_forbidden_formalism(*operands)
+        return super(_MetaOp, cls).__call__(*operands, **kwargs)
+
+    def _check_not_forbidden_formalism(cls, *operands):
+        """Check operands belong to same formalism."""
+        enforce(len(operands) >= 1, "expected at least one operand.")
+        logic = operands[0].logic
+        allowed = getattr(cls, "ALLOWED_LOGICS", None)
+        forbidden = getattr(cls, "FORBIDDEN_LOGICS", None)
+        if allowed is not None:
+            forbidden = []
+
+        is_logic_allowed = allowed is not None and logic in allowed
+        is_logic_forbidden = forbidden is not None and logic in forbidden
+        if is_logic_allowed and not is_logic_forbidden:
+            raise ValueError(
+                f"error during instantiation of class {cls.__name__}: "
+                f"found operand belonging to logic {logic}, which is forbidden"
+            )
+
+
+class _BinaryOp(Formula):
+    """
+    Binary operator.
+
+    SYMBOL: the symbol to represent this operator in the native string representation.
+    ALLOWED_LOGICS: the collection of allowed formalisms whose formulae can be
+      the arguments of the operator. This has to be set in concrete classes.
+      If None, then the FORBIDDEN_LOGICS field is processed.
+    FORBIDDEN_LOGICS: the collection of formalisms whose formula cannot be
+      the arguments of the operator. This has to be set in concrete classes.
+      If ALLOWED_LOGICS is specified, this field is ignored.
+      If this field is None, then no check is applied.
+    """
 
     SYMBOL: str
+    ALLOWED_LOGICS: Optional[Container[Logic]] = None
+    FORBIDDEN_LOGICS: Optional[Container[Logic]] = None
 
     def __init__(self, *operands: Formula):
         """
@@ -164,10 +203,23 @@ class BinaryOp(Formula):
         )
 
 
-class UnaryOp(Formula, ABC):
-    """Unary operator."""
+class _UnaryOp(Formula, ABC):
+    """
+    Unary operator.
+
+    SYMBOL: the symbol to represent this operator in the native string representation.
+    ALLOWED_LOGICS: the collection of allowed formalisms whose formulae can be
+      the argument of the operator. This has to be set in concrete classes.
+      If None, then the FORBIDDEN_LOGICS field is processed.
+    FORBIDDEN_LOGICS: the collection of formalisms whose formula cannot be
+      the argument of the operator. This has to be set in concrete classes.
+      If ALLOWED_LOGICS is specified, this field is ignored.
+      If this field is None, then no check is applied.
+    """
 
     SYMBOL: str
+    ALLOWED_LOGICS: Optional[Container[Logic]] = None
+    FORBIDDEN_LOGICS: Optional[Container[Logic]] = None
 
     def __init__(self, arg: Formula):
         """
@@ -298,7 +350,7 @@ def make_boolean(value: bool, logic: Logic) -> Formula:
     return formula_cls(logic=logic)
 
 
-class _MonotoneBinaryOp(_HashConsing):
+class _MonotoneBinaryOp(_MetaOp):
     """
     Metaclass to simplify binary monotone operator instantiations.
 
@@ -375,7 +427,7 @@ class _MonotoneBinaryOp(_HashConsing):
         )
 
 
-class CommutativeBinaryOp(BinaryOp):
+class _CommutativeBinaryOp(_BinaryOp):
     """Commutative binary operator."""
 
     @property
@@ -404,24 +456,27 @@ class CommutativeBinaryOp(BinaryOp):
         )
 
 
-class And(CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
+class And(_CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
     """And operator."""
 
     _absorbing = False
     SYMBOL = "and"
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
-class Or(CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
+class Or(_CommutativeBinaryOp, metaclass=_MonotoneBinaryOp):
     """Or operator."""
 
     _absorbing = True
     SYMBOL = "or"
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
-class Not(UnaryOp):
+class Not(_UnaryOp):
     """Not operator."""
 
     SYMBOL = "not"
+    FORBIDDEN_LOGICS = {Logic.RE}
 
     def __new__(cls, arg, **kwargs):
         """Instantiate the object."""
@@ -436,7 +491,7 @@ class Not(UnaryOp):
         return self.argument.logic
 
 
-class _MetaImpliesOp(_HashConsing):
+class _MetaImpliesOp(_MetaOp):
     """
     Metaclass for the imply operator.
 
@@ -473,7 +528,7 @@ class _MetaImpliesOp(_HashConsing):
         return operands
 
 
-class ImpliesOp(BinaryOp, metaclass=_MetaImpliesOp):
+class Implies(_BinaryOp, metaclass=_MetaImpliesOp):
     """
     Implication operator.
 
@@ -481,9 +536,10 @@ class ImpliesOp(BinaryOp, metaclass=_MetaImpliesOp):
     """
 
     SYMBOL = "implies"
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
-class _MetaEquivalenceOp(_HashConsing):
+class _MetaEquivalenceOp(_MetaOp):
     """
     Metaclass for the equivalence operator.
 
@@ -493,8 +549,7 @@ class _MetaEquivalenceOp(_HashConsing):
     def __call__(cls, *args, **kwargs):
         """Init the subclass object."""
         operands = cls._simplify_operands(*args)
-        if len(args) == 0:
-            raise ValueError("cannot accept zero arguments")
+        enforce(len(args) > 0, "cannot accept zero arguments", ValueError)
         if len(operands) == 1:
             return operands[0]
 
@@ -512,10 +567,11 @@ class _MetaEquivalenceOp(_HashConsing):
         return operands
 
 
-class EquivalenceOp(CommutativeBinaryOp, metaclass=_MetaEquivalenceOp):
+class Equivalence(_CommutativeBinaryOp, metaclass=_MetaEquivalenceOp):
     """Equivalence operator."""
 
     SYMBOL = "equivalence"
+    FORBIDDEN_LOGICS = {Logic.RE}
 
 
 def ensure_formula(f: Optional[Formula], is_none_true: bool) -> Formula:
@@ -532,7 +588,7 @@ def ensure_formula(f: Optional[Formula], is_none_true: bool) -> Formula:
 class AtomName(RegexConstrainedString):
     """A string that denotes an atomic propositional symbol."""
 
-    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_]*")
+    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_]*|\"\w+\"")
 
 
 _AtomNameOrStr = Union[str, AtomName]

@@ -24,14 +24,13 @@
 from abc import ABC
 from functools import partial
 
-from pylogics.helpers.misc import enforce
 from pylogics.syntax.base import (
     AbstractAtomic,
-    BinaryOp,
     FalseFormula,
     Formula,
     Logic,
-    UnaryOp,
+    _BinaryOp,
+    _UnaryOp,
 )
 
 
@@ -48,25 +47,16 @@ class _LTL(Formula, ABC):
         return super(Formula, self).__hash__()
 
 
-class _LTLUnaryOp(UnaryOp, _LTL):
+class _LTLUnaryOp(_UnaryOp, _LTL):
     """LTL Unary operation."""
 
-    def __post_init__(self):
-        """Check that the argument is of LTL logic."""
-        enforce(
-            self.argument.logic == Logic.LTL, "operand does not belong to LTL logic"
-        )
+    ALLOWED_LOGICS = {Logic.LTL}
 
 
-class _LTLBinaryOp(BinaryOp, _LTL):
+class _LTLBinaryOp(_BinaryOp, _LTL):
     """LTL Unary operation."""
 
-    def __post_init__(self):
-        """Check that the agument is of LTL logic."""
-        enforce(
-            all(op.logic == Logic.LTL for op in self.operands),
-            "operands do not belong to LTL logic",
-        )
+    ALLOWED_LOGICS = {Logic.LTL}
 
 
 class Atomic(AbstractAtomic, _LTL):

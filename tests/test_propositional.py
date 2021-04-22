@@ -72,13 +72,13 @@ def test_semantics_negation(formula, interpretation):
 
 def test_hash_consing():
     """Test that hash consing works as expected."""
-    a1 = parse_prop("A")
+    a1 = parse_prop("a")
     context = get_cache_context()
     assert len(context[a1.logic]) == 1
     assert context[a1.logic][a1] is None
     assert list(context[a1.logic])[0] == a1
 
-    a2 = parse_prop("A")
+    a2 = parse_prop("a")
     assert len(context[a1.logic]) == 1
     assert context[a1.logic][a1] is None
     assert list(context[a1.logic])[0] == a1 == a2

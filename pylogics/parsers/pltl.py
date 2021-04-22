@@ -71,39 +71,19 @@ class _PLTLTransformer(AbstractTransformer):
 
     @classmethod
     def pltlf_historically(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Historically(f)
-        return f
+        return cls._process_unaryop(args, Historically)
 
     @classmethod
     def pltlf_once(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Once(f)
-        return f
+        return cls._process_unaryop(args, Once)
 
     @classmethod
     def pltlf_before(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Before(f)
-        return f
+        return cls._process_unaryop(args, Before)
 
     @classmethod
     def pltlf_not(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Not(f)
-        return f
+        return cls._process_unaryop(args, Not)
 
     @classmethod
     def pltlf_wrapped(cls, args):

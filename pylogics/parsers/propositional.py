@@ -69,12 +69,7 @@ class _PLTransformer(AbstractTransformer):
 
     @classmethod
     def prop_not(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Not(f)
-        return f
+        return cls._process_unaryop(args, Not)
 
     @classmethod
     def prop_wrapped(cls, args):

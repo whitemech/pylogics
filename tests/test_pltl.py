@@ -38,7 +38,7 @@ def test_parser(formula):
     formula_1 = parse_pltl(formula)
     formula_2 = parse_pltl(formula)
     assert formula_1 == formula_2
-    assert Logic.LTL == formula_1.logic == formula_2.logic
+    assert Logic.PLTL == formula_1.logic == formula_2.logic
 
 
 @suppress_health_checks_for_lark

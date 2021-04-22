@@ -94,48 +94,23 @@ class _LTLTransformer(AbstractTransformer):
 
     @classmethod
     def ltlf_always(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Always(f)
-        return f
+        return cls._process_unaryop(args, Always)
 
     @classmethod
     def ltlf_eventually(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Eventually(f)
-        return f
+        return cls._process_unaryop(args, Eventually)
 
     @classmethod
     def ltlf_next(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Next(f)
-        return f
+        return cls._process_unaryop(args, Next)
 
     @classmethod
     def ltlf_weak_next(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = WeakNext(f)
-        return f
+        return cls._process_unaryop(args, WeakNext)
 
     @classmethod
     def ltlf_not(cls, args):
-        if len(args) == 1:
-            return args[0]
-        f = args[-1]
-        for _ in args[:-1]:
-            f = Not(f)
-        return f
+        return cls._process_unaryop(args, Not)
 
     @classmethod
     def ltlf_wrapped(cls, args):

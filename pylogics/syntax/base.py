@@ -480,12 +480,13 @@ class Not(_UnaryOp):
 
     def __new__(cls, arg, **kwargs):
         """Instantiate the object."""
-        if isinstance(arg, Not):
-            # ~~phi = phi
-            return arg.argument
-        elif isinstance(arg, (TrueFormula, FalseFormula)):
+        if isinstance(arg, (Not, TrueFormula, FalseFormula)):
             return ~arg
         return super(Not, cls).__new__(cls)
+
+    def __invert__(self):
+        """Invert the negation."""
+        return self.argument
 
     @property
     def logic(self) -> Logic:

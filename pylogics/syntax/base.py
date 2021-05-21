@@ -483,6 +483,8 @@ class Not(_UnaryOp):
         if isinstance(arg, Not):
             # ~~phi = phi
             return arg.argument
+        elif isinstance(arg, (TrueFormula, FalseFormula)):
+            return make_boolean(not isinstance(arg, TrueFormula), logic=arg.logic)
         return super(Not, cls).__new__(cls)
 
     @property

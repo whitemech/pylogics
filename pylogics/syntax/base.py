@@ -292,7 +292,7 @@ class TrueFormula(Formula):
         """
         return type(other) == type(self) and self.logic == other.logic
 
-    def __neg__(self) -> Formula:
+    def __invert__(self) -> "Formula":
         """Negate."""
         return make_boolean(False, logic=self.logic)
 
@@ -333,7 +333,7 @@ class FalseFormula(Formula):
         """
         return type(other) == type(self) and self.logic == other.logic
 
-    def __neg__(self) -> Formula:
+    def __invert__(self) -> "Formula":
         """Negate."""
         return make_boolean(True, logic=self.logic)
 
@@ -484,7 +484,7 @@ class Not(_UnaryOp):
             # ~~phi = phi
             return arg.argument
         elif isinstance(arg, (TrueFormula, FalseFormula)):
-            return make_boolean(not isinstance(arg, TrueFormula), logic=arg.logic)
+            return ~arg
         return super(Not, cls).__new__(cls)
 
     @property

@@ -21,14 +21,18 @@
 #
 
 """Tests on the pylogics.syntax.ltl module."""
-from pylogics.syntax.base import FalseFormula, Not, TrueFormula
+import pytest
+
+from pylogics.syntax.base import FalseFormula, Logic, Not, TrueFormula
 
 
-def test_not_true():
+@pytest.mark.parametrize("logic", list(Logic))
+def test_not_true(logic):
     """Test that the negation of true gives false."""
-    assert FalseFormula() == Not(TrueFormula())
+    assert FalseFormula(logic=logic) == Not(TrueFormula(logic=logic))
 
 
-def test_not_false():
+@pytest.mark.parametrize("logic", list(Logic))
+def test_not_false(logic):
     """Test that the negation of false gives true."""
-    assert TrueFormula() == Not(FalseFormula())
+    assert TrueFormula(logic=logic) == Not(FalseFormula(logic=logic))

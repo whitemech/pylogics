@@ -74,7 +74,7 @@ class LDLTrue(TrueFormula):
         """Get an unambiguous string representation."""
         return f"LDLTrue({self.logic})"
 
-    def __neg__(self) -> Formula:
+    def __invert__(self) -> Formula:
         """Negate."""
         return LDLFalse()
 
@@ -94,7 +94,7 @@ class LDLFalse(FalseFormula):
         """Get an unambiguous string representation."""
         return f"LDLFalse({self.logic})"
 
-    def __neg__(self) -> Formula:
+    def __invert__(self) -> Formula:
         """Negate."""
         return LDLTrue()
 

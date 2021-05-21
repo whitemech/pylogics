@@ -396,10 +396,17 @@ class _MonotoneBinaryOp(_MetaOp):
         while len(stack) > 0:
             element = stack.pop()
             if not isinstance(element, cls):
+                if ~element in seen_operands:
+                    # i.e. if you get "phi OP (INV phi)"
+                    # then we just return the absorbing element
+                    return [absorbing]
                 if element not in seen_operands:
+                    # thanks to idempotency, we can remove duplicates
                     new_operands.append(element)
                     seen_operands.add(element)
                 continue
+            # if here, we met a sub-operand of type OP
+            # we pop-up the operands of the subformula
             stack.extend(reversed(element.operands))  # see above regarding reversed.
 
         return new_operands

@@ -67,7 +67,7 @@ jupyter = "^1.0.0"
 mknotebooks = "^0.7.0"
 markdown = "^3.3.4"
 twine = "^3.3.0"
-hypothesis = "^6.10.0"
+hypothesis = "^6.13.13"
 hypothesis-pytest = "^0.19.0"
 
 [build-system]

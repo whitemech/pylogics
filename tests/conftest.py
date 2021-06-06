@@ -21,10 +21,20 @@
 #
 
 """The conftest.py module for pytest."""
+import inspect
+from pathlib import Path
+
 import pytest
 from hypothesis import HealthCheck, settings
 
+import pylogics
 from pylogics.syntax.base import reset_cache
+
+_current_filepah = inspect.getframeinfo(inspect.currentframe()).filename  # type: ignore
+TEST_DIRECTORY = Path(_current_filepah).absolute().parent
+ROOT_DIRECTORY = TEST_DIRECTORY.parent
+LIBRARY_DIRECTORY = ROOT_DIRECTORY / pylogics.__name__
+DOCS_DIRECTORY = ROOT_DIRECTORY / "docs"
 
 
 @pytest.fixture(scope="class", autouse=True)

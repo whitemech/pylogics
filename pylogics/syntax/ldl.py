@@ -66,10 +66,6 @@ class LDLTrue(TrueFormula):
         """Initialize."""
         super().__init__(Logic.LDL)
 
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return "tt"
-
     def __repr__(self) -> str:
         """Get an unambiguous string representation."""
         return f"LDLTrue({self.logic})"
@@ -85,10 +81,6 @@ class LDLFalse(FalseFormula):
     def __init__(self):
         """Initialize."""
         super().__init__(Logic.LDL)
-
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return "ff"
 
     def __repr__(self) -> str:
         """Get an unambiguous string representation."""

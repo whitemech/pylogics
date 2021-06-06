@@ -29,6 +29,8 @@ from pylogics.syntax.base import (
     FalseFormula,
     Formula,
     Logic,
+    Not,
+    TrueFormula,
     _BinaryOp,
     _UnaryOp,
 )
@@ -63,6 +65,50 @@ class Atomic(AbstractAtomic, _PLTL):
     """An atomic proposition of PLTL."""
 
 
+class PropositionalTrue(TrueFormula, _PLTL):
+    """
+    A propositional true.
+
+    This is equivalent to 'a | ~a'. for some atom 'a'.
+    It requires reading any symbol, at least once.
+    """
+
+    def __init__(self):
+        """Initialize."""
+        super().__init__(logic=Logic.PLTL)
+
+    def __invert__(self) -> "Formula":
+        """Negate."""
+        return PropositionalFalse()
+
+    def __repr__(self) -> str:
+        """Get an unambiguous string representation."""
+        return f"PropositionalTrue({self.logic})"
+
+
+class PropositionalFalse(FalseFormula, _PLTL):
+    """
+    A propositional false.
+
+    This is equivalent to 'a & ~a'. for some atom 'a'.
+    It requires reading no symbol, at least once.
+    The meaning of this formula is a bit blurred with 'ff'
+    with respect to 'tt' and 'true'.
+    """
+
+    def __init__(self):
+        """Initialize."""
+        super().__init__(logic=Logic.PLTL)
+
+    def __invert__(self) -> "Formula":
+        """Negate."""
+        return PropositionalTrue()
+
+    def __repr__(self) -> str:
+        """Get an unambiguous string representation."""
+        return f"PropositionalFalse({self.logic})"
+
+
 class Before(_PLTLUnaryOp):
     """The "before" formula in PLTL."""
 
@@ -88,3 +134,4 @@ class Historically(_PLTLUnaryOp):
 
 
 Start = partial(Historically, FalseFormula(logic=Logic.PLTL))
+First = partial(Not, Before(TrueFormula(logic=Logic.PLTL)))

@@ -32,6 +32,7 @@ from pylogics.syntax.base import (
     FalseFormula,
     Formula,
     Implies,
+    Logic,
     Not,
     Or,
     TrueFormula,
@@ -47,17 +48,14 @@ from pylogics.syntax.ldl import (
     Test,
     Union,
 )
-from pylogics.syntax.ltl import (
-    Always,
-    Eventually,
-    Next,
-    Release,
-    StrongRelease,
-    Until,
-    WeakNext,
-    WeakUntil,
-)
-from pylogics.syntax.pltl import Before, Historically, Once, Since
+from pylogics.syntax.ltl import Always, Eventually, Next
+from pylogics.syntax.ltl import PropositionalFalse as LTLPropositionalFalse
+from pylogics.syntax.ltl import PropositionalTrue as LTLPropositionalTrue
+from pylogics.syntax.ltl import Release, StrongRelease, Until, WeakNext, WeakUntil
+from pylogics.syntax.pltl import Before, Historically, Once
+from pylogics.syntax.pltl import PropositionalFalse as PLTLPropositionalFalse
+from pylogics.syntax.pltl import PropositionalTrue as PLTLPropositionalTrue
+from pylogics.syntax.pltl import Since
 
 
 @functools.singledispatch
@@ -108,27 +106,39 @@ def to_string_atomic(formula: AbstractAtomic) -> str:
 
 
 @to_string.register(TrueFormula)
-def to_string_true(_formula: TrueFormula) -> str:
-    """Transform the "true" formula into string."""
-    return "true"
+def to_string_logical_true(formula: TrueFormula) -> str:
+    """Transform the "tt" formula into string."""
+    return "tt" if formula.logic != Logic.PL else "true"
 
 
 @to_string.register(FalseFormula)
-def to_string_false(_formula: FalseFormula) -> str:
-    """Transform the "false" formula into string."""
+def to_string_logical_false(formula: FalseFormula) -> str:
+    """Transform the "ff" formula into string."""
+    return "ff" if formula.logic != Logic.PL else "false"
+
+
+@to_string.register
+def to_string_ltl_propositional_true(_formula: LTLPropositionalTrue) -> str:
+    """Transform the "tt" formula into string."""
+    return "true"
+
+
+@to_string.register
+def to_string_ltl_propositional_false(_formula: LTLPropositionalFalse) -> str:
+    """Transform the "ff" formula into string."""
     return "false"
 
 
 @to_string.register(Next)
 def to_string_next(formula: Next) -> str:
     """Transform a next formula into string."""
-    return f"X({to_string(formula.argument)})"
+    return f"X[!]({to_string(formula.argument)})"
 
 
 @to_string.register(WeakNext)
 def to_string_weak_next(formula: WeakNext) -> str:
     """Transform a weak next formula into string."""
-    return f"N({to_string(formula.argument)})"
+    return f"X({to_string(formula.argument)})"
 
 
 @to_string.register(Until)
@@ -165,6 +175,18 @@ def to_string_eventually(formula: Eventually) -> str:
 def to_string_always(formula: Always) -> str:
     """Transform a always formula into string."""
     return f"G({to_string(formula.argument)})"
+
+
+@to_string.register
+def to_string_pltl_propositional_true(_formula: PLTLPropositionalTrue) -> str:
+    """Transform the "true" formula into string."""
+    return "true"
+
+
+@to_string.register
+def to_string_pltl_propositional_false(_formula: PLTLPropositionalFalse) -> str:
+    """Transform the "false" formula into string."""
+    return "false"
 
 
 @to_string.register(Before)

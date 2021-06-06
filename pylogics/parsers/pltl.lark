@@ -18,23 +18,30 @@ start: pltlf_formula
 ?pltlf_before:       BEFORE pltlf_unaryop
 ?pltlf_not:          NOT pltlf_unaryop
 ?pltlf_wrapped:      pltlf_atom
-             |       LSEPARATOR pltlf_formula RSEPARATOR
+             |       LEFT_PARENTHESIS pltlf_formula RIGHT_PARENTHESIS
 ?pltlf_atom:       pltlf_symbol
            |       pltlf_true
            |       pltlf_false
+           |       pltlf_tt
+           |       pltlf_ff
            |       pltlf_start
+           |       pltlf_first
 
 pltlf_symbol: SYMBOL_NAME
 pltlf_true: prop_true
 pltlf_false: prop_false
+pltlf_tt: TT
+pltlf_ff: FF
 pltlf_start: START
+pltlf_first: FIRST
 
 // Operators must not be part of a word
 SINCE.2: "S"
 HISTORICALLY.2: "H"
 ONCE.2: "O"
 BEFORE.2: "Y"
-START.2: /(?i:start)/
+FIRST.2: /first/
+START.2: /start/
 
 %ignore /\s+/
 
@@ -46,5 +53,7 @@ START.2: /(?i:start)/
 %import  .pl.AND -> AND
 %import  .pl.EQUIVALENCE -> EQUIVALENCE
 %import  .pl.IMPLY -> IMPLY
-%import  .pl.LSEPARATOR -> LSEPARATOR
-%import  .pl.RSEPARATOR -> RSEPARATOR
+%import  .pl.LEFT_PARENTHESIS -> LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -> RIGHT_PARENTHESIS
+%import  .ltl.TT -> TT
+%import  .ltl.FF -> FF

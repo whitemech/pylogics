@@ -7,7 +7,7 @@ start: propositional_formula
 ?prop_and: prop_not (AND prop_not)*
 ?prop_not: NOT* prop_wrapped
 ?prop_wrapped: prop_atom
-            | LSEPARATOR propositional_formula RSEPARATOR
+            | LEFT_PARENTHESIS propositional_formula RIGHT_PARENTHESIS
 ?prop_atom: atom
 	     | prop_true
 	     | prop_false
@@ -16,15 +16,15 @@ atom: SYMBOL_NAME
 prop_true: TRUE
 prop_false: FALSE
 
-LSEPARATOR : "("
-RSEPARATOR : ")"
+LEFT_PARENTHESIS : "("
+RIGHT_PARENTHESIS : ")"
 EQUIVALENCE : "<->"
 IMPLY : ">>"|"->"
 OR: "||"|"|"
 AND: "&&"|"&"
 NOT: "!"|"~"
-TRUE.2: /(?i:true)/
-FALSE.2: /(?i:false)/
+TRUE.2: /true/
+FALSE.2: /false/
 
 // Symbols cannot contain uppercase letters, because these are reserved
 // Moreover, any word between quotes is a symbol

@@ -20,6 +20,12 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""A Python library for logic formalisms representation and manipulation."""
+"""Test parsing documentation page."""
+from tests.conftest import DOCS_DIRECTORY
+from tests.test_docs.base import BasePythonMarkdownDocs
 
-__version__ = "0.1.0"
+
+class TestParsing(BasePythonMarkdownDocs):
+    """Test that the code snippet in the parsing page run without failure."""
+
+    MD_FILE = DOCS_DIRECTORY / "parsing.md"

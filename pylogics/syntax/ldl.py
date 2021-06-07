@@ -59,46 +59,6 @@ class _RegularExpression(Formula):
         return Logic.RE
 
 
-class LDLTrue(TrueFormula):
-    """True formula of LDL."""
-
-    def __init__(self):
-        """Initialize."""
-        super().__init__(Logic.LDL)
-
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return "tt"
-
-    def __repr__(self) -> str:
-        """Get an unambiguous string representation."""
-        return f"LDLTrue({self.logic})"
-
-    def __neg__(self) -> Formula:
-        """Negate."""
-        return LDLFalse()
-
-
-class LDLFalse(FalseFormula):
-    """False formula of LDL."""
-
-    def __init__(self):
-        """Initialize."""
-        super().__init__(Logic.LDL)
-
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return "ff"
-
-    def __repr__(self) -> str:
-        """Get an unambiguous string representation."""
-        return f"LDLFalse({self.logic})"
-
-    def __neg__(self) -> Formula:
-        """Negate."""
-        return LDLTrue()
-
-
 class Seq(_BinaryOp, _RegularExpression):
     """Sequence of regular expressions."""
 
@@ -193,5 +153,5 @@ class Box(_TemporalFormula):
     """Box formula."""
 
 
-End = partial(Box, Prop(TrueFormula()), LDLFalse())
+End = partial(Box, Prop(TrueFormula()), FalseFormula(logic=Logic.LDL))
 Last = partial(Diamond, Prop(TrueFormula()), End())

@@ -33,7 +33,17 @@ from pylogics.syntax.base import (
     Or,
     make_boolean,
 )
-from pylogics.syntax.pltl import Atomic, Before, Historically, Once, Since, Start
+from pylogics.syntax.pltl import (
+    Atomic,
+    Before,
+    First,
+    Historically,
+    Once,
+    PropositionalFalse,
+    PropositionalTrue,
+    Since,
+    Start,
+)
 
 
 class _PLTLTransformer(AbstractTransformer):
@@ -99,15 +109,27 @@ class _PLTLTransformer(AbstractTransformer):
 
     @classmethod
     def pltlf_true(cls, _args):
-        return make_boolean(True, logic=Logic.PLTL)
+        return PropositionalTrue()
 
     @classmethod
     def pltlf_false(cls, _args):
+        return PropositionalFalse()
+
+    @classmethod
+    def pltlf_tt(cls, _args):
+        return make_boolean(True, logic=Logic.PLTL)
+
+    @classmethod
+    def pltlf_ff(cls, _args):
         return make_boolean(False, logic=Logic.PLTL)
 
     @classmethod
     def pltlf_start(cls, _args):
         return Start()
+
+    @classmethod
+    def pltlf_first(cls, _args):
+        return First()
 
     @classmethod
     def pltlf_symbol(cls, args):

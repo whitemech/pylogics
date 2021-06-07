@@ -91,8 +91,8 @@ described above.
 For LDL, you can use the following classes,
 defined in `pylogics.syntax.ldl`:
 
-- `LDLTrue`, the boolean positive constant `tt`
-- `LDLFalse`, the boolean negative constant `ff`
+- `TrueFormula(logic=Logic.LDL)`, the boolean positive constant `tt`
+- `FalseFormula(logic=Logic.LDL)`, the boolean negative constant `ff`
 - `Diamond(regex, ldlf_formula)`
 - `Box(regex, ldlf_formula)`
 

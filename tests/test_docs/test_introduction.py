@@ -20,6 +20,17 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""A Python library for logic formalisms representation and manipulation."""
+"""Test introduction documentation page."""
+from pylogics.semantics.pl import evaluate_pl
+from tests.conftest import DOCS_DIRECTORY
+from tests.test_docs.base import BasePythonMarkdownDocs
 
-__version__ = "0.1.0"
+
+class TestIntroduction(BasePythonMarkdownDocs):
+    """Test that the code snippet in the introduction are correct."""
+
+    MD_FILE = DOCS_DIRECTORY / "introduction.md"
+
+    def _assert(self, locals_, *mocks):
+        """Do assertions after Python code execution."""
+        assert self.locals["evaluate_pl"] == evaluate_pl

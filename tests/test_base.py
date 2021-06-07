@@ -20,29 +20,19 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""The conftest.py module for pytest."""
-import inspect
-from pathlib import Path
-
+"""Tests on the pylogics.syntax.ltl module."""
 import pytest
-from hypothesis import HealthCheck, settings
 
-import pylogics
-from pylogics.syntax.base import reset_cache
-
-_current_filepah = inspect.getframeinfo(inspect.currentframe()).filename  # type: ignore
-TEST_DIRECTORY = Path(_current_filepah).absolute().parent
-ROOT_DIRECTORY = TEST_DIRECTORY.parent
-LIBRARY_DIRECTORY = ROOT_DIRECTORY / pylogics.__name__
-DOCS_DIRECTORY = ROOT_DIRECTORY / "docs"
+from pylogics.syntax.base import FalseFormula, Logic, Not, TrueFormula
 
 
-@pytest.fixture(scope="class", autouse=True)
-def reset_cache_fixture():
-    """Reset hash-consing global cache after each test function/class call."""
-    reset_cache()
+@pytest.mark.parametrize("logic", list(Logic))
+def test_not_true(logic):
+    """Test that the negation of true gives false."""
+    assert FalseFormula(logic=logic) == Not(TrueFormula(logic=logic))
 
 
-suppress_health_checks_for_lark = settings(
-    suppress_health_check=[HealthCheck.too_slow, HealthCheck.filter_too_much]
-)
+@pytest.mark.parametrize("logic", list(Logic))
+def test_not_false(logic):
+    """Test that the negation of false gives true."""
+    assert TrueFormula(logic=logic) == Not(FalseFormula(logic=logic))

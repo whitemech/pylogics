@@ -20,6 +20,4 @@
 # along with pylogics.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""A Python library for logic formalisms representation and manipulation."""
-
-__version__ = "0.1.0"
+"""Test documentation code."""

@@ -273,10 +273,6 @@ class TrueFormula(Formula):
         """Compute the hash."""
         return hash((type(self), self.logic))
 
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return "true"
-
     def __repr__(self) -> str:
         """Get an unambiguous string representation."""
         return f"TrueFormula({self.logic})"
@@ -292,7 +288,7 @@ class TrueFormula(Formula):
         """
         return type(other) == type(self) and self.logic == other.logic
 
-    def __neg__(self) -> Formula:
+    def __invert__(self) -> "Formula":
         """Negate."""
         return make_boolean(False, logic=self.logic)
 
@@ -333,7 +329,7 @@ class FalseFormula(Formula):
         """
         return type(other) == type(self) and self.logic == other.logic
 
-    def __neg__(self) -> Formula:
+    def __invert__(self) -> "Formula":
         """Negate."""
         return make_boolean(True, logic=self.logic)
 
@@ -396,10 +392,17 @@ class _MonotoneBinaryOp(_MetaOp):
         while len(stack) > 0:
             element = stack.pop()
             if not isinstance(element, cls):
+                if ~element in seen_operands:
+                    # i.e. if you get "phi OP (INV phi)"
+                    # then we just return the absorbing element
+                    return [absorbing]
                 if element not in seen_operands:
+                    # thanks to idempotency, we can remove duplicates
                     new_operands.append(element)
                     seen_operands.add(element)
                 continue
+            # if here, we met a sub-operand of type OP
+            # we pop-up the operands of the subformula
             stack.extend(reversed(element.operands))  # see above regarding reversed.
 
         return new_operands
@@ -480,10 +483,13 @@ class Not(_UnaryOp):
 
     def __new__(cls, arg, **kwargs):
         """Instantiate the object."""
-        if isinstance(arg, Not):
-            # ~~phi = phi
-            return arg.argument
+        if isinstance(arg, (Not, TrueFormula, FalseFormula)):
+            return ~arg
         return super(Not, cls).__new__(cls)
+
+    def __invert__(self):
+        """Invert the negation."""
+        return self.argument
 
     @property
     def logic(self) -> Logic:

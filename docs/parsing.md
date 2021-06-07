@@ -17,6 +17,11 @@ The library uses [Lark](https://lark-parser.readthedocs.io/en/latest/)
 to generate the parser automatically.
 The grammar files are reported at [this page](grammars.md).
 
+The syntax for `LTL`, `PLTL` and `LDL`
+aims to be compliant with 
+[this specification](https://marcofavorito.me/tl-grammars/v/7d9a17267fbf525d9a6a1beb92a46f05cf652db6/).
+
+
 ## Symbols
 
 A symbol is determined by the following regular expression:
@@ -45,8 +50,8 @@ pl_formula: pl_formula <-> pl_formula  // equivalence
           | pl_formula &&  pl_formula  // conjunction 
           | !pl_formula                // negation
           | ( pl_formula )             // brackets 
-          | true                       // boolean constant
-          | false                      // boolean constant
+          | true                       // boolean propositional constant
+          | false                      // boolean propositional constant
           | SYMBOL                     // prop. atom
 ```
 
@@ -81,20 +86,26 @@ ltl_formula: ltl_formula <-> ltl_formula  // equivalence
            | ltl_formula M ltl_formula    // strong release 
            | F ltl_formula                // eventually 
            | G ltl_formula                // always 
-           | X ltl_formula                // next 
-           | N ltl_formula                // weak next 
-           | true                         // boolean constant
-           | false                        // boolean constant
-           | SYMBOL                       // prop. atom
+           | X[!] ltl_formula             // next 
+           | X ltl_formula                // weak next 
+           | true                         // boolean propositional constant
+           | false                        // boolean propositional constant
+           | tt                           // boolean logical constant
+           | ff                           // boolean logical constant
+           | SYMBOL                       // propositional atom
 ```
 
 Some examples:
 ```python
 from pylogics.parsers import parse_ltl
+parse_ltl("tt")
+parse_ltl("ff")
+parse_ltl("true")
+parse_ltl("false")
 parse_ltl("a")
 parse_ltl("b")
 parse_ltl("X(a)")
-parse_ltl("N(b)")
+parse_ltl("X[!](b)")
 parse_ltl("F(a)")
 parse_ltl("G(b)")
 parse_ltl("G(a -> b)")
@@ -118,14 +129,20 @@ pltl_formula: pltl_formula <-> pltl_formula  // equivalence
             | H pltl_formula                 // historically
             | O pltl_formula                 // once 
             | Y pltl_formula                 // before 
-            | true                           // boolean constant
-            | false                          // boolean constant
-            | SYMBOL                         // prop. atom
+            | true                           // boolean propositional constant
+            | false                          // boolean propositional constant
+            | tt                             // boolean logical constant
+            | ff                             // boolean logical constant
+            | SYMBOL                         // propositional atom
 ```
 
 Some examples:
 ```python
 from pylogics.parsers import parse_pltl
+parse_pltl("tt")
+parse_pltl("ff")
+parse_pltl("true")
+parse_pltl("false")
 parse_pltl("a")
 parse_pltl("b")
 parse_pltl("Y(a)")
@@ -172,5 +189,5 @@ parse_ldl("<a + b>tt")
 parse_ldl("<a ; b><c>tt")
 parse_ldl("<(a ; b)*><c>tt")
 parse_ldl("<true><a>tt")  # Next a
-parse_ldl("<(?<a>tt;true)*>(<b>tt)")  # (a Until b) in LDLf
+parse_ldl("<(<a>tt?;true)*>(<b>tt)")  # (a Until b) in LDLf
 ```

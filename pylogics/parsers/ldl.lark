@@ -1,31 +1,25 @@
 start: ldlf_formula
 
-?ldlf_formula:  ldlf_equivalence
+?ldlf_formula:     ldlf_equivalence
 ?ldlf_equivalence: ldlf_implication (EQUIVALENCE ldlf_implication)*
 ?ldlf_implication: ldlf_or (IMPLY ldlf_or)*
-?ldlf_or: ldlf_and (OR ldlf_and)*
-?ldlf_and: ldlf_unaryop (AND ldlf_unaryop)*
+?ldlf_or:          ldlf_and (OR ldlf_and)*
+?ldlf_and:         ldlf_unaryop (AND ldlf_unaryop)*
 
 ?ldlf_unaryop:     ldlf_box
              |     ldlf_diamond
              |     ldlf_not
              |     ldlf_wrapped
-?ldlf_box: BOXLSEPARATOR regular_expression BOXRSEPARATOR ldlf_unaryop
-?ldlf_diamond: DIAMONDLSEPARATOR regular_expression DIAMONDRSEPARATOR ldlf_unaryop
-?ldlf_not: NOT ldlf_unaryop
+?ldlf_box:         LEFT_SQUARE_BRACKET regular_expression RIGHT_SQUARE_BRACKET ldlf_unaryop
+?ldlf_diamond:     LEFT_ANGLE_BRACKET regular_expression RIGHT_ANGLE_BRACKET ldlf_unaryop
+?ldlf_not:         NOT ldlf_unaryop
 ?ldlf_wrapped:    ldlf_atom
-             |    LSEPARATOR ldlf_formula RSEPARATOR
-?ldlf_atom:   ldlf_tt
-          |   ldlf_ff
-          |   ldlf_last
-          |   ldlf_end
-          |   ldlf_prop_true
-          |   ldlf_prop_false
-          |   ldlf_prop_atom
+             |    LEFT_PARENTHESIS ldlf_formula RIGHT_PARENTHESIS
+?ldlf_atom:       ldlf_tt
+          |       ldlf_ff
+          |       ldlf_last
+          |       ldlf_end
 
-ldlf_prop_true: TRUE
-ldlf_prop_false: FALSE
-ldlf_prop_atom: SYMBOL_NAME
 
 ldlf_tt: TT
 ldlf_ff: FF
@@ -37,23 +31,21 @@ regular_expression: re_union
 ?re_union:      re_sequence (UNION re_sequence)*
 ?re_sequence:   re_star (SEQ re_star)*
 ?re_star:       re_test STAR?
-?re_test:       TEST ldlf_formula
+?re_test:       ldlf_formula TEST
         |       re_wrapped
 ?re_wrapped:    re_propositional
-           |    LSEPARATOR regular_expression RSEPARATOR
+           |    LEFT_PARENTHESIS regular_expression RIGHT_PARENTHESIS
 re_propositional: propositional_formula
 
 
-BOXLSEPARATOR: "["
-BOXRSEPARATOR: "]"
-DIAMONDLSEPARATOR: "<"
-DIAMONDRSEPARATOR: ">"
+LEFT_SQUARE_BRACKET: "["
+RIGHT_SQUARE_BRACKET: "]"
+LEFT_ANGLE_BRACKET: "<"
+RIGHT_ANGLE_BRACKET: ">"
 UNION: "+"
 SEQ: ";"
 TEST: "?"
 STAR: "*"
-TT.2: /(?i:tt)/
-FF.2: /(?i:ff)/
 
 %ignore /\s+/
 
@@ -66,7 +58,9 @@ FF.2: /(?i:ff)/
 %import  .pl.OR -> OR
 %import  .pl.AND -> AND
 %import  .pl.NOT -> NOT
-%import  .pl.LSEPARATOR -> LSEPARATOR
-%import  .pl.RSEPARATOR -> RSEPARATOR
-%import .ltl.LAST -> LAST
-%import .ltl.END -> END
+%import  .pl.LEFT_PARENTHESIS -> LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -> RIGHT_PARENTHESIS
+%import  .ltl.LAST -> LAST
+%import  .ltl.END -> END
+%import  .ltl.TT -> TT
+%import  .ltl.FF -> FF

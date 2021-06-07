@@ -29,6 +29,7 @@ from pylogics.syntax.base import (
     FalseFormula,
     Formula,
     Logic,
+    TrueFormula,
     _BinaryOp,
     _UnaryOp,
 )
@@ -61,6 +62,50 @@ class _LTLBinaryOp(_BinaryOp, _LTL):
 
 class Atomic(AbstractAtomic, _LTL):
     """An atomic proposition of LTL."""
+
+
+class PropositionalTrue(TrueFormula, _LTL):
+    """
+    A propositional true.
+
+    This is equivalent to 'a | ~a'. for some atom 'a'.
+    It requires reading any symbol, at least once.
+    """
+
+    def __init__(self):
+        """Initialize."""
+        super().__init__(logic=Logic.LTL)
+
+    def __invert__(self) -> "Formula":
+        """Negate."""
+        return PropositionalFalse()
+
+    def __repr__(self) -> str:
+        """Get an unambiguous string representation."""
+        return f"PropositionalTrue({self.logic})"
+
+
+class PropositionalFalse(FalseFormula, _LTL):
+    """
+    A propositional false.
+
+    This is equivalent to 'a & ~a'. for some atom 'a'.
+    It requires reading no symbol, at least once.
+    The meaning of this formula is a bit blurred with 'ff'
+    with respect to 'tt' and 'true'.
+    """
+
+    def __init__(self):
+        """Initialize."""
+        super().__init__(logic=Logic.LTL)
+
+    def __invert__(self) -> "Formula":
+        """Negate."""
+        return PropositionalTrue()
+
+    def __repr__(self) -> str:
+        """Get an unambiguous string representation."""
+        return f"PropositionalFalse({self.logic})"
 
 
 class Next(_LTLUnaryOp):

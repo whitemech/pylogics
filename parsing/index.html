@@ -9,8 +9,10 @@
       
       
       
+        <link rel="canonical" href="https://whitemech.github.io/pylogics/parsing/">
+      
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
+      <meta name="generator" content="mkdocs-1.2, mkdocs-material-7.1.7">
     
     
       
@@ -18,10 +20,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f955dcd.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
         
       
     
@@ -131,13 +133,13 @@
     
       <div class="md-header__source">
         
-<a href="https://github.com/marcofavorito/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/whitemech/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    marcofavorito/pylogics
+    whitemech/pylogics
   </div>
 </a>
       </div>
@@ -174,13 +176,13 @@
   
     <div class="md-nav__source">
       
-<a href="https://github.com/marcofavorito/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/whitemech/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    marcofavorito/pylogics
+    whitemech/pylogics
   </div>
 </a>
     </div>
@@ -426,7 +428,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/marcofavorito/pylogics/edit/master/docs/parsing.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/whitemech/pylogics/edit/master/docs/parsing.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -449,6 +451,9 @@ please look at <a href="../supported_logics/">this page</a>.</p>
 <p>The library uses <a href="https://lark-parser.readthedocs.io/en/latest/">Lark</a>
 to generate the parser automatically.
 The grammar files are reported at <a href="../grammars/">this page</a>.</p>
+<p>The syntax for <code>LTL</code>, <code>PLTL</code> and <code>LDL</code>
+aims to be compliant with 
+<a href="https://marcofavorito.me/tl-grammars/v/7d9a17267fbf525d9a6a1beb92a46f05cf652db6/">this specification</a>.</p>
 <h2 id="symbols">Symbols</h2>
 <p>A symbol is determined by the following regular expression:</p>
 <div class="highlight"><pre><span></span><code>SYMBOL: [a-z][a-z0-9_]*|&quot;\w+&quot;
@@ -473,8 +478,8 @@ The grammar files are reported at <a href="../grammars/">this page</a>.</p>
           | pl_formula &amp;&amp;  pl_formula  // conjunction 
           | !pl_formula                // negation
           | ( pl_formula )             // brackets 
-          | true                       // boolean constant
-          | false                      // boolean constant
+          | true                       // boolean propositional constant
+          | false                      // boolean propositional constant
           | SYMBOL                     // prop. atom
 </code></pre></div></p>
 <p>Some examples:
@@ -504,18 +509,24 @@ The grammar files are reported at <a href="../grammars/">this page</a>.</p>
            | ltl_formula M ltl_formula    // strong release 
            | F ltl_formula                // eventually 
            | G ltl_formula                // always 
-           | X ltl_formula                // next 
-           | N ltl_formula                // weak next 
-           | true                         // boolean constant
-           | false                        // boolean constant
-           | SYMBOL                       // prop. atom
+           | X[!] ltl_formula             // next 
+           | X ltl_formula                // weak next 
+           | true                         // boolean propositional constant
+           | false                        // boolean propositional constant
+           | tt                           // boolean logical constant
+           | ff                           // boolean logical constant
+           | SYMBOL                       // propositional atom
 </code></pre></div></p>
 <p>Some examples:
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pylogics.parsers</span> <span class="kn">import</span> <span class="n">parse_ltl</span>
+<span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;tt&quot;</span><span class="p">)</span>
+<span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;ff&quot;</span><span class="p">)</span>
+<span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">)</span>
+<span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;false&quot;</span><span class="p">)</span>
 <span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 <span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
 <span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;X(a)&quot;</span><span class="p">)</span>
-<span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;N(b)&quot;</span><span class="p">)</span>
+<span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;X[!](b)&quot;</span><span class="p">)</span>
 <span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;F(a)&quot;</span><span class="p">)</span>
 <span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;G(b)&quot;</span><span class="p">)</span>
 <span class="n">parse_ltl</span><span class="p">(</span><span class="s2">&quot;G(a -&gt; b)&quot;</span><span class="p">)</span>
@@ -536,12 +547,18 @@ The grammar files are reported at <a href="../grammars/">this page</a>.</p>
             | H pltl_formula                 // historically
             | O pltl_formula                 // once 
             | Y pltl_formula                 // before 
-            | true                           // boolean constant
-            | false                          // boolean constant
-            | SYMBOL                         // prop. atom
+            | true                           // boolean propositional constant
+            | false                          // boolean propositional constant
+            | tt                             // boolean logical constant
+            | ff                             // boolean logical constant
+            | SYMBOL                         // propositional atom
 </code></pre></div></p>
 <p>Some examples:
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pylogics.parsers</span> <span class="kn">import</span> <span class="n">parse_pltl</span>
+<span class="n">parse_pltl</span><span class="p">(</span><span class="s2">&quot;tt&quot;</span><span class="p">)</span>
+<span class="n">parse_pltl</span><span class="p">(</span><span class="s2">&quot;ff&quot;</span><span class="p">)</span>
+<span class="n">parse_pltl</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">)</span>
+<span class="n">parse_pltl</span><span class="p">(</span><span class="s2">&quot;false&quot;</span><span class="p">)</span>
 <span class="n">parse_pltl</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 <span class="n">parse_pltl</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
 <span class="n">parse_pltl</span><span class="p">(</span><span class="s2">&quot;Y(a)&quot;</span><span class="p">)</span>
@@ -582,7 +599,7 @@ to avoid parse conflicts in the parser generation.</p>
 <span class="n">parse_ldl</span><span class="p">(</span><span class="s2">&quot;&lt;a ; b&gt;&lt;c&gt;tt&quot;</span><span class="p">)</span>
 <span class="n">parse_ldl</span><span class="p">(</span><span class="s2">&quot;&lt;(a ; b)*&gt;&lt;c&gt;tt&quot;</span><span class="p">)</span>
 <span class="n">parse_ldl</span><span class="p">(</span><span class="s2">&quot;&lt;true&gt;&lt;a&gt;tt&quot;</span><span class="p">)</span>  <span class="c1"># Next a</span>
-<span class="n">parse_ldl</span><span class="p">(</span><span class="s2">&quot;&lt;(?&lt;a&gt;tt;true)*&gt;(&lt;b&gt;tt)&quot;</span><span class="p">)</span>  <span class="c1"># (a Until b) in LDLf</span>
+<span class="n">parse_ldl</span><span class="p">(</span><span class="s2">&quot;&lt;(&lt;a&gt;tt?;true)*&gt;(&lt;b&gt;tt)&quot;</span><span class="p">)</span>  <span class="c1"># (a Until b) in LDLf</span>
 </code></pre></div></p>
                 
               
@@ -602,7 +619,8 @@ to avoid parse conflicts in the parser generation.</p>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../supported_logics/" class="md-footer__link md-footer__link--prev" rel="prev">
+        
+        <a href="../supported_logics/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Supported Logics" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -617,7 +635,8 @@ to avoid parse conflicts in the parser generation.</p>
         </a>
       
       
-        <a href="../grammars/" class="md-footer__link md-footer__link--next" rel="next">
+        
+        <a href="../grammars/" class="md-footer__link md-footer__link--next" aria-label="Next: Grammars" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
@@ -652,10 +671,10 @@ to avoid parse conflicts in the parser generation.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      <script src="../assets/javascripts/bundle.76f349be.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
       

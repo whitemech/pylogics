@@ -9,8 +9,10 @@
       
       
       
+        <link rel="canonical" href="https://whitemech.github.io/pylogics/grammars/">
+      
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
+      <meta name="generator" content="mkdocs-1.2, mkdocs-material-7.1.7">
     
     
       
@@ -18,10 +20,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f955dcd.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ca7ac06f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
         
       
     
@@ -131,13 +133,13 @@
     
       <div class="md-header__source">
         
-<a href="https://github.com/marcofavorito/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/whitemech/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    marcofavorito/pylogics
+    whitemech/pylogics
   </div>
 </a>
       </div>
@@ -174,13 +176,13 @@
   
     <div class="md-nav__source">
       
-<a href="https://github.com/marcofavorito/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/whitemech/pylogics/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
-    marcofavorito/pylogics
+    whitemech/pylogics
   </div>
 </a>
     </div>
@@ -412,7 +414,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/marcofavorito/pylogics/edit/master/docs/grammars.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/whitemech/pylogics/edit/master/docs/grammars.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -434,7 +436,7 @@ contains the specification of the Lark grammar, and it is reported below:</p>
 ?prop_and: prop_not (AND prop_not)*
 ?prop_not: NOT* prop_wrapped
 ?prop_wrapped: prop_atom
-            | LSEPARATOR propositional_formula RSEPARATOR
+            | LEFT_PARENTHESIS propositional_formula RIGHT_PARENTHESIS
 ?prop_atom: atom
          | prop_true
          | prop_false
@@ -443,15 +445,15 @@ atom: SYMBOL_NAME
 prop_true: TRUE
 prop_false: FALSE
 
-LSEPARATOR : &quot;(&quot;
-RSEPARATOR : &quot;)&quot;
+LEFT_PARENTHESIS : &quot;(&quot;
+RIGHT_PARENTHESIS : &quot;)&quot;
 EQUIVALENCE : &quot;&lt;-&gt;&quot;
 IMPLY : &quot;&gt;&gt;&quot;|&quot;-&gt;&quot;
 OR: &quot;||&quot;|&quot;|&quot;
 AND: &quot;&amp;&amp;&quot;|&quot;&amp;&quot;
 NOT: &quot;!&quot;|&quot;~&quot;
-TRUE.2: /(?i:true)/
-FALSE.2: /(?i:false)/
+TRUE.2: /true/
+FALSE.2: /false/
 
 // Symbols cannot contain uppercase letters, because these are reserved
 // Moreover, any word between quotes is a symbol
@@ -488,28 +490,35 @@ and it is reported below:</p>
 ?ltlf_weak_next:   WEAK_NEXT ltlf_unaryop
 ?ltlf_not:         NOT ltlf_unaryop
 ?ltlf_wrapped:     ltlf_atom
-             |     LSEPARATOR ltlf_formula RSEPARATOR
+             |     LEFT_PARENTHESIS ltlf_formula RIGHT_PARENTHESIS
 ?ltlf_atom:        ltlf_symbol
           |        ltlf_true
           |        ltlf_false
+          |        ltlf_tt
+          |        ltlf_ff
           |        ltlf_last
 
 ltlf_symbol: SYMBOL_NAME
 ltlf_true: prop_true
 ltlf_false: prop_false
+ltlf_tt: TT
+ltlf_ff: FF
 ltlf_last: LAST
 
 UNTIL.2: &quot;U&quot;
-RELEASE.2: &quot;R&quot;
+RELEASE.2:  /R|V/
 ALWAYS.2: &quot;G&quot;
 EVENTUALLY.2: &quot;F&quot;
-NEXT.2: &quot;X&quot;
-WEAK_NEXT.2: &quot;N&quot;
+NEXT.2: &quot;X[!]&quot;
+WEAK_NEXT.2: &quot;X&quot;
 WEAK_UNTIL.2: &quot;W&quot;
 STRONG_RELEASE.2: &quot;M&quot;
 
-END.2: /(?i:end)/
-LAST.2: /(?i:last)/
+END.2: /end/
+LAST.2: /last/
+
+TT.2: /tt/
+FF.2: /ff/
 
 %ignore /\s+/
 
@@ -521,8 +530,8 @@ LAST.2: /(?i:last)/
 %import  .pl.AND -&gt; AND
 %import  .pl.EQUIVALENCE -&gt; EQUIVALENCE
 %import  .pl.IMPLY -&gt; IMPLY
-%import  .pl.LSEPARATOR -&gt; LSEPARATOR
-%import  .pl.RSEPARATOR -&gt; RSEPARATOR
+%import  .pl.LEFT_PARENTHESIS -&gt; LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -&gt; RIGHT_PARENTHESIS
 </code></pre></div>
 <h2 id="past-linear-temporal-logic">Past Linear Temporal Logic</h2>
 <p>The Lark grammar for Past Linear Temporal Logic is defined
@@ -548,23 +557,30 @@ and it is reported below:</p>
 ?pltlf_before:       BEFORE pltlf_unaryop
 ?pltlf_not:          NOT pltlf_unaryop
 ?pltlf_wrapped:      pltlf_atom
-             |       LSEPARATOR pltlf_formula RSEPARATOR
+             |       LEFT_PARENTHESIS pltlf_formula RIGHT_PARENTHESIS
 ?pltlf_atom:       pltlf_symbol
            |       pltlf_true
            |       pltlf_false
+           |       pltlf_tt
+           |       pltlf_ff
            |       pltlf_start
+           |       pltlf_first
 
 pltlf_symbol: SYMBOL_NAME
 pltlf_true: prop_true
 pltlf_false: prop_false
+pltlf_tt: TT
+pltlf_ff: FF
 pltlf_start: START
+pltlf_first: FIRST
 
 // Operators must not be part of a word
 SINCE.2: &quot;S&quot;
 HISTORICALLY.2: &quot;H&quot;
 ONCE.2: &quot;O&quot;
 BEFORE.2: &quot;Y&quot;
-START.2: /(?i:start)/
+FIRST.2: /first/
+START.2: /start/
 
 %ignore /\s+/
 
@@ -576,8 +592,10 @@ START.2: /(?i:start)/
 %import  .pl.AND -&gt; AND
 %import  .pl.EQUIVALENCE -&gt; EQUIVALENCE
 %import  .pl.IMPLY -&gt; IMPLY
-%import  .pl.LSEPARATOR -&gt; LSEPARATOR
-%import  .pl.RSEPARATOR -&gt; RSEPARATOR
+%import  .pl.LEFT_PARENTHESIS -&gt; LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -&gt; RIGHT_PARENTHESIS
+%import  .ltl.TT -&gt; TT
+%import  .ltl.FF -&gt; FF
 </code></pre></div>
 <h2 id="linear-dynamic-logic">Linear Dynamic Logic</h2>
 <p>The Lark grammar for Linear Dynamic Logic is defined
@@ -585,32 +603,26 @@ in <a href="https://github.com/whitemech/pylogics/blob/main/pylogics/parsers/ldl
 and it is reported below:</p>
 <div class="highlight"><pre><span></span><code>start: ldlf_formula
 
-?ldlf_formula:  ldlf_equivalence
+?ldlf_formula:     ldlf_equivalence
 ?ldlf_equivalence: ldlf_implication (EQUIVALENCE ldlf_implication)*
 ?ldlf_implication: ldlf_or (IMPLY ldlf_or)*
-?ldlf_or: ldlf_and (OR ldlf_and)*
-?ldlf_and: ldlf_unaryop (AND ldlf_unaryop)*
+?ldlf_or:          ldlf_and (OR ldlf_and)*
+?ldlf_and:         ldlf_unaryop (AND ldlf_unaryop)*
 
 ?ldlf_unaryop:     ldlf_box
              |     ldlf_diamond
              |     ldlf_not
              |     ldlf_wrapped
-?ldlf_box: BOXLSEPARATOR regular_expression BOXRSEPARATOR ldlf_unaryop
-?ldlf_diamond: DIAMONDLSEPARATOR regular_expression DIAMONDRSEPARATOR ldlf_unaryop
-?ldlf_not: NOT ldlf_unaryop
+?ldlf_box:         LEFT_SQUARE_BRACKET regular_expression RIGHT_SQUARE_BRACKET ldlf_unaryop
+?ldlf_diamond:     LEFT_ANGLE_BRACKET regular_expression RIGHT_ANGLE_BRACKET ldlf_unaryop
+?ldlf_not:         NOT ldlf_unaryop
 ?ldlf_wrapped:    ldlf_atom
-             |    LSEPARATOR ldlf_formula RSEPARATOR
-?ldlf_atom:   ldlf_tt
-          |   ldlf_ff
-          |   ldlf_last
-          |   ldlf_end
-          |   ldlf_prop_true
-          |   ldlf_prop_false
-          |   ldlf_prop_atom
+             |    LEFT_PARENTHESIS ldlf_formula RIGHT_PARENTHESIS
+?ldlf_atom:       ldlf_tt
+          |       ldlf_ff
+          |       ldlf_last
+          |       ldlf_end
 
-ldlf_prop_true: TRUE
-ldlf_prop_false: FALSE
-ldlf_prop_atom: SYMBOL_NAME
 
 ldlf_tt: TT
 ldlf_ff: FF
@@ -622,23 +634,21 @@ regular_expression: re_union
 ?re_union:      re_sequence (UNION re_sequence)*
 ?re_sequence:   re_star (SEQ re_star)*
 ?re_star:       re_test STAR?
-?re_test:       TEST ldlf_formula
+?re_test:       ldlf_formula TEST
         |       re_wrapped
 ?re_wrapped:    re_propositional
-           |    LSEPARATOR regular_expression RSEPARATOR
+           |    LEFT_PARENTHESIS regular_expression RIGHT_PARENTHESIS
 re_propositional: propositional_formula
 
 
-BOXLSEPARATOR: &quot;[&quot;
-BOXRSEPARATOR: &quot;]&quot;
-DIAMONDLSEPARATOR: &quot;&lt;&quot;
-DIAMONDRSEPARATOR: &quot;&gt;&quot;
+LEFT_SQUARE_BRACKET: &quot;[&quot;
+RIGHT_SQUARE_BRACKET: &quot;]&quot;
+LEFT_ANGLE_BRACKET: &quot;&lt;&quot;
+RIGHT_ANGLE_BRACKET: &quot;&gt;&quot;
 UNION: &quot;+&quot;
 SEQ: &quot;;&quot;
 TEST: &quot;?&quot;
 STAR: &quot;*&quot;
-TT.2: /(?i:tt)/
-FF.2: /(?i:ff)/
 
 %ignore /\s+/
 
@@ -651,10 +661,12 @@ FF.2: /(?i:ff)/
 %import  .pl.OR -&gt; OR
 %import  .pl.AND -&gt; AND
 %import  .pl.NOT -&gt; NOT
-%import  .pl.LSEPARATOR -&gt; LSEPARATOR
-%import  .pl.RSEPARATOR -&gt; RSEPARATOR
-%import .ltl.LAST -&gt; LAST
-%import .ltl.END -&gt; END
+%import  .pl.LEFT_PARENTHESIS -&gt; LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -&gt; RIGHT_PARENTHESIS
+%import  .ltl.LAST -&gt; LAST
+%import  .ltl.END -&gt; END
+%import  .ltl.TT -&gt; TT
+%import  .ltl.FF -&gt; FF
 </code></pre></div>
                 
               
@@ -674,7 +686,8 @@ FF.2: /(?i:ff)/
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../parsing/" class="md-footer__link md-footer__link--prev" rel="prev">
+        
+        <a href="../parsing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Parsing" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -689,7 +702,8 @@ FF.2: /(?i:ff)/
         </a>
       
       
-        <a href="../syntax/" class="md-footer__link md-footer__link--next" rel="next">
+        
+        <a href="../syntax/" class="md-footer__link md-footer__link--next" aria-label="Next: Syntax" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
@@ -724,10 +738,10 @@ FF.2: /(?i:ff)/
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.b0710199.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      <script src="../assets/javascripts/bundle.76f349be.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
       

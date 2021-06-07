@@ -9,8 +9,8 @@ start: propositional_formula
 ?prop_wrapped: prop_atom
             | LEFT_PARENTHESIS propositional_formula RIGHT_PARENTHESIS
 ?prop_atom: atom
-	     | prop_true
-	     | prop_false
+         | prop_true
+         | prop_false
 
 atom: SYMBOL_NAME
 prop_true: TRUE

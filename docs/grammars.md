@@ -18,24 +18,24 @@ start: propositional_formula
 ?prop_and: prop_not (AND prop_not)*
 ?prop_not: NOT* prop_wrapped
 ?prop_wrapped: prop_atom
-            | LSEPARATOR propositional_formula RSEPARATOR
+            | LEFT_PARENTHESIS propositional_formula RIGHT_PARENTHESIS
 ?prop_atom: atom
-	     | prop_true
-	     | prop_false
+         | prop_true
+         | prop_false
 
 atom: SYMBOL_NAME
 prop_true: TRUE
 prop_false: FALSE
 
-LSEPARATOR : "("
-RSEPARATOR : ")"
+LEFT_PARENTHESIS : "("
+RIGHT_PARENTHESIS : ")"
 EQUIVALENCE : "<->"
 IMPLY : ">>"|"->"
 OR: "||"|"|"
 AND: "&&"|"&"
 NOT: "!"|"~"
-TRUE.2: /(?i:true)/
-FALSE.2: /(?i:false)/
+TRUE.2: /true/
+FALSE.2: /false/
 
 // Symbols cannot contain uppercase letters, because these are reserved
 // Moreover, any word between quotes is a symbol
@@ -76,28 +76,35 @@ start: ltlf_formula
 ?ltlf_weak_next:   WEAK_NEXT ltlf_unaryop
 ?ltlf_not:         NOT ltlf_unaryop
 ?ltlf_wrapped:     ltlf_atom
-             |     LSEPARATOR ltlf_formula RSEPARATOR
+             |     LEFT_PARENTHESIS ltlf_formula RIGHT_PARENTHESIS
 ?ltlf_atom:        ltlf_symbol
           |        ltlf_true
           |        ltlf_false
+          |        ltlf_tt
+          |        ltlf_ff
           |        ltlf_last
 
 ltlf_symbol: SYMBOL_NAME
 ltlf_true: prop_true
 ltlf_false: prop_false
+ltlf_tt: TT
+ltlf_ff: FF
 ltlf_last: LAST
 
 UNTIL.2: "U"
-RELEASE.2: "R"
+RELEASE.2:  /R|V/
 ALWAYS.2: "G"
 EVENTUALLY.2: "F"
-NEXT.2: "X"
-WEAK_NEXT.2: "N"
+NEXT.2: "X[!]"
+WEAK_NEXT.2: "X"
 WEAK_UNTIL.2: "W"
 STRONG_RELEASE.2: "M"
 
-END.2: /(?i:end)/
-LAST.2: /(?i:last)/
+END.2: /end/
+LAST.2: /last/
+
+TT.2: /tt/
+FF.2: /ff/
 
 %ignore /\s+/
 
@@ -109,8 +116,8 @@ LAST.2: /(?i:last)/
 %import  .pl.AND -> AND
 %import  .pl.EQUIVALENCE -> EQUIVALENCE
 %import  .pl.IMPLY -> IMPLY
-%import  .pl.LSEPARATOR -> LSEPARATOR
-%import  .pl.RSEPARATOR -> RSEPARATOR
+%import  .pl.LEFT_PARENTHESIS -> LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -> RIGHT_PARENTHESIS
 ```
 
 ## Past Linear Temporal Logic
@@ -140,23 +147,30 @@ start: pltlf_formula
 ?pltlf_before:       BEFORE pltlf_unaryop
 ?pltlf_not:          NOT pltlf_unaryop
 ?pltlf_wrapped:      pltlf_atom
-             |       LSEPARATOR pltlf_formula RSEPARATOR
+             |       LEFT_PARENTHESIS pltlf_formula RIGHT_PARENTHESIS
 ?pltlf_atom:       pltlf_symbol
            |       pltlf_true
            |       pltlf_false
+           |       pltlf_tt
+           |       pltlf_ff
            |       pltlf_start
+           |       pltlf_first
 
 pltlf_symbol: SYMBOL_NAME
 pltlf_true: prop_true
 pltlf_false: prop_false
+pltlf_tt: TT
+pltlf_ff: FF
 pltlf_start: START
+pltlf_first: FIRST
 
 // Operators must not be part of a word
 SINCE.2: "S"
 HISTORICALLY.2: "H"
 ONCE.2: "O"
 BEFORE.2: "Y"
-START.2: /(?i:start)/
+FIRST.2: /first/
+START.2: /start/
 
 %ignore /\s+/
 
@@ -168,8 +182,10 @@ START.2: /(?i:start)/
 %import  .pl.AND -> AND
 %import  .pl.EQUIVALENCE -> EQUIVALENCE
 %import  .pl.IMPLY -> IMPLY
-%import  .pl.LSEPARATOR -> LSEPARATOR
-%import  .pl.RSEPARATOR -> RSEPARATOR
+%import  .pl.LEFT_PARENTHESIS -> LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -> RIGHT_PARENTHESIS
+%import  .ltl.TT -> TT
+%import  .ltl.FF -> FF
 ```
 
 ## Linear Dynamic Logic
@@ -181,32 +197,26 @@ and it is reported below:
 ```lark
 start: ldlf_formula
 
-?ldlf_formula:  ldlf_equivalence
+?ldlf_formula:     ldlf_equivalence
 ?ldlf_equivalence: ldlf_implication (EQUIVALENCE ldlf_implication)*
 ?ldlf_implication: ldlf_or (IMPLY ldlf_or)*
-?ldlf_or: ldlf_and (OR ldlf_and)*
-?ldlf_and: ldlf_unaryop (AND ldlf_unaryop)*
+?ldlf_or:          ldlf_and (OR ldlf_and)*
+?ldlf_and:         ldlf_unaryop (AND ldlf_unaryop)*
 
 ?ldlf_unaryop:     ldlf_box
              |     ldlf_diamond
              |     ldlf_not
              |     ldlf_wrapped
-?ldlf_box: BOXLSEPARATOR regular_expression BOXRSEPARATOR ldlf_unaryop
-?ldlf_diamond: DIAMONDLSEPARATOR regular_expression DIAMONDRSEPARATOR ldlf_unaryop
-?ldlf_not: NOT ldlf_unaryop
+?ldlf_box:         LEFT_SQUARE_BRACKET regular_expression RIGHT_SQUARE_BRACKET ldlf_unaryop
+?ldlf_diamond:     LEFT_ANGLE_BRACKET regular_expression RIGHT_ANGLE_BRACKET ldlf_unaryop
+?ldlf_not:         NOT ldlf_unaryop
 ?ldlf_wrapped:    ldlf_atom
-             |    LSEPARATOR ldlf_formula RSEPARATOR
-?ldlf_atom:   ldlf_tt
-          |   ldlf_ff
-          |   ldlf_last
-          |   ldlf_end
-          |   ldlf_prop_true
-          |   ldlf_prop_false
-          |   ldlf_prop_atom
+             |    LEFT_PARENTHESIS ldlf_formula RIGHT_PARENTHESIS
+?ldlf_atom:       ldlf_tt
+          |       ldlf_ff
+          |       ldlf_last
+          |       ldlf_end
 
-ldlf_prop_true: TRUE
-ldlf_prop_false: FALSE
-ldlf_prop_atom: SYMBOL_NAME
 
 ldlf_tt: TT
 ldlf_ff: FF
@@ -218,23 +228,21 @@ regular_expression: re_union
 ?re_union:      re_sequence (UNION re_sequence)*
 ?re_sequence:   re_star (SEQ re_star)*
 ?re_star:       re_test STAR?
-?re_test:       TEST ldlf_formula
+?re_test:       ldlf_formula TEST
         |       re_wrapped
 ?re_wrapped:    re_propositional
-           |    LSEPARATOR regular_expression RSEPARATOR
+           |    LEFT_PARENTHESIS regular_expression RIGHT_PARENTHESIS
 re_propositional: propositional_formula
 
 
-BOXLSEPARATOR: "["
-BOXRSEPARATOR: "]"
-DIAMONDLSEPARATOR: "<"
-DIAMONDRSEPARATOR: ">"
+LEFT_SQUARE_BRACKET: "["
+RIGHT_SQUARE_BRACKET: "]"
+LEFT_ANGLE_BRACKET: "<"
+RIGHT_ANGLE_BRACKET: ">"
 UNION: "+"
 SEQ: ";"
 TEST: "?"
 STAR: "*"
-TT.2: /(?i:tt)/
-FF.2: /(?i:ff)/
 
 %ignore /\s+/
 
@@ -247,8 +255,10 @@ FF.2: /(?i:ff)/
 %import  .pl.OR -> OR
 %import  .pl.AND -> AND
 %import  .pl.NOT -> NOT
-%import  .pl.LSEPARATOR -> LSEPARATOR
-%import  .pl.RSEPARATOR -> RSEPARATOR
-%import .ltl.LAST -> LAST
-%import .ltl.END -> END
+%import  .pl.LEFT_PARENTHESIS -> LEFT_PARENTHESIS
+%import  .pl.RIGHT_PARENTHESIS -> RIGHT_PARENTHESIS
+%import  .ltl.LAST -> LAST
+%import  .ltl.END -> END
+%import  .ltl.TT -> TT
+%import  .ltl.FF -> FF
 ```

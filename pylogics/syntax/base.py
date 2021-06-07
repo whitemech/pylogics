@@ -273,10 +273,6 @@ class TrueFormula(Formula):
         """Compute the hash."""
         return hash((type(self), self.logic))
 
-    def __str__(self) -> str:
-        """Get the string representation."""
-        return "true"
-
     def __repr__(self) -> str:
         """Get an unambiguous string representation."""
         return f"TrueFormula({self.logic})"

@@ -39,6 +39,8 @@ from pylogics.syntax.ltl import (
     Eventually,
     Last,
     Next,
+    PropositionalFalse,
+    PropositionalTrue,
     Release,
     StrongRelease,
     Until,
@@ -128,10 +130,18 @@ class _LTLTransformer(AbstractTransformer):
 
     @classmethod
     def ltlf_true(cls, _args):
-        return make_boolean(True, logic=Logic.LTL)
+        return PropositionalTrue()
 
     @classmethod
     def ltlf_false(cls, _args):
+        return PropositionalFalse()
+
+    @classmethod
+    def ltlf_tt(cls, _args):
+        return make_boolean(True, logic=Logic.LTL)
+
+    @classmethod
+    def ltlf_ff(cls, _args):
         return make_boolean(False, logic=Logic.LTL)
 
     @classmethod

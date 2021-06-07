@@ -37,17 +37,7 @@ from pylogics.syntax.base import (
     Or,
     TrueFormula,
 )
-from pylogics.syntax.ldl import (
-    Box,
-    Diamond,
-    LDLFalse,
-    LDLTrue,
-    Prop,
-    Seq,
-    Star,
-    Test,
-    Union,
-)
+from pylogics.syntax.ldl import Box, Diamond, Prop, Seq, Star, Test, Union
 from pylogics.syntax.ltl import Always, Eventually, Next
 from pylogics.syntax.ltl import PropositionalFalse as LTLPropositionalFalse
 from pylogics.syntax.ltl import PropositionalTrue as LTLPropositionalTrue
@@ -211,18 +201,6 @@ def to_string_pltl_once(formula: Once) -> str:
 def to_string_pltl_historically(formula: Historically) -> str:
     """Transform a 'historically' formula into string."""
     return f"H({to_string(formula.argument)})"
-
-
-@to_string.register(LDLTrue)
-def to_string_ldl_true(_formula: LDLTrue) -> str:
-    """Transform an LDL true into string."""
-    return "tt"
-
-
-@to_string.register(LDLFalse)
-def to_string_ldl_false(_formula: LDLFalse) -> str:
-    """Transform an LDL false into string."""
-    return "ff"
 
 
 @to_string.register(Diamond)

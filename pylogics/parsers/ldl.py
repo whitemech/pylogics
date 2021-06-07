@@ -31,23 +31,12 @@ from pylogics.syntax.base import (
     FalseFormula,
     Formula,
     Implies,
+    Logic,
     Not,
     Or,
     TrueFormula,
 )
-from pylogics.syntax.ldl import (
-    Box,
-    Diamond,
-    End,
-    Last,
-    LDLFalse,
-    LDLTrue,
-    Prop,
-    Seq,
-    Star,
-    Test,
-    Union,
-)
+from pylogics.syntax.ldl import Box, Diamond, End, Last, Prop, Seq, Star, Test, Union
 from pylogics.syntax.pl import Atomic
 
 
@@ -123,11 +112,11 @@ class _LDLTransformer(AbstractTransformer):
 
     @classmethod
     def ldlf_tt(cls, args):
-        return LDLTrue()
+        return TrueFormula(logic=Logic.LDL)
 
     @classmethod
     def ldlf_ff(cls, args):
-        return LDLFalse()
+        return FalseFormula(logic=Logic.LDL)
 
     @classmethod
     def ldlf_last(cls, args):
@@ -139,18 +128,18 @@ class _LDLTransformer(AbstractTransformer):
 
     @classmethod
     def ldlf_prop_true(cls, args):
-        return Diamond(Prop(TrueFormula()), LDLTrue())
+        return Diamond(Prop(TrueFormula()), TrueFormula(logic=Logic.LDL))
 
     @classmethod
     def ldlf_prop_false(cls, args):
-        return Diamond(Prop(FalseFormula()), LDLTrue())
+        return Diamond(Prop(FalseFormula()), TrueFormula(logic=Logic.LDL))
 
     @classmethod
     def ldlf_prop_atom(cls, args):
         assert len(args) == 1
         token = args[0]
         symbol = str(token)
-        return Diamond(Prop(Atomic(symbol)), LDLTrue())
+        return Diamond(Prop(Atomic(symbol)), TrueFormula(logic=Logic.LDL))
 
     @classmethod
     def regular_expression(cls, args):

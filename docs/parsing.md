@@ -17,6 +17,11 @@ The library uses [Lark](https://lark-parser.readthedocs.io/en/latest/)
 to generate the parser automatically.
 The grammar files are reported at [this page](grammars.md).
 
+The syntax for `LTL`, `PLTL` and `LDL`
+aims to be compliant with 
+[this specification](https://marcofavorito.me/tl-grammars/v/7d9a17267fbf525d9a6a1beb92a46f05cf652db6/).
+
+
 ## Symbols
 
 A symbol is determined by the following regular expression:

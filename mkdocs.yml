@@ -1,7 +1,7 @@
 site_name: PyLogics Docs
 site_url: "https://whitemech.github.io/pylogics/"
-repo_name: 'marcofavorito/pylogics'
-repo_url: "https://github.com/marcofavorito/pylogics"
+repo_name: 'whitemech/pylogics'
+repo_url: "https://github.com/whitemech/pylogics"
 
 nav:
 - Home: index.md

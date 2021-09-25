@@ -167,6 +167,11 @@ class _BinaryOp(Formula):
             len(operands) >= 2,
             f"expected at least 2 operands, found {len(operands)} operands",
         )
+        enforce(
+            all(map(lambda x: isinstance(x, Formula), operands)),
+            "some argument is not an instance of 'Formula'",
+            exception_cls=ValueError,
+        )
         self._operands = list(operands)
 
     @property
@@ -227,6 +232,11 @@ class _UnaryOp(Formula, ABC):
 
         :param arg: the argument.
         """
+        enforce(
+            isinstance(arg, Formula),
+            "argument is not an instance of 'Formula'",
+            exception_cls=ValueError,
+        )
         super().__init__()
         self._arg = arg
 

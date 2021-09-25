@@ -4,6 +4,7 @@
 
 - Fixed bug in LDLf parsing; the regular expression of type "test"
   was not parsed correctly ([#76](https://github.com/whitemech/pylogics/pull/76)). 
+- Other minor bug fixing
 
 ## 0.1.0 (2021-06-07)
 

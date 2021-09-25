@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "pylogics"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Python library for logic formalisms representation and manipulation."
 authors = ["MarcoFavorito <marco.favorito@gmail.com>"]
 license = "LGPL-3.0-or-later"
 readme = "README.md"
-homepage = "https://marcofavorito.me/pylogics"
-repository = "https://github.com/marcofavorito/pylogics.git"
-documentation = "https://marcofavorito.me/pylogics"
+homepage = "https://whitemech.github.io/pylogics"
+repository = "https://github.com/whitemech/pylogics.git"
+documentation = "https://whitemech.github.io/pylogics"
 keywords = [
     "logic",
     "propositional logic",
@@ -32,8 +32,8 @@ include = []
 #script_name = 'path/to/script'
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/marcofavorito/pylogics/issues"
-"Pull Requests" = "https://github.com/marcofavorito/pylogics/pulls"
+"Bug Tracker" = "https://github.com/whitemech/pylogics/issues"
+"Pull Requests" = "https://github.com/whitemech/pylogics/pulls"
 
 
 [tool.poetry.dependencies]

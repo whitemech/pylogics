@@ -168,7 +168,7 @@ class _LDLTransformer(AbstractTransformer):
         if len(args) == 1:
             return args[0]
         if len(args) == 2:
-            _, formula = args
+            formula, _ = args
             return Test(formula)
         cls._raise_parsing_error(cls.re_test.__name__, args)
 

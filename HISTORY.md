@@ -1,5 +1,10 @@
 # History
 
+## 0.1.1 (2021-09-25)
+
+- Fixed bug in LDLf parsing; the regular expression of type "test"
+  was not parsed correctly ([#76](https://github.com/whitemech/pylogics/pull/76)). 
+
 ## 0.1.0 (2021-06-07)
 
 - Improved to the behaviour of `Not`:

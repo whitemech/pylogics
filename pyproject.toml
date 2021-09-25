@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pylogics"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Python library for logic formalisms representation and manipulation."
 authors = ["MarcoFavorito <marco.favorito@gmail.com>"]
 license = "LGPL-3.0-or-later"

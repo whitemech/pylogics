@@ -604,7 +604,7 @@ def ensure_formula(f: Optional[Formula], is_none_true: bool) -> Formula:
 class AtomName(RegexConstrainedString):
     """A string that denotes an atomic propositional symbol."""
 
-    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_]*|\"\w+\"")
+    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_-]*|\"\w+\"")
 
 
 _AtomNameOrStr = Union[str, AtomName]

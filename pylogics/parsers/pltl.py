@@ -36,7 +36,6 @@ from pylogics.syntax.base import (
 from pylogics.syntax.pltl import (
     Atomic,
     Before,
-    First,
     Historically,
     Once,
     PropositionalFalse,
@@ -126,10 +125,6 @@ class _PLTLTransformer(AbstractTransformer):
     @classmethod
     def pltlf_start(cls, _args):
         return Start()
-
-    @classmethod
-    def pltlf_first(cls, _args):
-        return First()
 
     @classmethod
     def pltlf_symbol(cls, args):

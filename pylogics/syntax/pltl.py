@@ -133,5 +133,4 @@ class Historically(_PLTLUnaryOp):
     SYMBOL = "historically"
 
 
-Start = partial(Historically, FalseFormula(logic=Logic.PLTL))
-First = partial(Not, Before(TrueFormula(logic=Logic.PLTL)))
+Start = partial(Not, Before(TrueFormula(logic=Logic.PLTL)))

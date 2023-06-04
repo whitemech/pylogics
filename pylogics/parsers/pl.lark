@@ -31,6 +31,18 @@ FALSE.2: /false/
 // 1) either start with [a-z_], followed by at least one [a-zA-Z0-9_-], and by one [a-zA-Z0-9_] (i.e. hyphens only in between)
 // 2) or, start with [a-z_] and follows with any sequence of [a-zA-Z0-9_] (no hyphens)
 // 3) or, any sequence of ASCII printable characters (i.e. going from ' ' to '~'), except '"'.
-SYMBOL_NAME: /[a-z_]([a-zA-Z0-9_-]+[a-zA-Z0-9_])|[a-z_][a-zA-Z0-9_]*|"[ !#-~]+?"/
+SYMBOL_NAME: FIRST_SYMBOL_CHAR _SYMBOL_1_BODY _SYMBOL_1_TAIL
+           | FIRST_SYMBOL_CHAR _SYMBOL_2_BODY
+           | DOUBLE_QUOTES _SYMBOL_3_BODY DOUBLE_QUOTES
+
+_SYMBOL_QUOTED: DOUBLE_QUOTES _SYMBOL_3_BODY DOUBLE_QUOTES
+_SYMBOL_1_BODY: /[a-zA-Z0-9_\-]+/
+_SYMBOL_1_TAIL: /[a-zA-Z0-9_]/
+_SYMBOL_2_BODY: /[a-zA-Z0-9_]*/
+_SYMBOL_3_BODY: /[ -!#-~]+?/
+
+DOUBLE_QUOTES: "\""
+FIRST_SYMBOL_CHAR: /[a-z_]/
+
 
 %ignore /\s+/

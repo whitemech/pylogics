@@ -27,13 +27,13 @@ aims to be compliant with
 A symbol is determined by the following regular expression:
 
 ```
-SYMBOL: [a-z][a-z0-9_]*|"\w+"
+SYMBOL: [a-z][a-z0-9_-]*|"\w+"
 ```
 
 That is:
 
 - if between quotes `""`, a symbol can be any 
-  non-empty sequence of word characters: `[a-zA-Z0-9_]+`
+  non-empty sequence of word characters: `[a-zA-Z0-9_-]+`
 - if not, a symbol must:
   
     - have only have lower case characters

@@ -39,7 +39,7 @@ FALSE.2: /false/
 
 // Symbols cannot contain uppercase letters, because these are reserved
 // Moreover, any word between quotes is a symbol
-SYMBOL_NAME: /[a-z][a-z0-9_]*|"\w+"/
+SYMBOL_NAME: /[a-z][a-z0-9_-]*|"\w+"/
 
 %ignore /\s+/
 ```
@@ -154,7 +154,6 @@ start: pltlf_formula
            |       pltlf_tt
            |       pltlf_ff
            |       pltlf_start
-           |       pltlf_first
 
 pltlf_symbol: SYMBOL_NAME
 pltlf_true: prop_true
@@ -162,7 +161,6 @@ pltlf_false: prop_false
 pltlf_tt: TT
 pltlf_ff: FF
 pltlf_start: START
-pltlf_first: FIRST
 
 // Operators must not be part of a word
 SINCE.2: "S"

@@ -34,10 +34,10 @@ pltlf_ff: FF
 pltlf_start: START
 
 // Operators must not be part of a word
-SINCE.2: "S"
-HISTORICALLY.2: "H"
-ONCE.2: "O"
-BEFORE.2: "Y"
+SINCE.2: /S(?=[ "\(])/
+HISTORICALLY.2: /H(?=[ "\(])/
+ONCE.2: /O(?=[ "\(])/
+BEFORE.2: /Y(?=[ "\(])/
 FIRST.2: /first/
 START.2: /start/
 

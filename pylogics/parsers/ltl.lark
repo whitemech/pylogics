@@ -38,14 +38,16 @@ ltlf_tt: TT
 ltlf_ff: FF
 ltlf_last: LAST
 
-UNTIL.2: "U"
-RELEASE.2:  /R|V/
-ALWAYS.2: "G"
-EVENTUALLY.2: "F"
-NEXT.2: "X[!]"
-WEAK_NEXT.2: "X"
-WEAK_UNTIL.2: "W"
-STRONG_RELEASE.2: "M"
+// Operators must not be part of a word
+UNTIL.2: /U(?=[ "\(])/
+RELEASE.2: /R(?=[ "\(])/
+ALWAYS.2: /G(?=[ "\(])/
+EVENTUALLY.2: /F(?=[ "\(])/
+NEXT.2: /X\[!\](?=[ "\(])/
+WEAK_NEXT.2: /X(?=[ "\(])/
+WEAK_UNTIL.2: /W(?=[ "\(])/
+STRONG_RELEASE.2: /M(?=[ "\(])/
+
 
 END.2: /end/
 LAST.2: /last/

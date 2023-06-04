@@ -34,15 +34,27 @@ IMPLY : ">>"|"->"
 OR: "||"|"|"
 AND: "&&"|"&"
 NOT: "!"|"~"
-TRUE.2: /true/
-FALSE.2: /false/
+TRUE.2: /true|TRUE/
+FALSE.2: /false|FALSE/
 
 // Symbols cannot start with uppercase letters, because these are reserved. Moreover, any word between quotes is a symbol.
 // More in detail:
 // 1) either start with [a-z_], followed by at least one [a-zA-Z0-9_-], and by one [a-zA-Z0-9_] (i.e. hyphens only in between)
 // 2) or, start with [a-z_] and follows with any sequence of [a-zA-Z0-9_] (no hyphens)
 // 3) or, any sequence of ASCII printable characters (i.e. going from ' ' to '~'), except '"'.
-SYMBOL_NAME: /[a-z_]([a-zA-Z0-9_-]+[a-zA-Z0-9_])|[a-z_][a-zA-Z0-9_]*|"[ !#-~]+?"/
+SYMBOL_NAME: FIRST_SYMBOL_CHAR _SYMBOL_1_BODY _SYMBOL_1_TAIL
+           | FIRST_SYMBOL_CHAR _SYMBOL_2_BODY
+           | DOUBLE_QUOTES _SYMBOL_3_BODY DOUBLE_QUOTES
+
+_SYMBOL_QUOTED: DOUBLE_QUOTES _SYMBOL_3_BODY DOUBLE_QUOTES
+_SYMBOL_1_BODY: /[a-zA-Z0-9_\-]+/
+_SYMBOL_1_TAIL: /[a-zA-Z0-9_]/
+_SYMBOL_2_BODY: /[a-zA-Z0-9_]*/
+_SYMBOL_3_BODY: /[ -!#-~]+?/
+
+DOUBLE_QUOTES: "\""
+FIRST_SYMBOL_CHAR: /[a-z_]/
+
 
 %ignore /\s+/
 ```
@@ -94,14 +106,16 @@ ltlf_tt: TT
 ltlf_ff: FF
 ltlf_last: LAST
 
-UNTIL.2: "U"
-RELEASE.2:  /R|V/
-ALWAYS.2: "G"
-EVENTUALLY.2: "F"
-NEXT.2: "X[!]"
-WEAK_NEXT.2: "X"
-WEAK_UNTIL.2: "W"
-STRONG_RELEASE.2: "M"
+// Operators must not be part of a word
+UNTIL.2: /U(?=[ "\(])/
+RELEASE.2: /R(?=[ "\(])/
+ALWAYS.2: /G(?=[ "\(])/
+EVENTUALLY.2: /F(?=[ "\(])/
+NEXT.2: /X\[!\](?=[ "\(])/
+WEAK_NEXT.2: /X(?=[ "\(])/
+WEAK_UNTIL.2: /W(?=[ "\(])/
+STRONG_RELEASE.2: /M(?=[ "\(])/
+
 
 END.2: /end/
 LAST.2: /last/
@@ -166,10 +180,10 @@ pltlf_ff: FF
 pltlf_start: START
 
 // Operators must not be part of a word
-SINCE.2: "S"
-HISTORICALLY.2: "H"
-ONCE.2: "O"
-BEFORE.2: "Y"
+SINCE.2: /S(?=[ "\(])/
+HISTORICALLY.2: /H(?=[ "\(])/
+ONCE.2: /O(?=[ "\(])/
+BEFORE.2: /Y(?=[ "\(])/
 FIRST.2: /first/
 START.2: /start/
 

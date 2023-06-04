@@ -39,7 +39,7 @@ FALSE.2: /false/
 
 // Symbols cannot contain uppercase letters, because these are reserved
 // Moreover, any word between quotes is a symbol
-SYMBOL_NAME: /[a-z][a-z0-9_-]*|"\w+"/
+SYMBOL_NAME: /[a-z][a-z0-9_-]*[a-z0-9_]*|"\w+"/
 
 %ignore /\s+/
 ```

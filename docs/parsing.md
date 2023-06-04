@@ -27,7 +27,7 @@ aims to be compliant with
 A symbol is determined by the following regular expression:
 
 ```
-SYMBOL: [a-z][a-z0-9_-]*|"\w+"
+SYMBOL: [a-z][a-z0-9_-]*[a-z0-9_]*|"\w+"
 ```
 
 That is:

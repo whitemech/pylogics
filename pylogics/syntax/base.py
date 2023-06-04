@@ -602,9 +602,23 @@ def ensure_formula(f: Optional[Formula], is_none_true: bool) -> Formula:
 
 
 class AtomName(RegexConstrainedString):
-    """A string that denotes an atomic propositional symbol."""
+    """
+    A string that denotes an atomic propositional symbol.
 
-    REGEX = re.compile(r"[A-Za-z][A-Za-z0-9_-]*|\"\w+\"")
+    Symbols cannot start with uppercase letters, because these are reserved. Moreover, any word between quotes is a
+     symbol.
+
+    More in detail:
+
+    1) either start with [a-z_], followed by at least one [a-zA-Z0-9_-], and by one [a-zA-Z0-9_] (i.e. hyphens only in
+       between);
+    2) or, start with [a-z_] and follows with any sequence of [a-zA-Z0-9_] (no hyphens);
+    3) or, any sequence of ASCII printable characters (i.e. going from ' ' to '~'), except '"'.
+    """
+
+    REGEX = re.compile(
+        r"[a-z_]([a-zA-Z0-9_-]+[a-zA-Z0-9_])|[a-z_][a-zA-Z0-9_]*|\"[ -!#-~]+?\""
+    )
 
 
 _AtomNameOrStr = Union[str, AtomName]

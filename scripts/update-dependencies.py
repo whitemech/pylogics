@@ -37,81 +37,118 @@ Requirements:
     - toml library
     - A valid pyproject.toml file managed by Poetry.
 """
+
 import argparse
 import logging
 import subprocess
-from pathlib import Path
-from typing import Union
+from typing import Optional
 
 import requests
 import toml
+from packaging.specifiers import SpecifierSet
+from packaging.version import InvalidVersion, Version, parse
+from pkg_resources import parse_version
+
+URL_PATTERN = "https://pypi.python.org/pypi/{package}/json"
 
 
-def get_latest_version(package: str) -> Union[str, None]:
-    """
-    Fetch the latest version of a package from PyPI.
-
-    Args:
-        package (str): The name of the package.
-
-    Returns:
-        Union[str, None]: The latest version of the package, or None if an error occurred.
-    """
-    try:
-        response = requests.get(f"https://pypi.org/pypi/{package}/json")
-        response.raise_for_status()
-        version = response.json()["info"]["version"]
-        logging.info(f"Latest version of {package} is {version}")
-        return version
-    except requests.HTTPError:
-        logging.error(f"Failed to get the latest version for {package}, skipping...")
-        return None
+def clean_version_specifier(version_specifier: str) -> str:
+    """Clean version specifier by removing '.*' if present."""
+    cleaned = version_specifier.replace(".*", "")
+    return cleaned
 
 
-def update_dependencies(file_path: Path, poetry_path: Path) -> None:
-    """
-    Update the dev-dependencies in a pyproject.toml file to their latest versions.
+def get_lowest_python_version(specifier_set: SpecifierSet) -> str:
+    """Get the lowest Python version that satisfies the specifier set."""
+    possible_versions = [
+        f"{major}.{minor}.{patch}"
+        for major in range(3, 4)
+        for minor in range(10)
+        for patch in range(10)
+    ]
+    satisfying_versions = [
+        version for version in possible_versions if parse(version) in specifier_set
+    ]
+    return min(satisfying_versions, default="3")
 
-    Args:
-        file_path (Path): The path to the pyproject.toml file.
-        poetry_path (str): The path to the poetry main entrypoint.
-    """
-    pyproject = toml.load(str(file_path))
-    dev_dependencies = pyproject["tool"]["poetry"]["group"]["dev"]["dependencies"]
-    for package in dev_dependencies:
-        latest_version = get_latest_version(package)
-        if latest_version is not None:
+
+def get_pyproject_python_version(pyproject_file: str) -> str:
+    """Extract the Python version from a pyproject.toml file."""
+    pyproject_data = toml.load(pyproject_file)
+    python_version_specifier = pyproject_data["tool"]["poetry"]["dependencies"][
+        "python"
+    ]
+    specifier_set = SpecifierSet(python_version_specifier)
+    return get_lowest_python_version(specifier_set)
+
+
+def get_version(package: str, python_version: str) -> Optional[str]:
+    """Get the latest version of a package that is compatible with the provided Python version."""
+    req = requests.get(URL_PATTERN.format(package=package))
+    version = parse_version("0")
+    if req.status_code == requests.codes.ok:
+        j = req.json()
+        releases = j.get("releases", [])
+        for release in releases:
             try:
-                command = f"{poetry_path} add --group dev {package}^{latest_version}"
-                logging.info(f'Running command "{command}"')
-                subprocess.check_call(command, shell=True)
-                logging.info(
-                    f"Successfully updated {package} to version {latest_version}"
-                )
-            except subprocess.CalledProcessError:
-                logging.error(f"Failed to update {package}, skipping...")
+                ver = parse_version(release)
+            except InvalidVersion:
+                logging.warning(f"Skipping invalid version: {release}")
                 continue
+
+            release_info = j["releases"].get(str(ver), [{}])
+            if release_info:
+                info = release_info[-1]
+                if not ver.is_prerelease and info:
+                    requires_python = info["requires_python"]
+                    requires_python = requires_python if requires_python else ">=3"
+                    cleaned_requires_python = clean_version_specifier(requires_python)
+                    if Version(python_version) in SpecifierSet(cleaned_requires_python):
+                        version = max(version, ver)
+    return str(version)
+
+
+def update_dependencies(pyproject_file: str, poetry_path: str = "poetry") -> None:
+    """Update the dev-dependencies in a pyproject.toml file to their latest versions."""
+    pyproject_data = toml.load(pyproject_file)
+    dev_dependencies = pyproject_data["tool"]["poetry"]["group"]["dev"]["dependencies"]
+    python_version = get_pyproject_python_version(pyproject_file)
+
+    for package in dev_dependencies:
+        if package == "python":
+            continue
+        try:
+            logging.info(f"Updating {package}")
+            latest_version = get_version(package, python_version)
+            if latest_version == "0":
+                logging.warning(
+                    f"Could not find a valid version for {package}, skipping."
+                )
+                continue
+            logging.info(f"Latest version of {package} is {latest_version}")
+            subprocess.run(
+                [poetry_path, "add", "--group", "dev", f"{package}^{latest_version}"],
+                check=True,
+            )
+        except Exception as e:
+            logging.exception(f"Failed to update {package} due to error: {str(e)}")
+            continue
+
+
+def main():
+    """Run main function to parse arguments and initiate the update process."""
+    parser = argparse.ArgumentParser(
+        description="Update the dev-dependencies in a pyproject.toml file to their latest versions."
+    )
+    parser.add_argument("file_path", help="The path to the pyproject.toml file.")
+    parser.add_argument(
+        "--poetry_path", default="poetry", help="The path to the Poetry executable."
+    )
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO)
+    update_dependencies(args.file_path, args.poetry_path)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        format="%(asctime)s %(levelname)s: %(message)s", level=logging.INFO
-    )
-    parser = argparse.ArgumentParser(
-        description="Update the dev-dependencies in a pyproject.toml file."
-    )
-    parser.add_argument(
-        "file_path",
-        metavar="path",
-        type=Path,
-        help="the path to the pyproject.toml file",
-    )
-    parser.add_argument(
-        "--poetry-path",
-        metavar="poetry",
-        type=Path,
-        default="poetry",
-        help='the path to the poetry main entrypoint (default: "poetry")',
-    )
-    args = parser.parse_args()
-    update_dependencies(args.file_path, args.poetry_path)
+    main()

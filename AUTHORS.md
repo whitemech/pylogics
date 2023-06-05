@@ -6,4 +6,7 @@
 
 ## Contributors
 
-None yet. [Why not be the first](./contributing.md)? 
+- [Francesco Fuggitti](https://github.com/francescofuggitti)
+
+
+[Do you want to be a contributor](./contributing.md)? 

@@ -34,8 +34,8 @@ IMPLY : ">>"|"->"
 OR: "||"|"|"
 AND: "&&"|"&"
 NOT: "!"|"~"
-TRUE.2: /true|TRUE/
-FALSE.2: /false|FALSE/
+TRUE.2: /true/
+FALSE.2: /false/
 
 // Symbols cannot start with uppercase letters, because these are reserved. Moreover, any word between quotes is a symbol.
 // More in detail:

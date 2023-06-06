@@ -1,5 +1,15 @@
 # History
 
+## 0.2.1 (2023-06-06)
+
+The main change of this release is to relax the supported grammar, in particular regarding the symbols definition.
+
+* Wip/grammar by @francescofuggitti in https://github.com/whitemech/pylogics/pull/81
+  * Earlier, symbols could not contain uppercase letters. Now, symbols cannot *start* with uppercase letters.
+  * Now, hyphens can only occur in the middle characters of a word, i.e. neither at the start nor at the end of the symbol (unless quoted).
+  * Double quoted words can contain all printable characters (except the double quote ".
+
+
 ## 0.1.1 (2021-09-25)
 
 - Fixed bug in LDLf parsing; the regular expression of type "test"

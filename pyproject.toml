@@ -73,7 +73,7 @@ toml = "^0.10.2"
 tox = "^4.4.12"
 twine = "^4.0.2"
 types-requests = "^2.31.0.1"
-types-setuptools = "^67.8.0.0"
+types-setuptools = ">=67.8,<69.0"
 types-toml = "^0.10.8.6"
 vulture = "^2.7"
 

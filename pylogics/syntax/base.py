@@ -296,7 +296,7 @@ class TrueFormula(Formula):
         the set of instances of this class
         equal between them.
         """
-        return type(other) == type(self) and self.logic == other.logic
+        return type(other) is type(self) and self.logic == other.logic
 
     def __invert__(self) -> "Formula":
         """Negate."""
@@ -337,7 +337,7 @@ class FalseFormula(Formula):
         the set of instances of this class
         equal between them.
         """
-        return type(other) == type(self) and self.logic == other.logic
+        return type(other) is type(self) and self.logic == other.logic
 
     def __invert__(self) -> "Formula":
         """Negate."""

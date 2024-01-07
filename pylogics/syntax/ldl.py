@@ -135,7 +135,7 @@ class _TemporalFormula(_LDL, ABC):
     def __eq__(self, other):
         """Test equality."""
         return (
-            type(self) == type(other)
+            type(self) is type(other)
             and self.regular_expression == other.regular_expression
             and self.tail_formula == other.tail_formula
         )

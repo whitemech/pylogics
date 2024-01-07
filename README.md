@@ -84,9 +84,9 @@ and then go to [http://localhost:8000](http://localhost:8000)
 
 ## License
 
-pylogics is released under the GNU Lesser General Public License v3.0 or later (LGPLv3+).
+pylogics is released under the MIT License.
 
-Copyright 2021 WhiteMech
+Copyright 2021-2024 The Pylogics contributors
 
 ## Authors
 
